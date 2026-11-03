@@ -3,7 +3,11 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-### STS ###
+### IDE & Editors ###
+.idea/
+*.iws
+*.iml
+*.ipr
 .apt_generated
 .classpath
 .factorypath
@@ -11,14 +15,6 @@ target/
 .settings
 .springBeans
 .sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
 /nbproject/private/
 /nbbuild/
 /dist/
@@ -26,7 +22,12 @@ target/
 /nbactions.xml
 /nb-configuration.xml
 
-### SQLite working database ###
+### Documents & Starter Template ###
+starter/
+*.pptx
+*.docx
+
+### SQLite Working Database ###
 instance/*.db
 instance/*.db-journal
 instance/*.db-wal
@@ -38,6 +39,7 @@ instance/*.db-shm
 __pycache__/
 *.pyc
 
-### OS ###
+### OS & Temporary Files ###
 .DS_Store
 Thumbs.db
+*.log
