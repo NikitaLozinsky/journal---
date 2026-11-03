@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('journal_theme');
+        var theme = saved === 'light' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
+  <title>Отчёты и аналитика — Электронный журнал</title>
+  <link rel="stylesheet" href="/css/styles.css?v=2.2">
+  <script src="/js/vendor/chart.umd.min.js?v=2.2"></script>
+</head>
+<body>
+  <header th:replace="~{partials/header :: header}"></header>
+  <main id="main-content" class="container page" aria-busy="false">
+    <div class="page-heading">
+      <h1>Отчёты и аналитика</h1>
+    </div>
+    <div class="toolbar">
+      <label>Вид отчёта
+        <select id="kind-select">
+          <option value="groups">Показатели групп</option>
+          <option value="no_grades">Студенты без оценок</option>
+          <option value="failing">Студенты с двойками</option>
+        </select>
+      </label>
+      <div class="view-tabs" role="tablist" aria-label="Режим отображения">
+        <button id="view-both" class="view-tab-btn active" type="button">Всё вместе</button>
+        <button id="view-charts" class="view-tab-btn" type="button">Графика</button>
+        <button id="view-table" class="view-tab-btn" type="button">Таблица</button>
+      </div>
+    </div>
+    <p id="status" class="status" role="status" aria-live="polite" hidden></p>
+
+    <!-- Сводная аналитика и графики -->
+    <section id="analytics-section" class="analytics-section" aria-label="Аналитические графики и показатели">
+      <div id="kpi-container" class="kpi-grid"></div>
+      <div id="charts-container" class="charts-grid">
+        <div id="chart-card-1" class="chart-card">
+          <div class="chart-card-header">
+            <h2 id="chart-title-1" class="chart-title">Диаграмма</h2>
+          </div>
+          <div class="chart-canvas-wrap">
+            <canvas id="report-canvas-1"></canvas>
+          </div>
+        </div>
+        <div id="chart-card-2" class="chart-card">
+          <div class="chart-card-header">
+            <h2 id="chart-title-2" class="chart-title">Диаграмма</h2>
+          </div>
+          <div class="chart-canvas-wrap">
+            <canvas id="report-canvas-2"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Таблица данных -->
+    <div id="table-container" class="table-scroll">
+      <table>
+        <thead id="table-head"></thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+  </main>
+  <footer th:replace="~{partials/footer :: footer}"></footer>
+  <script type="module" src="/js/reports.js?v=2.2"></script>
+</body>
+</html>

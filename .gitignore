@@ -1,0 +1,43 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/nbactions.xml
+/nb-configuration.xml
+
+### SQLite working database ###
+instance/*.db
+instance/*.db-journal
+instance/*.db-wal
+instance/*.db-shm
+!instance/.gitkeep
+
+### Python / Virtualenv ###
+.venv/
+__pycache__/
+*.pyc
+
+### OS ###
+.DS_Store
+Thumbs.db

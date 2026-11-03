@@ -1,0 +1,19 @@
+<header class="site-header" th:fragment="header" xmlns:th="http://www.thymeleaf.org">
+  <div class="container">
+    <div class="brand-row">
+      <a class="brand" href="/groups">Электронный журнал</a>
+      <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="Переключить тему оформления" title="Переключить тему оформления">
+        <span class="theme-toggle-icon" aria-hidden="true">☀️</span>
+        <span class="theme-toggle-text">Светлая тема</span>
+      </button>
+    </div>
+    <nav class="navigation" aria-label="Разделы приложения">
+      <a href="/groups" th:attr="aria-current=${activePage == 'groups'} ? 'page' : null">Группы</a>
+      <a href="/subjects" th:attr="aria-current=${activePage == 'subjects'} ? 'page' : null">Предметы</a>
+      <a href="/students" th:attr="aria-current=${activePage == 'students'} ? 'page' : null">Студенты</a>
+      <a href="/journal" th:attr="aria-current=${activePage == 'journal'} ? 'page' : null">Журнал</a>
+      <a href="/reports" th:attr="aria-current=${activePage == 'reports'} ? 'page' : null">Отчёты</a>
+    </nav>
+  </div>
+  <script type="module" src="/js/theme.js?v=2.2"></script>
+</header>

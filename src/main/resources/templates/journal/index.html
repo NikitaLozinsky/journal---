@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('journal_theme');
+        var theme = saved === 'light' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
+  <title>Журнал оценок — Электронный журнал</title>
+  <link rel="stylesheet" href="/css/styles.css?v=2.3">
+  <script src="/js/vendor/chart.umd.min.js?v=2.3"></script>
+</head>
+<body>
+  <header th:replace="~{partials/header :: header}"></header>
+  <main id="main-content" class="container page" aria-busy="false">
+    <div class="page-heading">
+      <h1>Журнал оценок</h1>
+      <div class="heading-actions">
+        <button id="toggle-analytics" class="button-secondary" type="button" aria-expanded="true">📊 Аналитика группы</button>
+        <button id="btn-export-excel" class="button-secondary" type="button" title="Скачать в формате Microsoft Excel (.xlsx)">📥 Excel (.xlsx)</button>
+        <button id="btn-export-csv" class="button-secondary" type="button" title="Скачать в текстовом формате CSV">📥 CSV</button>
+        <button id="btn-print" class="button-primary" type="button" title="Распечатать официальную экзаменационную ведомость">🖨️ Печать ведомости</button>
+      </div>
+    </div>
+    <div class="toolbar journal-toolbar">
+      <label>Группа
+        <select id="group-select"></select>
+      </label>
+      <label class="toggle-mode-label">
+        <input id="quick-edit-mode" type="checkbox" checked>
+        <span>⌨️ Быстрый ввод (Excel)</span>
+      </label>
+    </div>
+
+    <!-- Интерактивная подсказка для быстрого ввода -->
+    <div id="quick-edit-hint" class="quick-edit-hint">
+      <span class="hint-badge">Быстрый ввод:</span>
+      Кликните по ячейке и нажимайте <kbd>2</kbd>, <kbd>3</kbd>, <kbd>4</kbd>, <kbd>5</kbd> для моментального сохранения. Навигация стрелками <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> или <kbd>Enter</kbd>. Удаление — <kbd>Del</kbd> или <kbd>Backspace</kbd>. Двойной клик открывает форму.
+    </div>
+
+    <p id="status" class="status" role="status" aria-live="polite" hidden></p>
+
+    <!-- Секция аналитики успеваемости группы -->
+    <section id="journal-analytics" class="analytics-section" aria-label="Аналитика группы">
+      <div id="journal-kpi" class="kpi-grid"></div>
+      <div id="journal-charts" class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <h2 class="chart-title">Распределение оценок группы</h2>
+          </div>
+          <div class="chart-canvas-wrap">
+            <canvas id="journal-canvas-marks"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <h2 class="chart-title">Средний балл по предметам</h2>
+          </div>
+          <div class="chart-canvas-wrap">
+            <canvas id="journal-canvas-subjects"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Модальный редактор оценки -->
+    <section id="editor" class="editor" aria-labelledby="editor-title" hidden>
+      <h2 id="editor-title">Оценка</h2>
+      <form id="edit-form">
+        <input id="record-student-id" type="hidden">
+        <input id="record-subject-id" type="hidden">
+        <div class="form-fields">
+          <label>Оценка
+            <select id="record-mark" required>
+              <option value="5">5</option>
+              <option value="4">4</option>
+              <option value="3">3</option>
+              <option value="2">2</option>
+            </select>
+          </label>
+        </div>
+        <div class="button-row">
+          <button class="button-primary" type="submit">Сохранить</button>
+          <button id="delete-grade" class="button-danger" type="button" hidden>Удалить оценку</button>
+          <button id="cancel-edit" type="button">Отмена</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Академический бланк ведомости для печати -->
+    <div class="print-sheet-header">
+      <div class="print-org-name">МИНИСТЕРСТВО НАУКИ И ВЫСШЕГО ОБРАЗОВАНИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ</div>
+      <h2 class="print-sheet-title">ЭКЗАМЕНАЦИОННО-ЗАЧЁТНАЯ ВЕДОМОСТЬ</h2>
+      <div class="print-meta-grid">
+        <div><strong>Учебная группа:</strong> <span id="print-group-name">—</span></div>
+        <div><strong>Дата формирования:</strong> <span id="print-date">—</span></div>
+        <div><strong>Семестр:</strong> Осенний семестр 2026/2027 уч. год</div>
+        <div><strong>Форма контроля:</strong> Итоговая аттестация</div>
+      </div>
+    </div>
+
+    <!-- Таблица журнала оценок -->
+    <div class="table-scroll">
+      <table class="journal-table">
+        <thead id="table-head"></thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+
+    <!-- Подписи для печати -->
+    <div class="print-sheet-footer">
+      <div class="print-signatures-grid">
+        <div class="print-sig-col">
+          <div>Преподаватель: ____________________ / ____________________ /</div>
+          <div class="sig-note">(подпись, расшифровка)</div>
+        </div>
+        <div class="print-sig-col">
+          <div>Декан факультета: ____________________ / ____________________ /</div>
+          <div class="sig-note">(подпись, расшифровка)</div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer th:replace="~{partials/footer :: footer}"></footer>
+  <script type="module" src="/js/journal.js?v=2.3"></script>
+</body>
+</html>

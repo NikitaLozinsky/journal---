@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('journal_theme');
+        var theme = saved === 'light' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
+  <title>Страница не найдена — Электронный журнал</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header th:replace="~{partials/header :: header}"></header>
+  <main id="main-content" class="container page" aria-busy="false">
+    <h1>Страница не найдена</h1>
+    <p>Выберите раздел в меню.</p>
+  </main>
+  <footer th:replace="~{partials/footer :: footer}"></footer>
+</body>
+</html>
