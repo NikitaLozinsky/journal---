@@ -1,13 +1,20 @@
 package ru.edu.journal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.event.EventListener;
 import ru.edu.journal.common.DatabaseInitializer;
 import ru.edu.journal.features.students.StudentService;
 
 import javax.sql.DataSource;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -15,6 +22,8 @@ import java.util.*;
 
 @SpringBootApplication
 public class JournalApplication implements CommandLineRunner {
+
+    private static final Logger log = LoggerFactory.getLogger(JournalApplication.class);
 
     private final ApplicationContext context;
     private final DatabaseInitializer databaseInitializer;
@@ -30,6 +39,32 @@ public class JournalApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
         SpringApplication.run(JournalApplication.class, args);
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void onApplicationReady(ApplicationReadyEvent event) {
+        if (event.getApplicationContext() instanceof ServletWebServerApplicationContext webContext) {
+            int port = webContext.getWebServer().getPort();
+            String contextPath = webContext.getServletContext().getContextPath();
+            String path = (contextPath == null || contextPath.isBlank()) ? "/" : (contextPath.endsWith("/") ? contextPath : contextPath + "/");
+
+            String hostAddress = "localhost";
+            try {
+                hostAddress = InetAddress.getLocalHost().getHostAddress();
+            } catch (UnknownHostException ignored) {
+            }
+
+            log.info("""
+                
+                ----------------------------------------------------------
+                \tПриложение успешно запущено!
+                \tЛокально: \thttp://localhost:{}{}
+                \tВ сети:   \thttp://{}:{}{}
+                ----------------------------------------------------------""",
+                port, path,
+                hostAddress, port, path
+            );
+        }
     }
 
     @Override
