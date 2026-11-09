@@ -1,5 +1,41 @@
-<footer class="site-footer" th:fragment="footer" xmlns:th="http://www.thymeleaf.org">
-  <div class="container">
-    <p class="muted">Учебный проект — Электронный журнал студентов</p>
+<footer class="site-footer statusline" th:fragment="footer" xmlns:th="http://www.thymeleaf.org">
+  <!-- Всплывающее меню автодополнения (wildmenu в стиле Neovim / fish) -->
+  <div id="cli-wildmenu" class="cli-wildmenu" hidden>
+    <div class="wildmenu-header">
+      <span>󰋖 Автодополнение (Tab — подставить, ↑↓ — история, Enter — выполнить)</span>
+      <span id="wildmenu-context" class="pink-accent">Ex-mode</span>
+    </div>
+    <ul id="cli-suggestions" class="wildmenu-list"></ul>
+  </div>
+
+  <div class="statusline-inner">
+    <div class="statusline-left">
+      <span id="vim-mode-indicator" class="vim-mode mode-normal">NORMAL</span>
+
+      <!-- Стандартная подсказка (скрывается при нажатии :) -->
+      <span id="status-default-bar" class="status-segment">
+        <span class="tree-branch">├─</span>
+        <span id="status-active-hint">
+          Команда: <kbd>:</kbd> · Навигация: <kbd>J</kbd><kbd>K</kbd> · Воркспейсы: <kbd>1</kbd>–<kbd>5</kbd> · Поиск: <kbd>/</kbd> · HUD: <kbd>?</kbd>
+        </span>
+      </span>
+
+      <!-- Терминальная строка ввода (активируется по клавише :) -->
+      <form id="cli-form" class="cli-form" autocomplete="off" hidden>
+        <span class="cli-colon">:</span>
+        <div class="cli-input-wrap">
+          <input id="cli-input" type="text" class="cli-input" spellcheck="false" placeholder="grade Иванов Python 5 | add БЭИ2401 | w excel | theme oled">
+          <span id="cli-ghost" class="cli-ghost" aria-hidden="true"></span>
+        </div>
+      </form>
+    </div>
+
+    <div class="statusline-right">
+      <button id="cli-trigger-btn" type="button" class="cli-trigger-btn" title="Открыть командную строку (Клавиша :)">
+        <span>:_ консоль</span>
+      </button>
+      <span class="status-segment muted">UTF-8</span>
+      <span id="status-cursor-pos" class="status-segment status-pos">ROW --</span>
+    </div>
   </div>
 </footer>

@@ -684,9 +684,11 @@ tableBody.addEventListener("dblclick", function(event) {
   openGradeEditor(btn);
 });
 
+// Обработка клавиатурной навигации по матрице (Стрелки + Vim HJKL + Цифры 2..5)
 tableBody.addEventListener("keydown", function(event) {
-  const isQuick = quickEditCheckbox ? quickEditCheckbox.checked : false;
+  const isQuick = quickEditCheckbox ? quickEditCheckbox.checked : true;
   if (!isQuick) return;
+
   const btn = event.target.closest("button.grade-button");
   if (!btn) return;
 
@@ -695,21 +697,48 @@ tableBody.addEventListener("keydown", function(event) {
 
   switch (event.key) {
     case "ArrowDown":
+    case "j":
+    case "J":
     case "Enter":
-      event.preventDefault(); setActiveCell(r + 1, c); break;
+      event.preventDefault();
+      setActiveCell(r + 1, c);
+      break;
     case "ArrowUp":
-      event.preventDefault(); setActiveCell(r - 1, c); break;
+    case "k":
+    case "K":
+      event.preventDefault();
+      setActiveCell(r - 1, c);
+      break;
     case "ArrowRight":
-      event.preventDefault(); setActiveCell(r, c + 1); break;
+    case "l":
+    case "L":
+      event.preventDefault();
+      setActiveCell(r, c + 1);
+      break;
     case "ArrowLeft":
-      event.preventDefault(); setActiveCell(r, c - 1); break;
-    case "2": case "3": case "4": case "5":
+    case "h":
+    case "H":
+      event.preventDefault();
+      setActiveCell(r, c - 1);
+      break;
+    case " ":
+    case "e":
+    case "E":
+      event.preventDefault();
+      openGradeEditor(btn);
+      break;
+    case "2":
+    case "3":
+    case "4":
+    case "5":
       event.preventDefault();
       quickSaveGrade(btn, r, c, Number(event.key));
       setActiveCell(r + 1, c);
       break;
     case "Delete":
     case "Backspace":
+    case "x":
+    case "X":
       event.preventDefault();
       quickDeleteGrade(btn);
       break;

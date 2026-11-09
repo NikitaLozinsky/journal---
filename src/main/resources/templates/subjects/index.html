@@ -6,11 +6,8 @@
   <script>
     (function() {
       try {
-        var t = localStorage.getItem('journal_theme') === 'light' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', t);
-        if (t === 'dark' && localStorage.getItem('journal_oled') === 'true') {
-          document.documentElement.setAttribute('data-oled', 'true');
-        }
+        var t = localStorage.getItem('journal_theme');
+        document.documentElement.setAttribute('data-theme', (t === 'oled' || t === 'light') ? t : 'dark');
       } catch (e) {}
     })();
   </script>
