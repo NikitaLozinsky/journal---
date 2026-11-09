@@ -101,6 +101,8 @@ public class JournalExportService {
             Row headerRow = sheet.createRow(headerRowNum);
             headerRow.setHeightInPoints(26);
 
+            boolean isAllGroups = data.group() == null || data.group().id() == 0L;
+
             int colIdx = 0;
             Cell c = headerRow.createCell(colIdx++);
             c.setCellValue("№");
@@ -109,6 +111,12 @@ public class JournalExportService {
             c = headerRow.createCell(colIdx++);
             c.setCellValue("ФИО Студента");
             c.setCellStyle(headerStyle);
+
+            if (isAllGroups) {
+                c = headerRow.createCell(colIdx++);
+                c.setCellValue("Группа");
+                c.setCellStyle(headerStyle);
+            }
 
             c = headerRow.createCell(colIdx++);
             c.setCellValue("Email");
@@ -154,6 +162,12 @@ public class JournalExportService {
                 c = row.createCell(colIdx++);
                 c.setCellValue(student.name());
                 c.setCellStyle(textStyle);
+
+                if (isAllGroups) {
+                    c = row.createCell(colIdx++);
+                    c.setCellValue(student.group_name() != null ? student.group_name() : "—");
+                    c.setCellStyle(centerStyle);
+                }
 
                 // Email
                 c = row.createCell(colIdx++);

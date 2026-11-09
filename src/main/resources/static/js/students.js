@@ -19,8 +19,17 @@ const emailInput = document.querySelector("#record-email");
 const confirmation = document.querySelector("#confirmation");
 const confirmationText = document.querySelector("#confirmation-text");
 
+const btnQuickCreateGroup = document.querySelector("#btn-quick-create-group");
+const quickGroupModal = document.querySelector("#quick-group-modal");
+const quickGroupName = document.querySelector("#quick-group-name");
+const submitQuickGroup = document.querySelector("#submit-quick-group");
+const cancelQuickGroup = document.querySelector("#cancel-quick-group");
+const closeQuickGroup = document.querySelector("#close-quick-group");
+const quickGroupError = document.querySelector("#quick-group-error");
+
 let items = [], groups = [], pendingItem = null, loaded = false;
 let currentSort = "name_asc";
+let lastSelectedGroupId = "";
 nameInput.maxLength = 50;
 
 /** Отправляет сохранение студента. */
@@ -201,19 +210,98 @@ async function load(successText = "") {
   }
 }
 
+function renderGroupInputOptions(selectedId = null) {
+  groupInput.replaceChildren();
+  for (const g of groups) {
+    const opt = document.createElement("option");
+    opt.value = String(g.id);
+    opt.textContent = g.name;
+    groupInput.append(opt);
+  }
+  const optCreate = document.createElement("option");
+  optCreate.value = "__create_new__";
+  optCreate.textContent = "➕ Создать новую группу...";
+  groupInput.append(optCreate);
+
+  if (selectedId) {
+    groupInput.value = String(selectedId);
+    lastSelectedGroupId = String(selectedId);
+  } else if (groups.length) {
+    groupInput.value = String(groups[0].id);
+    lastSelectedGroupId = String(groups[0].id);
+  }
+}
+
+function showQuickGroupCreator() {
+  if (!quickGroupModal) return;
+  quickGroupModal.hidden = false;
+  quickGroupName.value = "";
+  if (quickGroupError) quickGroupError.hidden = true;
+  quickGroupName.focus();
+}
+
+function hideQuickGroupCreator() {
+  if (!quickGroupModal) return;
+  quickGroupModal.hidden = true;
+  quickGroupName.value = "";
+  if (quickGroupError) quickGroupError.hidden = true;
+  if (groupInput.value === "__create_new__") {
+    groupInput.value = lastSelectedGroupId || (groups.length ? String(groups[0].id) : "");
+  }
+}
+
+async function createQuickGroup() {
+  const name = quickGroupName.value.trim();
+  if (!name) {
+    if (quickGroupError) {
+      quickGroupError.textContent = "Введите название группы.";
+      quickGroupError.hidden = false;
+    }
+    quickGroupName.focus();
+    return;
+  }
+  busy(true);
+  try {
+    const resp = await requestJSON(GROUPS_API, "POST", { name: name });
+    const newGroup = resp.item || resp;
+    groups.push(newGroup);
+
+    // Обновляем фильтр по группам в тулбаре
+    fillGroups(filterGroup, groups, true);
+    // Обновляем выпадающий список в форме и выбираем новую группу
+    renderGroupInputOptions(newGroup.id);
+
+    hideQuickGroupCreator();
+    message(`Группа «${newGroup.name}» успешно создана и выбрана.`);
+    if (emailInput && !emailInput.value) emailInput.focus();
+    else nameInput.focus();
+  } catch (err) {
+    if (quickGroupError) {
+      quickGroupError.textContent = err.message || "Ошибка при создании группы.";
+      quickGroupError.hidden = false;
+    }
+  } finally {
+    busy(false);
+  }
+}
+
 /** Открывает форму для создания или редактирования. */
 function openEditor(item = null) {
   form.reset();
+  hideQuickGroupCreator();
   idInput.value = item ? String(item.id) : "";
   nameInput.value = item ? item.name : "";
-  fillGroups(groupInput, groups, false);
+
+  let targetGroupId = null;
   if (item) {
-    groupInput.value = String(item.group_id);
+    targetGroupId = item.group_id;
   } else if (filterGroup.value) {
-    groupInput.value = filterGroup.value;
+    targetGroupId = filterGroup.value;
   } else if (groups.length) {
-    groupInput.value = String(groups[0].id);
+    targetGroupId = groups[0].id;
   }
+  renderGroupInputOptions(targetGroupId);
+
   emailInput.value = item && item.email ? item.email : "";
   document.querySelector("#editor-title").textContent = item ? "Изменение записи" : "Добавление студента";
   editor.hidden = false;
@@ -221,6 +309,31 @@ function openEditor(item = null) {
   message();
   nameInput.focus();
 }
+
+if (btnQuickCreateGroup) btnQuickCreateGroup.addEventListener("click", showQuickGroupCreator);
+if (closeQuickGroup) closeQuickGroup.addEventListener("click", hideQuickGroupCreator);
+if (cancelQuickGroup) cancelQuickGroup.addEventListener("click", hideQuickGroupCreator);
+if (submitQuickGroup) submitQuickGroup.addEventListener("click", createQuickGroup);
+
+if (quickGroupName) {
+  quickGroupName.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      createQuickGroup();
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      hideQuickGroupCreator();
+    }
+  });
+}
+
+groupInput.addEventListener("change", function() {
+  if (groupInput.value === "__create_new__") {
+    showQuickGroupCreator();
+  } else {
+    lastSelectedGroupId = groupInput.value;
+  }
+});
 
 document.querySelector("#add-record").addEventListener("click", function() { openEditor(); });
 document.querySelector("#cancel-edit").addEventListener("click", function() { editor.hidden = true; message(); });
@@ -291,7 +404,11 @@ form.addEventListener("submit", async function(event) {
   const name = nameInput.value.trim();
   if (!name) { message("Введите имя.", true); nameInput.focus(); return; }
   const groupId = Number(groupInput.value);
-  if (!groupId) { message("Выберите группу.", true); return; }
+  if (!groupId || isNaN(groupId) || groupInput.value === "__create_new__") {
+    message("Выберите или создайте группу.", true);
+    groupInput.focus();
+    return;
+  }
   const email = emailInput.value.trim() || null;
   busy(true);
   try {

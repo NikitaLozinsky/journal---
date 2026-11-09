@@ -6,15 +6,17 @@
   <script>
     (function() {
       try {
-        var saved = localStorage.getItem('journal_theme');
-        var theme = saved === 'light' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', theme);
+        var t = localStorage.getItem('journal_theme') === 'light' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+        if (t === 'dark' && localStorage.getItem('journal_oled') === 'true') {
+          document.documentElement.setAttribute('data-oled', 'true');
+        }
       } catch (e) {}
     })();
   </script>
   <title>Журнал оценок — Электронный журнал</title>
-  <link rel="stylesheet" href="/css/styles.css?v=2.3">
-  <script src="/js/vendor/chart.umd.min.js?v=2.3"></script>
+  <link rel="stylesheet" href="/css/styles.css?v=3.0">
+  <script src="/js/vendor/chart.umd.min.js?v=3.0"></script>
 </head>
 <body>
   <header th:replace="~{partials/header :: header}"></header>
@@ -22,15 +24,28 @@
     <div class="page-heading">
       <h1>Журнал оценок</h1>
       <div class="heading-actions">
-        <button id="toggle-analytics" class="button-secondary" type="button" aria-expanded="true">📊 Аналитика группы</button>
+        <button id="toggle-analytics" class="button-secondary" type="button" aria-expanded="true">📊 Скрыть аналитику</button>
+        <button id="btn-bulk-grade" class="button-secondary" type="button" title="Выставить или очистить оценки группе или всем группам">⚡ Массовые оценки</button>
         <button id="btn-export-excel" class="button-secondary" type="button" title="Скачать в формате Microsoft Excel (.xlsx)">📥 Excel (.xlsx)</button>
         <button id="btn-export-csv" class="button-secondary" type="button" title="Скачать в текстовом формате CSV">📥 CSV</button>
         <button id="btn-print" class="button-primary" type="button" title="Распечатать официальную экзаменационную ведомость">🖨️ Печать ведомости</button>
       </div>
     </div>
+
     <div class="toolbar journal-toolbar">
-      <label>Группа
+      <label>Учебная группа
         <select id="group-select"></select>
+      </label>
+      <label>Быстрый фильтр по ФИО
+        <input id="journal-student-filter" type="search" placeholder="Начните вводить фамилию...">
+      </label>
+      <label>Срез успеваемости
+        <select id="journal-status-filter">
+          <option value="all">Все студенты группы</option>
+          <option value="failing">Имеют задолженность (2)</option>
+          <option value="no_grades">Без единой оценки</option>
+          <option value="excellent">Только отличники (все 5)</option>
+        </select>
       </label>
       <label class="toggle-mode-label">
         <input id="quick-edit-mode" type="checkbox" checked>
@@ -38,15 +53,13 @@
       </label>
     </div>
 
-    <!-- Интерактивная подсказка для быстрого ввода -->
     <div id="quick-edit-hint" class="quick-edit-hint">
-      <span class="hint-badge">Быстрый ввод:</span>
-      Кликните по ячейке и нажимайте <kbd>2</kbd>, <kbd>3</kbd>, <kbd>4</kbd>, <kbd>5</kbd> для моментального сохранения. Навигация стрелками <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> или <kbd>Enter</kbd>. Удаление — <kbd>Del</kbd> или <kbd>Backspace</kbd>. Двойной клик открывает форму.
+      <span class="hint-badge">Excel-режим:</span>
+      Кликните по ячейке и нажимайте <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> <kbd>5</kbd> для мгновенной записи. Навигация: <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> и <kbd>Enter</kbd>. Очистка: <kbd>Backspace</kbd> / <kbd>Del</kbd>. Тема: <kbd>Alt+T</kbd>.
     </div>
 
     <p id="status" class="status" role="status" aria-live="polite" hidden></p>
 
-    <!-- Секция аналитики успеваемости группы -->
     <section id="journal-analytics" class="analytics-section" aria-label="Аналитика группы">
       <div id="journal-kpi" class="kpi-grid"></div>
       <div id="journal-charts" class="charts-grid">
@@ -69,7 +82,43 @@
       </div>
     </section>
 
-    <!-- Модальный редактор оценки -->
+    <section id="bulk-editor" class="editor" aria-labelledby="bulk-editor-title" hidden>
+      <h2 id="bulk-editor-title">⚡ Массовое выставление оценок</h2>
+      <p class="muted">Вы можете в один клик выставить оценку выбранной группе (или всем группам) по выбранному предмету (или по всем предметам), либо очистить оценки.</p>
+      <form id="bulk-form">
+        <div class="form-fields">
+          <label>Группа
+            <select id="bulk-group-select">
+              <option value="">Все группы</option>
+            </select>
+          </label>
+          <label>Предмет
+            <select id="bulk-subject-select">
+              <option value="">Все предметы</option>
+            </select>
+          </label>
+          <label>Оценка
+            <select id="bulk-mark-select" required>
+              <option value="5">5 (Отлично)</option>
+              <option value="4">4 (Хорошо)</option>
+              <option value="3">3 (Удовлетворительно)</option>
+              <option value="2">2 (Неудовлетворительно)</option>
+              <option value="0">🗑️ Очистить оценки</option>
+            </select>
+          </label>
+          <label class="toggle-mode-label" style="align-self: center; padding-top: 18px;">
+            <input id="bulk-overwrite-checkbox" type="checkbox" checked>
+            <span>Перезаписать существующие оценки</span>
+          </label>
+        </div>
+        <div id="bulk-action-hint" class="bulk-hint-box"></div>
+        <div class="button-row">
+          <button class="button-primary" type="submit">Применить оценки</button>
+          <button id="cancel-bulk-edit" class="button-secondary" type="button">Отмена</button>
+        </div>
+      </form>
+    </section>
+
     <section id="editor" class="editor" aria-labelledby="editor-title" hidden>
       <h2 id="editor-title">Оценка</h2>
       <form id="edit-form">
@@ -78,10 +127,10 @@
         <div class="form-fields">
           <label>Оценка
             <select id="record-mark" required>
-              <option value="5">5</option>
-              <option value="4">4</option>
-              <option value="3">3</option>
-              <option value="2">2</option>
+              <option value="5">5 (Отлично)</option>
+              <option value="4">4 (Хорошо)</option>
+              <option value="3">3 (Удовлетворительно)</option>
+              <option value="2">2 (Неудовлетворительно)</option>
             </select>
           </label>
         </div>
@@ -93,7 +142,6 @@
       </form>
     </section>
 
-    <!-- Академический бланк ведомости для печати -->
     <div class="print-sheet-header">
       <div class="print-org-name">МИНИСТЕРСТВО НАУКИ И ВЫСШЕГО ОБРАЗОВАНИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ</div>
       <h2 class="print-sheet-title">ЭКЗАМЕНАЦИОННО-ЗАЧЁТНАЯ ВЕДОМОСТЬ</h2>
@@ -105,7 +153,6 @@
       </div>
     </div>
 
-    <!-- Таблица журнала оценок -->
     <div class="table-scroll">
       <table class="journal-table">
         <thead id="table-head"></thead>
@@ -113,7 +160,6 @@
       </table>
     </div>
 
-    <!-- Подписи для печати -->
     <div class="print-sheet-footer">
       <div class="print-signatures-grid">
         <div class="print-sig-col">
@@ -128,6 +174,6 @@
     </div>
   </main>
   <footer th:replace="~{partials/footer :: footer}"></footer>
-  <script type="module" src="/js/journal.js?v=2.3"></script>
+  <script type="module" src="/js/journal.js?v=3.0"></script>
 </body>
 </html>

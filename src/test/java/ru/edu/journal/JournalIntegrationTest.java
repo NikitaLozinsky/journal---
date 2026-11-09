@@ -136,6 +136,14 @@ class JournalIntegrationTest {
     // --- ЛАБ 4: ЖУРНАЛ ОЦЕНОК ---
     @Test
     void testJournalApi() throws Exception {
+        // Чтение журнала всех групп (без group_id)
+        mockMvc.perform(get("/api/journal"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.group.name", is("Все группы")))
+                .andExpect(jsonPath("$.students", hasSize(60)))
+                .andExpect(jsonPath("$.subjects", hasSize(3)))
+                .andExpect(jsonPath("$.grades", hasSize(162)));
+
         // Чтение журнала группы 1
         mockMvc.perform(get("/api/journal?group_id=1"))
                 .andExpect(status().isOk())
@@ -183,6 +191,56 @@ class JournalIntegrationTest {
                 .andExpect(jsonPath("$.error", containsString("от 2 до 5")));
     }
 
+    // --- МАССОВОЕ ВЫСТАВЛЕНИЕ ОЦЕНОК (BULK GRADING) ---
+    @Test
+    void testBulkGradesApi() throws Exception {
+        // Выставляем 5 всей группе 1 по предмету 1 с перезаписью
+        mockMvc.perform(post("/api/journal/grades/bulk")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of(
+                                "group_id", 1,
+                                "subject_id", 1,
+                                "mark", 5,
+                                "overwrite_existing", true
+                        ))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.count", is(20)));
+
+        // Очищаем оценки всей группе 1 по предмету 1 (mark = 0)
+        mockMvc.perform(post("/api/journal/grades/bulk")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of(
+                                "group_id", 1,
+                                "subject_id", 1,
+                                "mark", 0
+                        ))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.count", is(20)));
+
+        // Выставляем 4 ВСЕМ студентам ВСЕХ групп по ВСЕМ предметам (60 студентов * 3 предмета = 180 записей)
+        mockMvc.perform(post("/api/journal/grades/bulk")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of(
+                                "mark", 4,
+                                "overwrite_existing", true
+                        ))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.count", is(180)));
+
+        // Невалидный запрос (mark = 9)
+        mockMvc.perform(post("/api/journal/grades/bulk")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of(
+                                "group_id", 1,
+                                "subject_id", 1,
+                                "mark", 9
+                        ))))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", containsString("от 2 до 5")));
+    }
+
     // --- ЭКСПОРТ ЖУРНАЛА (EXCEL & CSV) ---
     @Test
     void testJournalExportExcelAndCsv() throws Exception {
@@ -208,6 +266,22 @@ class JournalIntegrationTest {
 
         org.junit.jupiter.api.Assertions.assertTrue(csvContent.contains("ФИО;Email;Группа"), "CSV must contain header");
         org.junit.jupiter.api.Assertions.assertTrue(csvContent.contains("БЭИ2301"), "CSV must contain group name");
+
+        // Экспорт всех групп в Excel (.xlsx) без group_id
+        mockMvc.perform(get("/api/journal/export/excel"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Disposition", containsString("journal_Все_группы.xlsx")));
+
+        // Экспорт всех групп в CSV (.csv) без group_id
+        mockMvc.perform(get("/api/journal/export/csv"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Disposition", containsString("journal_Все_группы.csv")));
+
+        // Журнал без group_id (сводная ведомость всех групп)
+        mockMvc.perform(get("/api/journal"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.group.name", is("Все группы")))
+                .andExpect(jsonPath("$.students", hasSize(60)));
     }
 
     // --- ЛАБ 5: ОТЧЕТЫ ---

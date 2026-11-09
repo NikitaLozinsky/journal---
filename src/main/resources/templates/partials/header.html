@@ -1,11 +1,24 @@
 <header class="site-header" th:fragment="header" xmlns:th="http://www.thymeleaf.org">
   <div class="container">
     <div class="brand-row">
-      <a class="brand" href="/groups">Электронный журнал</a>
-      <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="Переключить тему оформления" title="Переключить тему оформления">
-        <span class="theme-toggle-icon" aria-hidden="true">☀️</span>
-        <span class="theme-toggle-text">Светлая тема</span>
-      </button>
+      <a class="brand" href="/groups">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span>Электронный журнал</span>
+      </a>
+      <div class="header-controls">
+        <button id="cmd-palette-trigger" class="cmd-trigger-btn" type="button" title="Быстрый переход и команды (Ctrl+K)">
+          <span>⚡ Команды</span>
+          <kbd>Ctrl+K</kbd>
+        </button>
+        <label id="oled-toggle-wrap" class="oled-toggle-label" title="Включить абсолютно чёрный фон для OLED-экранов (Alt+O)">
+          <input id="oled-toggle" type="checkbox">
+          <span>OLED</span>
+        </label>
+        <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="Переключить тему оформления" title="Переключить тему (Alt+T)">
+          <span class="theme-toggle-icon" aria-hidden="true">🌙</span>
+          <span class="theme-toggle-text">Тёмная</span>
+        </button>
+      </div>
     </div>
     <nav class="navigation" aria-label="Разделы приложения">
       <a href="/groups" th:attr="aria-current=${activePage == 'groups'} ? 'page' : null">Группы</a>
@@ -15,5 +28,5 @@
       <a href="/reports" th:attr="aria-current=${activePage == 'reports'} ? 'page' : null">Отчёты</a>
     </nav>
   </div>
-  <script type="module" src="/js/theme.js?v=2.2"></script>
+  <script type="module" src="/js/theme.js?v=3.0"></script>
 </header>

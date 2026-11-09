@@ -6,14 +6,16 @@
   <script>
     (function() {
       try {
-        var saved = localStorage.getItem('journal_theme');
-        var theme = saved === 'light' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', theme);
+        var t = localStorage.getItem('journal_theme') === 'light' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+        if (t === 'dark' && localStorage.getItem('journal_oled') === 'true') {
+          document.documentElement.setAttribute('data-oled', 'true');
+        }
       } catch (e) {}
     })();
   </script>
   <title>Группы — Электронный журнал</title>
-  <link rel="stylesheet" href="/css/styles.css?v=2.2">
+  <link rel="stylesheet" href="/css/styles.css?v=3.0">
 </head>
 <body>
   <header th:replace="~{partials/header :: header}"></header>

@@ -1,5 +1,6 @@
 package ru.edu.journal.features.groups;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -33,7 +34,7 @@ public class GroupController {
 
     @PostMapping("/api/groups")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> createGroup(@RequestBody(required = false) GroupSaveRequest request) {
+    public ResponseEntity<Map<String, Object>> createGroup(@Valid @RequestBody GroupSaveRequest request) {
         String name = request != null ? request.name() : null;
         GroupDto item = groupService.saveGroup(name, null);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("item", item));
@@ -42,7 +43,7 @@ public class GroupController {
     @PostMapping("/api/groups/{id}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> updateGroup(@PathVariable Long id,
-                                                           @RequestBody(required = false) GroupSaveRequest request) {
+                                                           @Valid @RequestBody GroupSaveRequest request) {
         String name = request != null ? request.name() : null;
         GroupDto item = groupService.saveGroup(name, id);
         return ResponseEntity.ok(Map.of("item", item));

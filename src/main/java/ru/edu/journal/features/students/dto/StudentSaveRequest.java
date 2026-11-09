@@ -1,4 +1,18 @@
 package ru.edu.journal.features.students.dto;
 
-public record StudentSaveRequest(String name, Long group_id, String email) {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+public record StudentSaveRequest(
+        @NotBlank(message = "Введите имя.")
+        @Size(max = 50, message = "Допускается не более 50 символов.")
+        String name,
+
+        @NotNull(message = "Выберите существующую группу.")
+        Long group_id,
+
+        @Size(max = 100, message = "Email не должен превышать 100 символов.")
+        String email
+) {
 }

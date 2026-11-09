@@ -1,5 +1,6 @@
 package ru.edu.journal.features.students;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -34,7 +35,7 @@ public class StudentController {
 
     @PostMapping("/api/students")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> createStudent(@RequestBody(required = false) StudentSaveRequest request) {
+    public ResponseEntity<Map<String, Object>> createStudent(@Valid @RequestBody StudentSaveRequest request) {
         StudentDto item = studentService.saveStudent(request, null);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("item", item));
     }
@@ -42,7 +43,7 @@ public class StudentController {
     @PostMapping("/api/students/{id}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> updateStudent(@PathVariable Long id,
-                                                             @RequestBody(required = false) StudentSaveRequest request) {
+                                                             @Valid @RequestBody StudentSaveRequest request) {
         StudentDto item = studentService.saveStudent(request, id);
         return ResponseEntity.ok(Map.of("item", item));
     }

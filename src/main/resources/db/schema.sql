@@ -8,16 +8,19 @@ CREATE TABLE groups (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL UNIQUE CHECK(length(trim(name)) BETWEEN 1 AND 50)
 );
+
 CREATE TABLE subjects (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL UNIQUE CHECK(length(trim(name)) > 0)
 );
+
 CREATE TABLE students (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL CHECK(length(trim(name)) BETWEEN 1 AND 50),
     group_id INTEGER NOT NULL REFERENCES groups(id),
     email TEXT
 );
+
 CREATE TABLE grades (
     id INTEGER PRIMARY KEY,
     student_id INTEGER NOT NULL REFERENCES students(id),
@@ -25,3 +28,11 @@ CREATE TABLE grades (
     mark INTEGER NOT NULL CHECK(mark IN (2, 3, 4, 5)),
     UNIQUE(student_id, subject_id)
 );
+
+-- Индексы для ускорения JOIN, фильтрации и сортировки
+CREATE INDEX idx_groups_name ON groups(name);
+CREATE INDEX idx_subjects_name ON subjects(name);
+CREATE INDEX idx_students_group ON students(group_id);
+CREATE INDEX idx_students_name ON students(name);
+CREATE INDEX idx_grades_student ON grades(student_id);
+CREATE INDEX idx_grades_subject ON grades(subject_id);

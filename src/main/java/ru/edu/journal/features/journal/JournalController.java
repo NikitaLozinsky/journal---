@@ -1,5 +1,6 @@
 package ru.edu.journal.features.journal;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -35,15 +36,16 @@ public class JournalController {
 
     @GetMapping("/api/journal")
     @ResponseBody
-    public JournalResponse getJournal(@RequestParam("group_id") Long groupId) {
+    public JournalResponse getJournal(@RequestParam(value = "group_id", required = false) Long groupId) {
         return journalService.getJournal(groupId);
     }
 
     @GetMapping("/api/journal/export/excel")
-    public ResponseEntity<byte[]> exportExcel(@RequestParam("group_id") Long groupId) throws IOException {
+    public ResponseEntity<byte[]> exportExcel(@RequestParam(value = "group_id", required = false) Long groupId) throws IOException {
         JournalResponse journal = journalService.getJournal(groupId);
         byte[] bytes = exportService.exportToExcel(journal);
-        String filename = "journal_" + journal.group().name() + ".xlsx";
+        String groupName = journal.group() != null ? journal.group().name().replace(' ', '_') : "Все_группы";
+        String filename = "journal_" + groupName + ".xlsx";
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"; filename*=UTF-8''" + UriUtils.encode(filename, StandardCharsets.UTF_8))
@@ -52,10 +54,11 @@ public class JournalController {
     }
 
     @GetMapping("/api/journal/export/csv")
-    public ResponseEntity<byte[]> exportCsv(@RequestParam("group_id") Long groupId) {
+    public ResponseEntity<byte[]> exportCsv(@RequestParam(value = "group_id", required = false) Long groupId) {
         JournalResponse journal = journalService.getJournal(groupId);
         byte[] bytes = exportService.exportToCsv(journal);
-        String filename = "journal_" + journal.group().name() + ".csv";
+        String groupName = journal.group() != null ? journal.group().name().replace(' ', '_') : "Все_группы";
+        String filename = "journal_" + groupName + ".csv";
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"; filename*=UTF-8''" + UriUtils.encode(filename, StandardCharsets.UTF_8))
@@ -65,9 +68,16 @@ public class JournalController {
 
     @PostMapping("/api/journal/grades")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> saveGrade(@RequestBody(required = false) GradeSaveRequest request) {
+    public ResponseEntity<Map<String, Object>> saveGrade(@Valid @RequestBody GradeSaveRequest request) {
         GradeDto item = journalService.saveGrade(request);
         return ResponseEntity.ok(Map.of("item", item));
+    }
+
+    @PostMapping("/api/journal/grades/bulk")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> saveBulkGrades(@Valid @RequestBody ru.edu.journal.features.journal.dto.BulkGradeRequest request) {
+        int count = journalService.saveBulkGrades(request);
+        return ResponseEntity.ok(Map.of("success", true, "count", count));
     }
 
     @DeleteMapping("/api/journal/grades/{studentId}/{subjectId}")

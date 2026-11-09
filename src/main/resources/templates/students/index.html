@@ -6,14 +6,16 @@
   <script>
     (function() {
       try {
-        var saved = localStorage.getItem('journal_theme');
-        var theme = saved === 'light' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', theme);
+        var t = localStorage.getItem('journal_theme') === 'light' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+        if (t === 'dark' && localStorage.getItem('journal_oled') === 'true') {
+          document.documentElement.setAttribute('data-oled', 'true');
+        }
       } catch (e) {}
     })();
   </script>
   <title>Студенты — Электронный журнал</title>
-  <link rel="stylesheet" href="/css/styles.css?v=2.2">
+  <link rel="stylesheet" href="/css/styles.css?v=3.0">
 </head>
 <body>
   <header th:replace="~{partials/header :: header}"></header>
@@ -58,11 +60,26 @@
             <input id="record-name" type="text" required maxlength="50">
           </label>
           <label>Группа
-            <select id="record-group" required></select>
+            <div class="input-with-action">
+              <select id="record-group" required></select>
+              <button id="btn-quick-create-group" type="button" class="button-secondary quick-add-btn" title="Создать новую группу">➕</button>
+            </div>
           </label>
           <label>Email
             <input id="record-email" type="email" placeholder="student@example.edu">
           </label>
+        </div>
+        <div id="quick-group-modal" class="quick-group-box" hidden>
+          <div class="quick-group-header">
+            <span>➕ Создание новой учебной группы</span>
+            <button id="close-quick-group" type="button" class="close-icon-btn" title="Закрыть">✕</button>
+          </div>
+          <div class="quick-group-inputs">
+            <input id="quick-group-name" type="text" placeholder="Название группы (например: ПИ-25)" maxlength="20">
+            <button id="submit-quick-group" type="button" class="button-primary button-small">Создать</button>
+            <button id="cancel-quick-group" type="button" class="button-secondary button-small">Отмена</button>
+          </div>
+          <div id="quick-group-error" class="quick-group-error" hidden></div>
         </div>
         <div class="button-row">
           <button class="button-primary" type="submit">Сохранить</button>

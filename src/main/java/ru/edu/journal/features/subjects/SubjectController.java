@@ -1,5 +1,6 @@
 package ru.edu.journal.features.subjects;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -33,7 +34,7 @@ public class SubjectController {
 
     @PostMapping("/api/subjects")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> createSubject(@RequestBody(required = false) SubjectSaveRequest request) {
+    public ResponseEntity<Map<String, Object>> createSubject(@Valid @RequestBody SubjectSaveRequest request) {
         String name = request != null ? request.name() : null;
         SubjectDto item = subjectService.saveSubject(name, null);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("item", item));
@@ -42,7 +43,7 @@ public class SubjectController {
     @PostMapping("/api/subjects/{id}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> updateSubject(@PathVariable Long id,
-                                                             @RequestBody(required = false) SubjectSaveRequest request) {
+                                                             @Valid @RequestBody SubjectSaveRequest request) {
         String name = request != null ? request.name() : null;
         SubjectDto item = subjectService.saveSubject(name, id);
         return ResponseEntity.ok(Map.of("item", item));

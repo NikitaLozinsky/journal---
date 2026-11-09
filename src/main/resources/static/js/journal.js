@@ -5,8 +5,11 @@ import {createBarChart, createDoughnutChart, destroyChart} from "/js/chart-helpe
 const GROUPS_API = "/api/groups";
 const JOURNAL_API = "/api/journal";
 const GRADES_API = "/api/journal/grades";
+const BULK_GRADES_API = "/api/journal/grades/bulk";
 
 const groupSelect = document.querySelector("#group-select");
+const studentFilterInput = document.querySelector("#journal-student-filter");
+const statusFilterSelect = document.querySelector("#journal-status-filter");
 const tableHead = document.querySelector("#table-head");
 const tableBody = document.querySelector("#table-body");
 const editor = document.querySelector("#editor");
@@ -17,6 +20,16 @@ const subjectIdInput = document.querySelector("#record-subject-id");
 const markSelect = document.querySelector("#record-mark");
 const deleteButton = document.querySelector("#delete-grade");
 const cancelButton = document.querySelector("#cancel-edit");
+
+const bulkEditor = document.querySelector("#bulk-editor");
+const bulkForm = document.querySelector("#bulk-form");
+const bulkGroupSelect = document.querySelector("#bulk-group-select");
+const bulkSubjectSelect = document.querySelector("#bulk-subject-select");
+const bulkMarkSelect = document.querySelector("#bulk-mark-select");
+const bulkOverwriteCheckbox = document.querySelector("#bulk-overwrite-checkbox");
+const cancelBulkEditBtn = document.querySelector("#cancel-bulk-edit");
+const btnBulkGrade = document.querySelector("#btn-bulk-grade");
+const bulkActionHint = document.querySelector("#bulk-action-hint");
 
 const toggleAnalyticsBtn = document.querySelector("#toggle-analytics");
 const analyticsSection = document.querySelector("#journal-analytics");
@@ -32,10 +45,9 @@ const printGroupName = document.querySelector("#print-group-name");
 const printDate = document.querySelector("#print-date");
 
 let journalData = null, groups = [];
-let gridMatrix = []; // [row][col] -> HTMLButtonElement
+let gridMatrix = [];
 let activeRow = -1, activeCol = -1;
 
-/** Переключение видимости блока аналитики */
 if (toggleAnalyticsBtn && analyticsSection) {
   toggleAnalyticsBtn.addEventListener("click", () => {
     const isHidden = analyticsSection.hidden;
@@ -45,30 +57,26 @@ if (toggleAnalyticsBtn && analyticsSection) {
   });
 }
 
-/** Переключение подсказки быстрого ввода */
 if (quickEditCheckbox && quickEditHint) {
   quickEditCheckbox.addEventListener("change", () => {
     quickEditHint.hidden = !quickEditCheckbox.checked;
   });
 }
 
-/** Экспорт в Excel (.xlsx) */
 if (btnExportExcel) {
   btnExportExcel.addEventListener("click", () => {
-    if (!groupSelect.value) return;
-    window.location.href = `/api/journal/export/excel?group_id=${groupSelect.value}`;
+    const q = groupSelect.value ? `?group_id=${groupSelect.value}` : "";
+    window.location.href = `/api/journal/export/excel${q}`;
   });
 }
 
-/** Экспорт в CSV (.csv) */
 if (btnExportCsv) {
   btnExportCsv.addEventListener("click", () => {
-    if (!groupSelect.value) return;
-    window.location.href = `/api/journal/export/csv?group_id=${groupSelect.value}`;
+    const q = groupSelect.value ? `?group_id=${groupSelect.value}` : "";
+    window.location.href = `/api/journal/export/csv${q}`;
   });
 }
 
-/** Печать ведомости */
 if (btnPrint) {
   btnPrint.addEventListener("click", () => {
     if (journalData && journalData.group) {
@@ -79,7 +87,138 @@ if (btnPrint) {
   });
 }
 
-/** Создает карточку KPI показателя. */
+function updateBulkHint() {
+  if (!bulkActionHint) return;
+  const gVal = bulkGroupSelect ? bulkGroupSelect.value : "";
+  const sVal = bulkSubjectSelect ? bulkSubjectSelect.value : "";
+  const mark = bulkMarkSelect ? Number(bulkMarkSelect.value) : 5;
+  const overwrite = bulkOverwriteCheckbox ? bulkOverwriteCheckbox.checked : true;
+
+  let groupName = "ВСЕМ студентам ВСЕХ групп";
+  if (gVal) {
+    const grp = groups.find(g => String(g.id) === String(gVal));
+    groupName = grp ? `студентам группы «${grp.name}»` : `группе ID ${gVal}`;
+  }
+
+  let subjectName = "по ВСЕМ предметам";
+  if (sVal && journalData && journalData.subjects) {
+    const sub = journalData.subjects.find(s => String(s.id) === String(sVal));
+    subjectName = sub ? `по предмету «${sub.name}»` : `предмету ID ${sVal}`;
+  }
+
+  if (mark === 0) {
+    bulkActionHint.innerHTML = `⚠️ Будут <strong>удалены все оценки</strong>: ${groupName} ${subjectName}.`;
+  } else {
+    const overwriteText = overwrite ? "с перезаписью существующих" : "только в незаполненные ячейки (без перезаписи)";
+    bulkActionHint.innerHTML = `⚡ Будет выставлена оценка <strong>${mark}</strong>: ${groupName} ${subjectName} (${overwriteText}).`;
+  }
+}
+
+if (bulkGroupSelect) bulkGroupSelect.addEventListener("change", updateBulkHint);
+if (bulkSubjectSelect) bulkSubjectSelect.addEventListener("change", updateBulkHint);
+if (bulkMarkSelect) bulkMarkSelect.addEventListener("change", updateBulkHint);
+if (bulkOverwriteCheckbox) bulkOverwriteCheckbox.addEventListener("change", updateBulkHint);
+
+if (btnBulkGrade) {
+  btnBulkGrade.addEventListener("click", () => {
+    openBulkEditor();
+  });
+}
+
+if (cancelBulkEditBtn) {
+  cancelBulkEditBtn.addEventListener("click", () => {
+    if (bulkEditor) bulkEditor.hidden = true;
+    message();
+  });
+}
+
+if (bulkForm) {
+  bulkForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    busy(true);
+    try {
+      const gId = bulkGroupSelect && bulkGroupSelect.value ? Number(bulkGroupSelect.value) : null;
+      const sId = bulkSubjectSelect && bulkSubjectSelect.value ? Number(bulkSubjectSelect.value) : null;
+      const mark = Number(bulkMarkSelect.value);
+      const overwrite = bulkOverwriteCheckbox.checked;
+
+      const res = await requestJSON(BULK_GRADES_API, "POST", {
+        group_id: gId,
+        subject_id: sId,
+        mark: mark,
+        overwrite_existing: overwrite
+      });
+      if (bulkEditor) bulkEditor.hidden = true;
+      const count = res.count !== undefined ? res.count : 0;
+      await loadJournal(groupSelect.value, `Массовое действие выполнено: обновлено записей — ${count}.`);
+    } catch (err) {
+      message("Ошибка массового оценивания: " + err.message, true);
+    } finally {
+      busy(false);
+    }
+  });
+}
+
+function openBulkEditor(preselectedSubjectId = null, preselectedGroupId = null) {
+  if (editor) editor.hidden = true;
+
+  // Заполняем список групп
+  if (bulkGroupSelect) {
+    bulkGroupSelect.replaceChildren();
+    const optAllG = document.createElement("option");
+    optAllG.value = "";
+    optAllG.textContent = "Все группы";
+    bulkGroupSelect.append(optAllG);
+
+    for (const g of groups) {
+      const opt = document.createElement("option");
+      opt.value = String(g.id);
+      opt.textContent = g.name;
+      bulkGroupSelect.append(opt);
+    }
+
+    if (preselectedGroupId !== null && preselectedGroupId !== undefined) {
+      bulkGroupSelect.value = String(preselectedGroupId);
+    } else if (groupSelect && groupSelect.value) {
+      bulkGroupSelect.value = groupSelect.value;
+    } else {
+      bulkGroupSelect.value = "";
+    }
+  }
+
+  // Заполняем список предметов
+  if (bulkSubjectSelect) {
+    bulkSubjectSelect.replaceChildren();
+    const optAllS = document.createElement("option");
+    optAllS.value = "";
+    optAllS.textContent = "Все предметы";
+    bulkSubjectSelect.append(optAllS);
+
+    if (journalData && journalData.subjects) {
+      for (const s of journalData.subjects) {
+        const opt = document.createElement("option");
+        opt.value = String(s.id);
+        opt.textContent = s.name;
+        bulkSubjectSelect.append(opt);
+      }
+    }
+
+    if (preselectedSubjectId !== null && preselectedSubjectId !== undefined) {
+      bulkSubjectSelect.value = String(preselectedSubjectId);
+    } else {
+      bulkSubjectSelect.value = "";
+    }
+  }
+
+  updateBulkHint();
+  bulkEditor.hidden = false;
+  bulkEditor.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  bulkMarkSelect.focus();
+}
+
+if (studentFilterInput) studentFilterInput.addEventListener("input", render);
+if (statusFilterSelect) statusFilterSelect.addEventListener("change", render);
+
 function createKpiCard(title, value, subtitle = "") {
   const card = document.createElement("div");
   card.className = "kpi-card";
@@ -99,18 +238,18 @@ function createKpiCard(title, value, subtitle = "") {
   return card;
 }
 
-/** Загружает список групп и инициализирует выбор. */
 async function init() {
   busy(true);
   try {
     const groupsResp = await requestJSON(GROUPS_API);
     groups = groupsResp.items;
-    fillGroups(groupSelect, groups, false);
+    fillGroups(groupSelect, groups, true);
     if (groups.length) {
+      groupSelect.value = String(groups[0].id);
       await loadJournal(groups[0].id);
     } else {
-      renderEmpty("Нет доступных групп");
-      renderAnalyticsEmpty();
+      groupSelect.value = "";
+      await loadJournal("");
     }
   } catch (error) {
     message("Ошибка загрузки групп: " + error.message, true);
@@ -119,19 +258,16 @@ async function init() {
   }
 }
 
-/** Загружает данные журнала для выбранной группы. */
-async function loadJournal(groupId, successText = "") {
-  busy(true); message("Загрузка журнала...");
+async function loadJournal(groupId = "", successText = "") {
+  busy(true);
+  message("Загрузка журнала...");
   try {
-    journalData = await requestJSON(JOURNAL_API + "?group_id=" + groupId);
+    const url = groupId ? (JOURNAL_API + "?group_id=" + groupId) : JOURNAL_API;
+    journalData = await requestJSON(url);
     render();
     renderAnalytics();
-    if (printGroupName && journalData.group) {
-      printGroupName.textContent = journalData.group.name;
-    }
-    if (printDate) {
-      printDate.textContent = new Date().toLocaleDateString("ru-RU");
-    }
+    if (printGroupName && journalData.group) printGroupName.textContent = journalData.group.name;
+    if (printDate) printDate.textContent = new Date().toLocaleDateString("ru-RU");
     message(successText);
   } catch (error) {
     message((successText ? successText + " " : "") + error.message, true);
@@ -142,14 +278,13 @@ async function loadJournal(groupId, successText = "") {
   }
 }
 
-/** Отображает пустое состояние журнала. */
 function renderEmpty(text) {
   tableHead.replaceChildren();
   tableBody.replaceChildren();
   gridMatrix = [];
   const tr = document.createElement("tr");
   const td = document.createElement("td");
-  td.colSpan = 5;
+  td.colSpan = 6;
   td.className = "empty-row";
   td.textContent = text;
   tr.append(td);
@@ -162,7 +297,6 @@ function renderAnalyticsEmpty() {
   destroyChart("journal-canvas-subjects");
 }
 
-/** Рендерит аналитику и графики группы. */
 function renderAnalytics() {
   kpiContainer.replaceChildren();
   destroyChart("journal-canvas-marks");
@@ -179,9 +313,7 @@ function renderAnalytics() {
 
   for (const g of grades) {
     sumMarks += g.mark;
-    if (markCounts[g.mark] !== undefined) {
-      markCounts[g.mark]++;
-    }
+    if (markCounts[g.mark] !== undefined) markCounts[g.mark]++;
   }
 
   const avgMark = totalGrades > 0 ? (sumMarks / totalGrades).toFixed(2) : "—";
@@ -196,22 +328,14 @@ function renderAnalytics() {
     createKpiCard("Успеваемость", passRate, "Доля без двоек")
   );
 
-  if (totalGrades === 0) {
-    return;
-  }
-
-  // 1. Диаграмма распределения оценок
-  const markLabels = ["Отлично (5)", "Хорошо (4)", "Удовл. (3)", "Неуд. (2)"];
-  const markData = [markCounts[5], markCounts[4], markCounts[3], markCounts[2]];
-  const markColors = ["#22c55e", "#3b82f6", "#f59e0b", "#ef4444"];
+  if (totalGrades === 0) return;
 
   createDoughnutChart("journal-canvas-marks", {
-    labels: markLabels,
-    data: markData,
-    backgroundColors: markColors
+    labels: ["Отлично (5)", "Хорошо (4)", "Удовл. (3)", "Неуд. (2)"],
+    data: [markCounts[5], markCounts[4], markCounts[3], markCounts[2]],
+    backgroundColors: ["#22c55e", "#a78bfa", "#f59e0b", "#ef4444"]
   });
 
-  // 2. Диаграмма среднего балла по предметам
   const subjLabels = [];
   const subjAverages = [];
   const subjBarColors = [];
@@ -222,38 +346,49 @@ function renderAnalytics() {
     if (subGrades.length > 0) {
       const avg = Number((subGrades.reduce((sum, g) => sum + g.mark, 0) / subGrades.length).toFixed(2));
       subjAverages.push(avg);
-      if (avg >= 4.5) subjBarColors.push("#10b981");
-      else if (avg >= 3.8) subjBarColors.push("#3b82f6");
+      if (avg >= 4.5) subjBarColors.push("#22c55e");
+      else if (avg >= 3.8) subjBarColors.push("#a78bfa");
       else if (avg >= 3.0) subjBarColors.push("#f59e0b");
       else subjBarColors.push("#ef4444");
     } else {
       subjAverages.push(0);
-      subjBarColors.push("#94a3b8");
+      subjBarColors.push("#64748b");
     }
   }
 
   createBarChart("journal-canvas-subjects", {
     labels: subjLabels,
-    datasets: [{
-      label: "Средний балл",
-      data: subjAverages,
-      backgroundColor: subjBarColors
-    }],
+    datasets: [{ label: "Средний балл", data: subjAverages, backgroundColor: subjBarColors }],
     yAxisTitle: "Балл (от 2 до 5)",
     yMax: 5,
     stepSize: 1
   });
 }
 
-/** Устанавливает активную ячейку в матрице по координатам (row, col). */
+/** Обновляет бейдж среднего балла в строке студента на лету */
+function updateStudentRowAverage(studentId) {
+  const badge = tableBody.querySelector(`span[data-avg-for="${studentId}"]`);
+  if (!badge || !journalData) return;
+  const studentGrades = journalData.grades.filter(g => g.student_id === studentId);
+  badge.className = "mark-badge";
+  if (!studentGrades.length) {
+    badge.classList.add("empty");
+    badge.textContent = "—";
+    return;
+  }
+  const avg = studentGrades.reduce((s, g) => s + g.mark, 0) / studentGrades.length;
+  badge.textContent = avg.toFixed(2);
+  if (avg >= 4.5) badge.classList.add("excellent");
+  else if (avg >= 3.8) badge.classList.add("good");
+  else if (avg >= 3.0) badge.classList.add("fair");
+  else badge.classList.add("failing");
+}
+
 function setActiveCell(r, c) {
   if (!gridMatrix.length) return;
-  // Снимаем активность с предыдущей
   if (activeRow >= 0 && activeCol >= 0 && gridMatrix[activeRow] && gridMatrix[activeRow][activeCol]) {
     gridMatrix[activeRow][activeCol].classList.remove("cell-active");
   }
-
-  // Ограничиваем границы
   const maxR = gridMatrix.length - 1;
   const maxC = gridMatrix[0] ? gridMatrix[0].length - 1 : 0;
   activeRow = Math.max(0, Math.min(r, maxR));
@@ -266,21 +401,15 @@ function setActiveCell(r, c) {
   }
 }
 
-/** Моментальное сохранение оценки с клавиатуры (Excel mode). */
 async function quickSaveGrade(btn, r, c, mark) {
   const studentId = Number(btn.dataset.studentId);
   const subjectId = Number(btn.dataset.subjectId);
 
-  // Мгновенная визуальная реакция
   btn.textContent = String(mark);
   btn.dataset.hasGrade = "true";
   btn.dataset.mark = String(mark);
   btn.classList.remove("empty");
-  if (mark === 2) {
-    btn.classList.add("failing");
-  } else {
-    btn.classList.remove("failing");
-  }
+  btn.classList.toggle("failing", mark === 2);
   btn.classList.add("cell-saving");
 
   try {
@@ -290,19 +419,16 @@ async function quickSaveGrade(btn, r, c, mark) {
       mark: mark
     });
 
-    // Обновляем локальные данные в памяти
     if (journalData && journalData.grades) {
       const existingIdx = journalData.grades.findIndex(
         g => g.student_id === studentId && g.subject_id === subjectId
       );
       const gradeObj = res.item || { id: Date.now(), student_id: studentId, subject_id: subjectId, mark: mark };
-      if (existingIdx >= 0) {
-        journalData.grades[existingIdx] = gradeObj;
-      } else {
-        journalData.grades.push(gradeObj);
-      }
+      if (existingIdx >= 0) journalData.grades[existingIdx] = gradeObj;
+      else journalData.grades.push(gradeObj);
     }
 
+    updateStudentRowAverage(studentId);
     renderAnalytics();
   } catch (error) {
     message("Ошибка сохранения оценки: " + error.message, true);
@@ -311,8 +437,7 @@ async function quickSaveGrade(btn, r, c, mark) {
   }
 }
 
-/** Быстрое удаление оценки с клавиатуры (Del/Backspace). */
-async function quickDeleteGrade(btn, r, c) {
+async function quickDeleteGrade(btn) {
   const studentId = Number(btn.dataset.studentId);
   const subjectId = Number(btn.dataset.subjectId);
   if (btn.dataset.hasGrade !== "true") return;
@@ -326,12 +451,12 @@ async function quickDeleteGrade(btn, r, c) {
 
   try {
     await requestJSON(GRADES_API + "/" + studentId + "/" + subjectId, "DELETE");
-
     if (journalData && journalData.grades) {
       journalData.grades = journalData.grades.filter(
         g => !(g.student_id === studentId && g.subject_id === subjectId)
       );
     }
+    updateStudentRowAverage(studentId);
     renderAnalytics();
   } catch (error) {
     message("Ошибка удаления оценки: " + error.message, true);
@@ -340,7 +465,6 @@ async function quickDeleteGrade(btn, r, c) {
   }
 }
 
-/** Рендерит матрицу оценок. */
 function render() {
   tableHead.replaceChildren();
   tableBody.replaceChildren();
@@ -351,7 +475,6 @@ function render() {
   if (!journalData) return;
   const { students, subjects, grades } = journalData;
 
-  // Шапка таблицы
   const headRow = document.createElement("tr");
   const thStudent = document.createElement("th");
   thStudent.textContent = "Студент";
@@ -359,9 +482,33 @@ function render() {
 
   for (const subject of subjects) {
     const th = document.createElement("th");
-    th.textContent = subject.name;
+    th.style.textAlign = "center";
+
+    const wrap = document.createElement("div");
+    wrap.className = "th-subject-header";
+
+    const span = document.createElement("span");
+    span.textContent = subject.name;
+
+    const bulkBtn = document.createElement("button");
+    bulkBtn.type = "button";
+    bulkBtn.className = "th-bulk-btn";
+    bulkBtn.textContent = "⚡";
+    bulkBtn.title = `Заполнить предмет «${subject.name}» для всей группы`;
+    bulkBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openBulkEditor(subject.id, groupSelect.value ? Number(groupSelect.value) : null);
+    });
+
+    wrap.append(span, bulkBtn);
+    th.append(wrap);
     headRow.append(th);
   }
+
+  const thAvg = document.createElement("th");
+  thAvg.textContent = "Ср. балл";
+  thAvg.className = "number";
+  headRow.append(thAvg);
   tableHead.append(headRow);
 
   if (!students.length) {
@@ -369,14 +516,88 @@ function render() {
     return;
   }
 
-  // Создаем быстрый поиск оценок по ключу "studentId:subjectId"
   const gradesMap = new Map();
   for (const g of grades) {
     gradesMap.set(g.student_id + ":" + g.subject_id, g);
   }
 
-  // Тело таблицы
-  students.forEach((student, rIdx) => {
+  const q = studentFilterInput ? studentFilterInput.value.trim().toLowerCase() : "";
+  const statusFilter = statusFilterSelect ? statusFilterSelect.value : "all";
+
+  const filteredStudents = students.filter(st => {
+    if (q && !st.name.toLowerCase().includes(q)) return false;
+    if (statusFilter === "all") return true;
+    const stGrades = grades.filter(g => g.student_id === st.id);
+    if (statusFilter === "no_grades") return stGrades.length === 0;
+    if (statusFilter === "failing") return stGrades.some(g => g.mark === 2);
+    if (statusFilter === "excellent") return stGrades.length > 0 && stGrades.every(g => g.mark === 5);
+    return true;
+  });
+
+  if (!filteredStudents.length) {
+    renderEmpty("Нет студентов по выбранному фильтру");
+    return;
+  }
+
+  const isMultiGroup = !journalData.group || journalData.group.id === 0;
+  let currentGroupId = null;
+
+  filteredStudents.forEach((student, rIdx) => {
+    if (isMultiGroup && student.group_id !== currentGroupId) {
+      currentGroupId = student.group_id;
+      const groupName = student.group_name || `Группа ${currentGroupId}`;
+      const groupStudents = students.filter(st => st.group_id === currentGroupId);
+      const groupGrades = grades.filter(g => groupStudents.some(st => st.id === g.student_id));
+      const groupAvg = groupGrades.length > 0
+        ? (groupGrades.reduce((sum, g) => sum + g.mark, 0) / groupGrades.length).toFixed(2)
+        : "—";
+
+      const dividerRow = document.createElement("tr");
+      dividerRow.className = "group-divider-row";
+      dividerRow.dataset.groupId = String(currentGroupId);
+
+      const tdDivider = document.createElement("td");
+      tdDivider.colSpan = subjects.length + 2;
+
+      const dividerWrap = document.createElement("div");
+      dividerWrap.className = "group-divider-content";
+
+      const infoBox = document.createElement("div");
+      infoBox.className = "group-divider-info";
+
+      const iconSpan = document.createElement("span");
+      iconSpan.className = "group-divider-icon";
+      iconSpan.textContent = "📁";
+
+      const nameSpan = document.createElement("span");
+      nameSpan.className = "group-divider-name";
+      nameSpan.textContent = `Группа: ${groupName}`;
+
+      const countPill = document.createElement("span");
+      countPill.className = "group-divider-pill";
+      countPill.textContent = `${groupStudents.length} студ.`;
+
+      const avgPill = document.createElement("span");
+      avgPill.className = "group-divider-pill avg";
+      avgPill.textContent = `Ср. балл: ${groupAvg}`;
+
+      infoBox.append(iconSpan, nameSpan, countPill, avgPill);
+
+      const groupActionBtn = document.createElement("button");
+      groupActionBtn.type = "button";
+      groupActionBtn.className = "button-secondary button-small";
+      groupActionBtn.textContent = "⚡ Оценить группу";
+      groupActionBtn.title = `Массовое оценивание для группы «${groupName}»`;
+      groupActionBtn.addEventListener("click", () => {
+        openBulkEditor(null, currentGroupId);
+      });
+
+      dividerWrap.append(infoBox, groupActionBtn);
+      tdDivider.append(dividerWrap);
+      dividerRow.append(tdDivider);
+      tableBody.append(dividerRow);
+    }
+
     const row = document.createElement("tr");
     const tdName = document.createElement("td");
     tdName.textContent = student.name;
@@ -388,9 +609,7 @@ function render() {
       const td = document.createElement("td");
       td.className = "grade-cell";
 
-      const key = student.id + ":" + subject.id;
-      const grade = gradesMap.get(key);
-
+      const grade = gradesMap.get(student.id + ":" + subject.id);
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "grade-button";
@@ -405,9 +624,7 @@ function render() {
         btn.textContent = String(grade.mark);
         btn.dataset.hasGrade = "true";
         btn.dataset.mark = String(grade.mark);
-        if (grade.mark === 2) {
-          btn.classList.add("failing");
-        }
+        if (grade.mark === 2) btn.classList.add("failing");
       } else {
         btn.textContent = "—";
         btn.dataset.hasGrade = "false";
@@ -419,67 +636,57 @@ function render() {
       row.append(td);
     });
 
+    const tdAvg = document.createElement("td");
+    tdAvg.className = "number";
+    const avgBadge = document.createElement("span");
+    avgBadge.dataset.avgFor = String(student.id);
+    tdAvg.append(avgBadge);
+    row.append(tdAvg);
+
     gridMatrix.push(rowButtons);
     tableBody.append(row);
+    updateStudentRowAverage(student.id);
   });
 }
 
-/** Открывает форму выставления/изменения оценки. */
 function openGradeEditor(btn) {
-  const studentId = btn.dataset.studentId;
-  const subjectId = btn.dataset.subjectId;
-  const studentName = btn.dataset.studentName;
-  const subjectName = btn.dataset.subjectName;
   const hasGrade = btn.dataset.hasGrade === "true";
-  const currentMark = btn.dataset.mark;
-
+  if (bulkEditor) bulkEditor.hidden = true;
   form.reset();
-  studentIdInput.value = studentId;
-  subjectIdInput.value = subjectId;
-  markSelect.value = hasGrade ? currentMark : "5";
+  studentIdInput.value = btn.dataset.studentId;
+  subjectIdInput.value = btn.dataset.subjectId;
+  markSelect.value = hasGrade ? btn.dataset.mark : "5";
   deleteButton.hidden = !hasGrade;
 
-  editorTitle.textContent = "Оценка: " + studentName + " — " + subjectName;
+  editorTitle.textContent = "Оценка: " + btn.dataset.studentName + " — " + btn.dataset.subjectName;
   editor.hidden = false;
   message();
   markSelect.focus();
 }
 
 groupSelect.addEventListener("change", function() {
-  editor.hidden = true;
-  if (groupSelect.value) {
-    loadJournal(Number(groupSelect.value));
-  }
+  if (editor) editor.hidden = true;
+  if (bulkEditor) bulkEditor.hidden = true;
+  loadJournal(groupSelect.value);
 });
 
-// Клик по ячейке
 tableBody.addEventListener("click", function(event) {
   const btn = event.target.closest("button.grade-button");
   if (!btn) return;
   const isQuick = quickEditCheckbox ? quickEditCheckbox.checked : false;
-
-  const r = Number(btn.dataset.row);
-  const c = Number(btn.dataset.col);
-
-  if (isQuick) {
-    setActiveCell(r, c);
-  } else {
-    openGradeEditor(btn);
-  }
+  if (isQuick) setActiveCell(Number(btn.dataset.row), Number(btn.dataset.col));
+  else openGradeEditor(btn);
 });
 
-// Двойной клик всегда открывает подробную форму
 tableBody.addEventListener("dblclick", function(event) {
   const btn = event.target.closest("button.grade-button");
   if (!btn) return;
   openGradeEditor(btn);
 });
 
-// Обработка клавиатурной навигации и быстрого ввода (Excel-режим)
 tableBody.addEventListener("keydown", function(event) {
   const isQuick = quickEditCheckbox ? quickEditCheckbox.checked : false;
   if (!isQuick) return;
-
   const btn = event.target.closest("button.grade-button");
   if (!btn) return;
 
@@ -488,63 +695,40 @@ tableBody.addEventListener("keydown", function(event) {
 
   switch (event.key) {
     case "ArrowDown":
-      event.preventDefault();
-      setActiveCell(r + 1, c);
-      break;
-    case "ArrowUp":
-      event.preventDefault();
-      setActiveCell(r - 1, c);
-      break;
-    case "ArrowRight":
-      event.preventDefault();
-      setActiveCell(r, c + 1);
-      break;
-    case "ArrowLeft":
-      event.preventDefault();
-      setActiveCell(r, c - 1);
-      break;
     case "Enter":
-      event.preventDefault();
-      // Enter смещает вниз
-      setActiveCell(r + 1, c);
-      break;
-    case "2":
-    case "3":
-    case "4":
-    case "5":
+      event.preventDefault(); setActiveCell(r + 1, c); break;
+    case "ArrowUp":
+      event.preventDefault(); setActiveCell(r - 1, c); break;
+    case "ArrowRight":
+      event.preventDefault(); setActiveCell(r, c + 1); break;
+    case "ArrowLeft":
+      event.preventDefault(); setActiveCell(r, c - 1); break;
+    case "2": case "3": case "4": case "5":
       event.preventDefault();
       quickSaveGrade(btn, r, c, Number(event.key));
-      // Автопереход вниз как в Excel
       setActiveCell(r + 1, c);
       break;
     case "Delete":
     case "Backspace":
       event.preventDefault();
-      quickDeleteGrade(btn, r, c);
+      quickDeleteGrade(btn);
       break;
   }
 });
 
-cancelButton.addEventListener("click", function() {
-  editor.hidden = true;
-  message();
-});
+cancelButton.addEventListener("click", function() { editor.hidden = true; message(); });
 
 form.addEventListener("submit", async function(event) {
   event.preventDefault();
-  const studentId = Number(studentIdInput.value);
-  const subjectId = Number(subjectIdInput.value);
-  const mark = Number(markSelect.value);
-
   busy(true);
   try {
     await requestJSON(GRADES_API, "POST", {
-      student_id: studentId,
-      subject_id: subjectId,
-      mark: mark
+      student_id: Number(studentIdInput.value),
+      subject_id: Number(subjectIdInput.value),
+      mark: Number(markSelect.value)
     });
     editor.hidden = true;
-    await loadJournal(Number(groupSelect.value), "Оценка сохранена.");
+    await loadJournal(groupSelect.value, "Оценка сохранена.");
   } catch (error) {
     message(error.message, true);
   } finally {
@@ -553,14 +737,11 @@ form.addEventListener("submit", async function(event) {
 });
 
 deleteButton.addEventListener("click", async function() {
-  const studentId = Number(studentIdInput.value);
-  const subjectId = Number(subjectIdInput.value);
-
   busy(true);
   try {
-    await requestJSON(GRADES_API + "/" + studentId + "/" + subjectId, "DELETE");
+    await requestJSON(GRADES_API + "/" + Number(studentIdInput.value) + "/" + Number(subjectIdInput.value), "DELETE");
     editor.hidden = true;
-    await loadJournal(Number(groupSelect.value), "Оценка удалена.");
+    await loadJournal(groupSelect.value, "Оценка удалена.");
   } catch (error) {
     message(error.message, true);
   } finally {

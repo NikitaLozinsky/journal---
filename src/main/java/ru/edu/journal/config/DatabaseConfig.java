@@ -26,6 +26,9 @@ public class DatabaseConfig {
         SQLiteConfig config = new SQLiteConfig();
         config.enforceForeignKeys(true);
         config.setBusyTimeout(5000);
+        config.setJournalMode(SQLiteConfig.JournalMode.WAL);
+        config.setSynchronous(SQLiteConfig.SynchronousMode.NORMAL);
+        config.setTempStore(SQLiteConfig.TempStore.MEMORY);
 
         SQLiteDataSource dataSource = new SQLiteDataSource(config);
         dataSource.setUrl("jdbc:sqlite:" + dbPath);

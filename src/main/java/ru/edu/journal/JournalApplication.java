@@ -29,6 +29,9 @@ public class JournalApplication implements CommandLineRunner {
     private final DatabaseInitializer databaseInitializer;
     private final DataSource dataSource;
 
+    @org.springframework.beans.factory.annotation.Value("${app.public-url:http://journal.edu.local}")
+    private String publicUrl;
+
     public JournalApplication(ApplicationContext context,
                               DatabaseInitializer databaseInitializer,
                               DataSource dataSource) {
@@ -48,21 +51,15 @@ public class JournalApplication implements CommandLineRunner {
             String contextPath = webContext.getServletContext().getContextPath();
             String path = (contextPath == null || contextPath.isBlank()) ? "/" : (contextPath.endsWith("/") ? contextPath : contextPath + "/");
 
-            String hostAddress = "localhost";
-            try {
-                hostAddress = InetAddress.getLocalHost().getHostAddress();
-            } catch (UnknownHostException ignored) {
-            }
-
             log.info("""
                 
-                ----------------------------------------------------------
-                \tПриложение успешно запущено!
-                \tЛокально: \thttp://localhost:{}{}
-                \tВ сети:   \thttp://{}:{}{}
-                ----------------------------------------------------------""",
-                port, path,
-                hostAddress, port, path
+                ==========================================================
+                  ЭЛЕКТРОННЫЙ ЖУРНАЛ УСПЕВАЕМОСТИ ГОТОВ К РАБОТЕ
+                  Домен:       {}
+                  Локальный:   http://127.0.0.1:{}{}
+                  Режим БД:    SQLite WAL (Foreign Keys = ON)
+                ==========================================================""",
+                publicUrl, port, path
             );
         }
     }

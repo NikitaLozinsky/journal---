@@ -5,33 +5,34 @@ const activeCharts = new Map();
  * Получает цветовую схему для графиков в зависимости от активной темы оформления.
  */
 export function getChartThemeColors() {
-  const isDark = document.documentElement.getAttribute("data-theme") !== "light";
+  const theme = document.documentElement.getAttribute("data-theme") || "dark";
+  const isDark = theme !== "light";
+  const isOled = isDark && document.documentElement.getAttribute("data-oled") === "true";
   return {
     isDark,
-    textColor: isDark ? "#cbd5e1" : "#475569",
-    headingColor: isDark ? "#f1f5f9" : "#1e293b",
-    gridColor: isDark ? "rgba(255, 255, 255, 0.08)" : "rgba(0, 0, 0, 0.06)",
-    tooltipBg: isDark ? "#1e293b" : "#0f172a",
-    tooltipTitle: isDark ? "#f8fafc" : "#ffffff",
-    tooltipBody: isDark ? "#e2e8f0" : "#f1f5f9",
-    borderColor: isDark ? "#334155" : "#e2e8f0",
-    // Стандартные палитры
+    isOled,
+    textColor: isDark ? (isOled ? "#8a889e" : "#a3a0b8") : "#5b5675",
+    headingColor: isDark ? "#f3f2f7" : "#161426",
+    gridColor: isOled ? "rgba(255, 255, 255, 0.06)" : (isDark ? "rgba(255, 255, 255, 0.08)" : "rgba(22, 20, 38, 0.06)"),
+    tooltipBg: isOled ? "#0a0a0f" : (isDark ? "#21212e" : "#161426"),
+    tooltipTitle: "#ffffff",
+    tooltipBody: "#e4dcff",
+    borderColor: isDark ? (isOled ? "#1b1b29" : "#2e2e42") : "#e4e0f2",
     palette: [
-      "#3b82f6", // синий
+      "#8b5cf6", // фиолетовый
+      "#c084fc", // лавандовый
       "#10b981", // изумрудный
       "#f59e0b", // янтарный
-      "#ef4444", // красный
-      "#8b5cf6", // фиолетовый
-      "#06b6d4", // бирюзовый
       "#ec4899", // розовый
-      "#64748b"  // сланцевый
+      "#6366f1", // индиго
+      "#06b6d4", // бирюзовый
+      "#ef4444"  // красный
     ],
-    // Палитра для оценок (5, 4, 3, 2)
     marks: {
-      5: "#22c55e", // зеленый (отлично)
-      4: "#3b82f6", // синий (хорошо)
-      3: "#f59e0b", // желтый (удовл)
-      2: "#ef4444"  // красный (двойка)
+      5: "#22c55e",
+      4: "#a78bfa",
+      3: "#f59e0b",
+      2: "#ef4444"
     }
   };
 }

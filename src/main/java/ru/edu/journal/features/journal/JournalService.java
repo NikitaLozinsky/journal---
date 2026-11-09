@@ -6,6 +6,7 @@ import ru.edu.journal.common.exception.NotFoundException;
 import ru.edu.journal.common.exception.ValidationException;
 import ru.edu.journal.features.groups.GroupRepository;
 import ru.edu.journal.features.groups.dto.GroupDto;
+import ru.edu.journal.features.journal.dto.BulkGradeRequest;
 import ru.edu.journal.features.journal.dto.GradeDto;
 import ru.edu.journal.features.journal.dto.GradeSaveRequest;
 import ru.edu.journal.features.journal.dto.JournalResponse;
@@ -37,7 +38,11 @@ public class JournalService {
 
     public JournalResponse getJournal(Long groupId) {
         if (groupId == null || groupId <= 0) {
-            throw new ValidationException("Некорректный идентификатор группы.");
+            List<StudentDto> students = journalRepository.findAllStudents();
+            List<SubjectDto> subjects = subjectRepository.findAll();
+            List<GradeDto> grades = journalRepository.findAllGrades();
+            GroupDto allGroup = new GroupDto(0L, "Все группы", (long) students.size());
+            return new JournalResponse(allGroup, students, subjects, grades);
         }
 
         GroupDto group = groupRepository.findById(groupId)
@@ -102,5 +107,34 @@ public class JournalService {
         }
 
         journalRepository.deleteGrade(studentId, subjectId);
+    }
+
+    @Transactional
+    public int saveBulkGrades(BulkGradeRequest request) {
+        if (request == null) {
+            throw new ValidationException("Ожидается JSON-объект.");
+        }
+
+        Long groupId = request.group_id();
+        Long subjectId = request.subject_id();
+        Integer mark = request.mark();
+        boolean overwrite = Boolean.TRUE.equals(request.overwrite_existing());
+
+        if (mark == null || mark < 0 || mark > 5) {
+            throw new ValidationException("Оценка должна быть от 2 до 5 (или 0 для удаления).");
+        }
+
+        if (groupId != null && groupId > 0 && groupRepository.findById(groupId).isEmpty()) {
+            throw new NotFoundException("Группа не найдена.");
+        }
+        if (subjectId != null && subjectId > 0 && subjectRepository.findById(subjectId).isEmpty()) {
+            throw new NotFoundException("Предмет не найден.");
+        }
+
+        if (mark == 0) {
+            return journalRepository.bulkDeleteGrades(groupId, subjectId);
+        } else {
+            return journalRepository.bulkAssignGrades(groupId, subjectId, mark, overwrite);
+        }
     }
 }
