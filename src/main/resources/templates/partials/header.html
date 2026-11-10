@@ -5,9 +5,12 @@
     <div class="aurora-blob blob-2"></div>
   </div>
 
+  <!-- Интерактивный волновой слой ряби в шапке -->
+  <div class="header-ripple-layer" id="header-ripple-layer" aria-hidden="true"></div>
+
   <div class="container">
     <div class="brand-row">
-      <a class="brand" href="/groups">
+      <a class="brand" href="/" title="На главную страницу">
         <span class="brand-glyph" aria-hidden="true">λ</span>
         <span>Электронный журнал</span>
         <span class="brand-tag">arch::ed</span>
@@ -37,6 +40,7 @@
     </div>
     <nav id="main-nav" class="navigation" aria-label="Разделы приложения">
       <span id="nav-glider" class="nav-glider" aria-hidden="true"></span>
+      <a href="/" data-nav="home" th:attr="aria-current=${activePage == 'home'} ? 'page' : null">Главная</a>
       <a href="/groups" data-nav="groups" th:attr="aria-current=${activePage == 'groups'} ? 'page' : null">Группы</a>
       <a href="/subjects" data-nav="subjects" th:attr="aria-current=${activePage == 'subjects'} ? 'page' : null">Предметы</a>
       <a href="/students" data-nav="students" th:attr="aria-current=${activePage == 'students'} ? 'page' : null">Студенты</a>

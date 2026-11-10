@@ -6,10 +6,10 @@ export function cell(value, className = "") {
 }
 
 function getToastStack() {
-  let stack = document.querySelector(".toast-Stack");
+  let stack = document.querySelector(".toast-stack");
   if (!stack) {
     stack = document.createElement("div");
-    stack.className = "toast-Stack";
+    stack.className = "toast-stack";
     document.body.append(stack);
   }
   return stack;

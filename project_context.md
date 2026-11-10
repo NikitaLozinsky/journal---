@@ -74,6 +74,7 @@
 │   │       │   ├── css
 │   │       │   │   └── styles.css
 │   │       │   └── js
+│   │       │       ├── antigravity.js
 │   │       │       ├── api.js
 │   │       │       ├── chart-helper.js
 │   │       │       ├── groups.js
@@ -89,6 +90,7 @@
 │   │           ├── error.html
 │   │           ├── groups
 │   │           │   └── index.html
+│   │           ├── index.html
 │   │           ├── journal
 │   │           │   └── index.html
 │   │           ├── partials
@@ -145,7 +147,7 @@
             ├── footer.html
             └── header.html
 
-52 directories, 93 files
+52 directories, 95 files
 
 ## Содержимое ключевых файлов проекта
 
@@ -1176,7 +1178,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addRedirectViewController("/", "/groups");
+        registry.addViewController("/").setViewName("index");
     }
 
     @Override
@@ -4844,70 +4846,89 @@ body.xray-resizing .xray-resizer {
 /* ==========================================================================
    TOAST-УВЕДОМЛЕНИЯ (GLASSMORPHISM + TIMER PROGRESS)
    ========================================================================== */
-.toast-stack {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 99999;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-width: 420px;
-  pointer-events: none;
+.toast-stack,
+.toast-Stack {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  left: auto !important;
+  top: auto !important;
+  width: auto !important;
+  max-width: 380px !important;
+  z-index: 999999 !important;
+  display: flex !important;
+  flex-direction: column-reverse !important;
+  gap: 10px !important;
+  pointer-events: none !important;
 }
 
 .toast-item {
-  pointer-events: auto;
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 18px 14px 16px;
-  border-radius: 10px;
-  background: var(--surface-solid);
-  border: 1px solid var(--line-glow);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(12px);
-  color: var(--ink);
-  font-size: 13.5px;
-  font-weight: 500;
-  overflow: hidden;
-  animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  pointer-events: auto !important;
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: auto !important;
+  max-width: 360px !important;
+  padding: 10px 16px 12px 14px !important;
+  border-radius: 8px !important;
+  background: var(--surface-solid) !important;
+  border: 1px solid var(--line-glow) !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55) !important;
+  backdrop-filter: blur(14px) !important;
+  color: var(--ink) !important;
+  overflow: hidden !important;
+  animation: toastSlideIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) both !important;
 }
 
-.toast-item.toast-error {
-  border-color: rgba(255, 85, 85, 0.5);
-  background: rgba(30, 15, 20, 0.95);
-  color: #ffb3b3;
-}
-
-.toast-item.toast-leaving {
-  animation: toastSlideOut 0.28s ease forwards;
+.toast-content {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  width: 100% !important;
 }
 
 .toast-icon {
-  font-size: 16px;
-  flex-shrink: 0;
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+  max-width: 18px !important;
+  max-height: 18px !important;
+  flex-shrink: 0 !important;
+  stroke: currentColor !important;
+  color: #50fa7b !important;
+}
+
+.toast-item.error .toast-icon {
+  color: #ff5555 !important;
 }
 
 .toast-text {
-  flex: 1;
-  line-height: 1.4;
+  flex: 1 !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  line-height: 1.35 !important;
+  color: var(--ink) !important;
+  word-break: break-word !important;
 }
 
 .toast-timer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 3px;
-  width: 100%;
-  background: linear-gradient(90deg, var(--brand), var(--brand-pink));
-  transform-origin: left;
-  animation: toastTimerAnim 3.2s linear forwards;
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  height: 2.5px !important;
+  width: 100% !important;
+  background: linear-gradient(90deg, var(--brand), var(--brand-pink)) !important;
+  transform-origin: left !important;
+  animation: toastTimerAnim 3.2s linear forwards !important;
 }
 
-.toast-item.toast-error .toast-timer {
-  background: var(--danger);
+.toast-item.error .toast-timer {
+  background: var(--danger) !important;
+}
+
+.toast-item.toast-leaving {
+  animation: toastSlideOut 0.25s ease forwards !important;
 }
 
 @keyframes toastSlideIn {
@@ -4929,42 +4950,55 @@ body.xray-resizing .xray-resizer {
    LIVE PROGRESS BAR ЖУРНАЛА (ИНТЕРАКТИВНЫЙ ИНДИКАТОР ВЕДОМОСТИ)
    ========================================================================== */
 .journal-progress-box {
-  margin: 14px 0 18px 0;
-  padding: 14px 18px;
-  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  min-width: 220px;
+  height: 52px;
+  padding: 8px 14px;
+  margin: 0;
+  border-radius: 8px;
   background: var(--surface);
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
   backdrop-filter: blur(8px);
 }
 
+.progress-labels,
 .progress-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
-  font-size: 13px;
+  gap: 10px;
+  font-size: 12.5px;
   font-weight: 600;
 }
 
 .progress-title {
   color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
 }
 
 .progress-stats {
   color: var(--ink);
   font-family: "JetBrains Mono", monospace;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
+  white-space: nowrap;
 }
 
+.progress-track,
 .progress-bar-track {
   width: 100%;
-  height: 9px;
+  height: 6px;
+  min-height: 6px;
   border-radius: 99px;
   background: var(--input-bg);
   border: 1px solid var(--line);
   overflow: hidden;
+  position: relative;
 }
 
 .progress-bar-fill {
@@ -4972,12 +5006,12 @@ body.xray-resizing .xray-resizer {
   border-radius: 99px;
   background: linear-gradient(90deg, var(--brand), var(--brand-pink));
   transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease;
-  box-shadow: 0 0 12px var(--brand-soft);
+  box-shadow: 0 0 10px var(--brand-soft);
 }
 
 .progress-bar-fill.progress-complete {
   background: linear-gradient(90deg, #10b981, #34d399);
-  box-shadow: 0 0 16px rgba(16, 185, 129, 0.6);
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.6);
 }
 
 /* ==========================================================================
@@ -5531,13 +5565,15 @@ body.xray-resizing .xray-resizer {
 }
 
 /* ==========================================================================
-   CURSOR SPOTLIGHT (РАДИАЛЬНОЕ СВЕЧЕНИЕ НА КАРТОЧКАХ)
+   CURSOR SPOTLIGHT (РАДИАЛЬНОЕ СВЕЧЕНИЕ НА КАРТОЧКАХ И ТАБЛИЦАХ)
    ========================================================================== */
-.kpi-card, .chart-card, .toolbar, .editor, .term-window, .cmd-palette-box {
+.kpi-card, .chart-card, .toolbar, .editor, .term-window, .cmd-palette-box,
+.table-scroll, .status-card, .home-card, .journal-progress-box {
   position: relative;
 }
 
-.kpi-card::before, .chart-card::before, .toolbar::before, .editor::before, .cmd-palette-box::before {
+.kpi-card::before, .chart-card::before, .toolbar::before, .editor::before, .cmd-palette-box::before,
+.table-scroll::before, .status-card::before, .home-card::before, .journal-progress-box::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -5546,9 +5582,11 @@ body.xray-resizing .xray-resizer {
   opacity: 0;
   transition: opacity 0.25s ease;
   pointer-events: none;
+  z-index: 1;
 }
 
-.kpi-card:hover::before, .chart-card:hover::before, .toolbar:hover::before, .editor:hover::before, .cmd-palette-box:hover::before {
+.kpi-card:hover::before, .chart-card:hover::before, .toolbar:hover::before, .editor:hover::before, .cmd-palette-box:hover::before,
+.table-scroll:hover::before, .status-card:hover::before, .home-card:hover::before, .journal-progress-box:hover::before {
   opacity: 1;
 }
 
@@ -5603,6 +5641,654 @@ tbody tr {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* ==========================================================================
+   HEADER WATER RIPPLE & AMBIENT GLOW
+   ========================================================================== */
+.site-header {
+  position: relative;
+  overflow: hidden;
+}
+
+.header-ripple-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.header-ripple-drop {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--brand);
+  background: radial-gradient(circle, var(--brand-soft) 0%, transparent 70%);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0.85;
+  pointer-events: none;
+  animation: rippleWave 0.75s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes rippleWave {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.85;
+  }
+  60% {
+    border-color: var(--brand-pink);
+    opacity: 0.45;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(30);
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   ВЕКТОРНЫЕ SVG ИКОНКИ ДЛЯ КОМАНДНОЙ ПАЛИТРЫ И TUI-ТЕРМИНАЛА
+   ========================================================================== */
+.cmd-icon-svg {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  display: inline-block;
+  vertical-align: middle;
+  color: var(--brand);
+  flex-shrink: 0;
+}
+
+.cmd-item:hover .cmd-icon-svg,
+.cmd-item.selected .cmd-icon-svg {
+  color: var(--brand-pink);
+}
+
+.f-icon-svg {
+  width: 15px;
+  height: 15px;
+  min-width: 15px;
+  min-height: 15px;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.pam-icon-svg {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
+  stroke: currentColor;
+  stroke-width: 2;
+  color: var(--brand);
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   ДОМАШНЯЯ СТРАНИЦА (GOOGLE ANTIGRAVITY EXPERIENCE & PORTAL GRID)
+   ========================================================================== */
+.home-page-body {
+  position: relative;
+  overflow-x: hidden;
+}
+
+.antigravity-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.home-container {
+  position: relative;
+  z-index: 2;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 38px 24px 70px 24px;
+}
+
+.home-hero {
+  text-align: center;
+  max-width: 820px;
+  margin: 0 auto 46px auto;
+}
+
+.home-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  border-radius: 99px;
+  background: var(--surface);
+  border: 1px solid var(--line-glow);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  margin-bottom: 22px;
+}
+
+.home-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #50fa7b;
+  box-shadow: 0 0 8px #50fa7b;
+}
+
+.home-title {
+  font-size: 42px;
+  line-height: 1.18;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 0 0 16px 0;
+  color: var(--ink);
+}
+
+.home-gradient-text {
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-pink) 60%, #ff79c6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.home-subtitle {
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 680px;
+  margin: 0 auto 30px auto;
+}
+
+.home-actions-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 34px;
+}
+
+.home-main-btn {
+  padding: 10px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px var(--brand-soft);
+}
+
+.home-actions-row kbd {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--input-bg);
+  border: 1px solid var(--line);
+  color: var(--brand);
+  margin-left: 6px;
+}
+
+.home-stats-strip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding: 12px 28px;
+  border-radius: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+}
+
+.home-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.home-stat-val {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.home-stat-val.val-green {
+  color: #50fa7b;
+}
+
+.home-stat-label {
+  font-size: 11.5px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.home-stat-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--line);
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 18px;
+  margin-bottom: 40px;
+}
+
+.home-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 22px;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  text-decoration: none;
+  color: var(--ink);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease, box-shadow 0.22s ease;
+  cursor: pointer;
+}
+
+.home-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--brand);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35), 0 0 18px var(--brand-soft);
+}
+
+.home-card-icon-wrap {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--input-bg);
+  border: 1px solid var(--line);
+  transition: transform 0.2s ease;
+}
+
+.home-card:hover .home-card-icon-wrap {
+  transform: scale(1.08);
+}
+
+.icon-purple { color: #bd93f9; border-color: rgba(189, 147, 249, 0.3); background: rgba(189, 147, 249, 0.1); }
+.icon-pink   { color: #ff79c6; border-color: rgba(255, 121, 198, 0.3); background: rgba(255, 121, 198, 0.1); }
+.icon-cyan   { color: #8be9fd; border-color: rgba(139, 233, 253, 0.3); background: rgba(139, 233, 253, 0.1); }
+.icon-amber  { color: #f1fa8c; border-color: rgba(241, 250, 140, 0.3); background: rgba(241, 250, 140, 0.1); }
+.icon-green  { color: #50fa7b; border-color: rgba(80, 250, 123, 0.3); background: rgba(80, 250, 123, 0.1); }
+
+.home-card-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.home-card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.home-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.home-card-desc {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--muted);
+  margin: 0;
+}
+
+.home-card-arrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 18px;
+  color: var(--muted);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.home-card:hover .home-card-arrow {
+  transform: translateX(4px);
+  color: var(--brand);
+}
+
+.home-antigravity-tip {
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 10px;
+}
+
+.home-antigravity-tip kbd {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--input-bg);
+  border: 1px solid var(--line);
+  color: var(--brand);
+}
+```
+
+### `src/main/resources/static/js/antigravity.js`
+
+```js
+import { requestJSON } from "/js/api.js";
+
+/**
+ * Интерактивный физический движок "Google Antigravity Experience"
+ * Реализует парение частиц в невесомости, отталкивание курсором (антигравитационное поле),
+ * ударные гравитационные волны при клике и созвездия силовых линий.
+ */
+
+function initAntigravityPhysics() {
+  const canvas = document.querySelector("#antigravity-canvas");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+  let width = 0;
+  let height = 0;
+  let dpr = window.devicePixelRatio || 1;
+
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.scale(dpr, dpr);
+  }
+
+  window.addEventListener("resize", resize);
+  resize();
+
+  const PARTICLE_COUNT = Math.min(90, Math.max(45, Math.floor((width * height) / 16000)));
+  const COLORS = [
+    { r: 189, g: 147, b: 249 }, // Lavender #bd93f9
+    { r: 255, g: 121, b: 198 }, // Pink #ff79c6
+    { r: 139, g: 233, b: 253 }, // Cyan #8be9fd
+    { r: 80,  g: 250, b: 123 }, // Green #50fa7b
+    { r: 241, g: 250, b: 140 }  // Yellow #f1fa8c
+  ];
+
+  class Particle {
+    constructor() {
+      this.reset(true);
+    }
+
+    reset(initial = false) {
+      this.x = Math.random() * width;
+      this.y = initial ? Math.random() * height : (Math.random() < 0.5 ? -10 : height + 10);
+      this.baseVx = (Math.random() - 0.5) * 0.45;
+      this.baseVy = (Math.random() - 0.5) * 0.45;
+      this.vx = this.baseVx;
+      this.vy = this.baseVy;
+      this.radius = 2.2 + Math.random() * 2.5;
+      this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+      this.alpha = 0.45 + Math.random() * 0.45;
+      this.pulseSpeed = 0.02 + Math.random() * 0.03;
+      this.pulseAngle = Math.random() * Math.PI * 2;
+    }
+
+    update(mouse, shockwaves) {
+      // 1. Естественное парение в невесомости
+      this.pulseAngle += this.pulseSpeed;
+      const pulse = 1 + Math.sin(this.pulseAngle) * 0.25;
+
+      // 2. Взаимодействие с курсором (Антигравитационное поле отталкивания)
+      if (mouse.active) {
+        const dx = this.x - mouse.x;
+        const dy = this.y - mouse.y;
+        const dist = Math.hypot(dx, dy);
+        const maxDist = 180;
+
+        if (dist < maxDist && dist > 1) {
+          // Сила отталкивания: чем ближе курсор, тем мощнее разлетаются частицы
+          const force = (1 - dist / maxDist) * 3.8;
+          const angle = Math.atan2(dy, dx);
+          this.vx += Math.cos(angle) * force;
+          this.vy += Math.sin(angle) * force;
+        }
+      }
+
+      // 3. Ударные гравитационные волны (от кликов)
+      for (let i = shockwaves.length - 1; i >= 0; i--) {
+        const sw = shockwaves[i];
+        const dx = this.x - sw.x;
+        const dy = this.y - sw.y;
+        const dist = Math.hypot(dx, dy);
+        const waveDist = Math.abs(dist - sw.radius);
+
+        if (waveDist < 35 && dist > 1) {
+          const force = (1 - waveDist / 35) * sw.strength;
+          const angle = Math.atan2(dy, dx);
+          this.vx += Math.cos(angle) * force;
+          this.vy += Math.sin(angle) * force;
+        }
+      }
+
+      // 4. Трение невесомости и возвращение к плавному дрейфу
+      this.vx = this.vx * 0.94 + this.baseVx * 0.06;
+      this.vy = this.vy * 0.94 + this.baseVy * 0.06;
+
+      this.x += this.vx;
+      this.y += this.vy;
+
+      // Отражение от краев экрана
+      if (this.x < 0) { this.x = 0; this.vx *= -1; }
+      else if (this.x > width) { this.x = width; this.vx *= -1; }
+      if (this.y < 0) { this.y = 0; this.vy *= -1; }
+      else if (this.y > height) { this.y = height; this.vy *= -1; }
+    }
+
+    draw(ctx) {
+      const { r, g, b } = this.color;
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${this.alpha})`;
+      ctx.shadowColor = `rgba(${r}, ${g}, ${b}, 0.8)`;
+      ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  const particles = Array.from({ length: PARTICLE_COUNT }, () => new Particle());
+  const mouse = { x: -1000, y: -1000, active: false };
+  const shockwaves = [];
+
+  window.addEventListener("pointermove", (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+    mouse.active = true;
+  });
+
+  window.addEventListener("pointerleave", () => {
+    mouse.active = false;
+  });
+
+  // Клик по экрану создает расширяющуюся гравитационную волну
+  window.addEventListener("pointerdown", (e) => {
+    // Не создаем шоквейв, если кликнули по кнопкам или формам
+    if (e.target.closest("button, a, input, select, textarea, .home-card")) return;
+    shockwaves.push({
+      x: e.clientX,
+      y: e.clientY,
+      radius: 10,
+      maxRadius: 240,
+      speed: 7,
+      strength: 6.5,
+      alpha: 0.8
+    });
+  });
+
+  function render() {
+    ctx.clearRect(0, 0, width, height);
+
+    // Обновление и отрисовка ударных волн
+    for (let i = shockwaves.length - 1; i >= 0; i--) {
+      const sw = shockwaves[i];
+      sw.radius += sw.speed;
+      sw.alpha = Math.max(0, 1 - sw.radius / sw.maxRadius);
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(sw.x, sw.y, sw.radius, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(189, 147, 249, ${sw.alpha * 0.45})`;
+      ctx.lineWidth = 2.5;
+      ctx.shadowColor = "rgba(255, 121, 198, 0.6)";
+      ctx.shadowBlur = 10;
+      ctx.stroke();
+      ctx.restore();
+
+      if (sw.radius >= sw.maxRadius || sw.alpha <= 0) {
+        shockwaves.splice(i, 1);
+      }
+    }
+
+    // Соединительные гравитационные нити (Constellation Web)
+    const maxLinkDist = 125;
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const p1 = particles[i];
+        const p2 = particles[j];
+        const dx = p1.x - p2.x;
+        const dy = p1.y - p2.y;
+        const dist = Math.hypot(dx, dy);
+
+        if (dist < maxLinkDist) {
+          const lineAlpha = (1 - dist / maxLinkDist) * 0.22;
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = `rgba(189, 147, 249, ${lineAlpha})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Обновление и отрисовка частиц
+    for (const p of particles) {
+      p.update(mouse, shockwaves);
+      p.draw(ctx);
+    }
+
+    requestAnimationFrame(render);
+  }
+
+  requestAnimationFrame(render);
+}
+
+/**
+ * Плавный счетчик чисел от 0 до целевого значения
+ */
+function animateValue(el, target, duration = 800) {
+  if (!el || isNaN(target)) return;
+  const start = 0;
+  const t0 = performance.now();
+
+  function step(now) {
+    const progress = Math.min(1, (now - t0) / duration);
+    // Функция плавности cubic ease-out
+    const easeOut = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(start + (target - start) * easeOut);
+    el.textContent = String(current);
+    if (progress < 1) requestAnimationFrame(step);
+    else el.textContent = String(target);
+  }
+
+  requestAnimationFrame(step);
+}
+
+/**
+ * Загрузка актуальных системных счетчиков через REST API
+ */
+async function loadLiveHomeStats() {
+  const elStudents = document.querySelector("#stat-students");
+  const elGroups = document.querySelector("#stat-groups");
+  const elSubjects = document.querySelector("#stat-subjects");
+
+  try {
+    const [groupsData, subjectsData, studentsData] = await Promise.all([
+      requestJSON("/api/groups"),
+      requestJSON("/api/subjects"),
+      requestJSON("/api/students")
+    ]);
+
+    if (elGroups && groupsData?.items) {
+      animateValue(elGroups, groupsData.items.length);
+    }
+    if (elSubjects && subjectsData?.items) {
+      animateValue(elSubjects, subjectsData.items.length);
+    }
+    if (elStudents && studentsData?.items) {
+      animateValue(elStudents, studentsData.items.length);
+    }
+  } catch (err) {
+    console.warn("Ошибка загрузки живых счетчиков домашней страницы:", err);
+    if (elStudents) elStudents.textContent = "60";
+    if (elGroups) elGroups.textContent = "3";
+    if (elSubjects) elSubjects.textContent = "3";
+  }
+}
+
+/**
+ * Инициализация быстрых триггеров на домашней странице
+ */
+function initHomeTriggers() {
+  const btnTerm = document.querySelector("#home-open-term");
+  const btnPalette = document.querySelector("#home-open-palette");
+  const cardXray = document.querySelector("#card-trigger-xray");
+
+  if (btnTerm) {
+    btnTerm.addEventListener("click", () => {
+      document.querySelector("#term-toggle-btn")?.click();
+    });
+  }
+
+  if (btnPalette) {
+    btnPalette.addEventListener("click", () => {
+      document.querySelector("#cmd-palette-btn")?.click();
+    });
+  }
+
+  if (cardXray) {
+    cardXray.addEventListener("click", (e) => {
+      e.preventDefault();
+      document.querySelector("#xray-toggle-btn")?.click();
+    });
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initAntigravityPhysics();
+  loadLiveHomeStats();
+  initHomeTriggers();
+});
 ```
 
 ### `src/main/resources/static/js/api.js`
@@ -7968,6 +8654,7 @@ const THEME_META = {
 
 /** Координаты смещения градиента для каждой вкладки страницы */
 const AURORA_STATES = {
+  home:     { x1: "50%", y1: "15%", x2: "50%", y2: "75%", c1: "rgba(189, 147, 249, 0.28)", c2: "rgba(255, 121, 198, 0.16)" },
   groups:   { x1: "12%", y1: "18%", x2: "78%", y2: "65%", c1: "rgba(189, 147, 249, 0.22)", c2: "rgba(255, 121, 198, 0.14)" },
   subjects: { x1: "32%", y1: "12%", x2: "62%", y2: "75%", c1: "rgba(167, 139, 250, 0.24)", c2: "rgba(139, 233, 253, 0.12)" },
   students: { x1: "52%", y1: "22%", x2: "20%", y2: "70%", c1: "rgba(192, 132, 252, 0.22)", c2: "rgba(244, 114, 182, 0.15)" },
@@ -8033,7 +8720,7 @@ function initSlidingNavigation() {
   const activeLink = nav.querySelector('a[aria-current="page"]') || nav.querySelector("a");
   if (!activeLink) return;
 
-  const currentKey = activeLink.dataset.nav || "groups";
+  const currentKey = activeLink.dataset.nav || (window.location.pathname === "/" ? "home" : "groups");
   const prevKey = sessionStorage.getItem("journal_prev_nav_key");
   const prevRectRaw = sessionStorage.getItem("journal_prev_nav_rect");
 
@@ -8412,19 +9099,41 @@ const VFS = {
    3. ВСТРОЕННЫЙ LINUX-ТЕРМИНАЛ (PAM AUTH + TUI IDE + FISH SHELL)
    ========================================================================== */
 
+const SVG_ICONS_PACK = {
+  home: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>`,
+  groups: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`,
+  subjects: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>`,
+  students: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`,
+  journal: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>`,
+  reports: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"></path><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path></svg>`,
+  terminal: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>`,
+  xray: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>`,
+  theme: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 0 20z" fill="currentColor"></path></svg>`,
+  excel: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`,
+  csv: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>`,
+  key: `<svg class="pam-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7.5" cy="15.5" r="5.5"></circle><path d="M21 2l-9.6 9.6"></path><path d="M15.5 7.5l3 3"></path></svg>`,
+  java: `<svg class="f-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>`,
+  test: `<svg class="f-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2v7.31"></path><path d="M14 9.3V2"></path><path d="M8.5 2h7"></path><path d="M14 9.3a6.5 6.5 0 1 1-4 0"></path><path d="M5.52 16h12.96"></path></svg>`,
+  sql: `<svg class="f-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>`,
+  config: `<svg class="f-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>`,
+  xml: `<svg class="f-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>`,
+  doc: `<svg class="f-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>`,
+  folder: `<svg class="f-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>`
+};
+
 const PAM_VALID_PASSWORDS = ["admin", "milk13", "root", "1234"];
 const PAM_AUTH_KEY = "journal_term_auth";
 
 const IDE_KEY_FILES = [
-  { path: "/home/milk13/IdeaProjects/jrnl/src/main/java/JournalApplication.java", name: "JournalApplication.java", lang: "Java 21", icon: "☕" },
-  { path: "/home/milk13/IdeaProjects/jrnl/src/test/RollbackTest.java", name: "RollbackTest.java", lang: "Java 21 Test", icon: "🧪" },
-  { path: "/home/milk13/IdeaProjects/jrnl/src/main/java/GroupController.java", name: "GroupController.java", lang: "Java 21", icon: "☕" },
-  { path: "/home/milk13/IdeaProjects/jrnl/src/main/java/JournalService.java", name: "JournalService.java", lang: "Java 21", icon: "☕" },
-  { path: "/home/milk13/IdeaProjects/jrnl/src/main/java/StudentService.java", name: "StudentService.java", lang: "Java 21", icon: "☕" },
-  { path: "/home/milk13/IdeaProjects/jrnl/src/main/resources/schema.sql", name: "schema.sql", lang: "SQL DDL", icon: "🗄️" },
-  { path: "/home/milk13/IdeaProjects/jrnl/src/main/resources/application.properties", name: "application.properties", lang: "Properties", icon: "⚙️" },
-  { path: "/home/milk13/IdeaProjects/jrnl/pom.xml", name: "pom.xml", lang: "Maven XML", icon: "📦" },
-  { path: "/home/milk13/IdeaProjects/jrnl/README.md", name: "README.md", lang: "Markdown", icon: "📄" }
+  { path: "/home/milk13/IdeaProjects/jrnl/src/main/java/JournalApplication.java", name: "JournalApplication.java", lang: "Java 21", icon: SVG_ICONS_PACK.java },
+  { path: "/home/milk13/IdeaProjects/jrnl/src/test/RollbackTest.java", name: "RollbackTest.java", lang: "Java 21 Test", icon: SVG_ICONS_PACK.test },
+  { path: "/home/milk13/IdeaProjects/jrnl/src/main/java/GroupController.java", name: "GroupController.java", lang: "Java 21", icon: SVG_ICONS_PACK.java },
+  { path: "/home/milk13/IdeaProjects/jrnl/src/main/java/JournalService.java", name: "JournalService.java", lang: "Java 21", icon: SVG_ICONS_PACK.java },
+  { path: "/home/milk13/IdeaProjects/jrnl/src/main/java/StudentService.java", name: "StudentService.java", lang: "Java 21", icon: SVG_ICONS_PACK.java },
+  { path: "/home/milk13/IdeaProjects/jrnl/src/main/resources/schema.sql", name: "schema.sql", lang: "SQL DDL", icon: SVG_ICONS_PACK.sql },
+  { path: "/home/milk13/IdeaProjects/jrnl/src/main/resources/application.properties", name: "application.properties", lang: "Properties", icon: SVG_ICONS_PACK.config },
+  { path: "/home/milk13/IdeaProjects/jrnl/pom.xml", name: "pom.xml", lang: "Maven XML", icon: SVG_ICONS_PACK.xml },
+  { path: "/home/milk13/IdeaProjects/jrnl/README.md", name: "README.md", lang: "Markdown", icon: SVG_ICONS_PACK.doc }
 ];
 
 function initLinuxTerminal() {
@@ -8473,7 +9182,7 @@ function initLinuxTerminal() {
           <div class="pam-subtitle">Доступ к внутреннему TUI редактору, тестам транзакций и консоли Spring Boot</div>
           <form id="pam-form" class="pam-form">
             <div class="pam-input-wrap">
-              <span class="pam-key-icon">🔑</span>
+              <span class="pam-key-icon">${SVG_ICONS_PACK.key}</span>
               <input id="pam-password-input" class="pam-input" type="password" autocomplete="off" placeholder="Введите пароль администратора..." autofocus>
               <button type="submit" class="button-primary pam-submit-btn">Войти</button>
             </div>
@@ -8498,7 +9207,7 @@ function initLinuxTerminal() {
           <div class="ide-editor-area">
             <div class="ide-editor-tabbar">
               <div class="ide-tab active">
-                <span id="ide-tab-icon" class="ide-tab-icon">☕</span>
+                <span id="ide-tab-icon" class="ide-tab-icon"></span>
                 <span id="ide-tab-name" class="ide-tab-name">JournalApplication.java</span>
                 <span id="ide-tab-lang" class="ide-tab-lang">Java 21</span>
               </div>
@@ -8673,10 +9382,10 @@ function initLinuxTerminal() {
 
   function loadIdeFile(path) {
     activeIdeFile = path;
-    const fileMeta = IDE_KEY_FILES.find(f => f.path === path) || { name: path.split("/").pop(), lang: "Text", icon: "📄" };
+    const fileMeta = IDE_KEY_FILES.find(f => f.path === path) || { name: path.split("/").pop(), lang: "Text", icon: SVG_ICONS_PACK.doc };
     const content = VFS[path]?.content || "// Файл пуст или создан в VFS";
 
-    ideTabIcon.textContent = fileMeta.icon;
+    ideTabIcon.innerHTML = fileMeta.icon;
     ideTabName.textContent = fileMeta.name;
     ideTabLang.textContent = fileMeta.lang;
     stFilename.textContent = fileMeta.name;
@@ -9315,7 +10024,7 @@ PRAGMA journal_mode = WAL; --> <span style="color:#50fa7b">WAL MODE</span>
    ========================================================================== */
 function initCursorSpotlight() {
   let rafId = null;
-  const selector = ".kpi-card, .chart-card, .toolbar, .editor, .table-scroll, .term-window, .cmd-palette-box";
+  const selector = ".kpi-card, .chart-card, .toolbar, .editor, .table-scroll, .term-window, .cmd-palette-box, .status-card, .home-card, table, tbody tr, .journal-progress-box";
 
   window.addEventListener("pointermove", (e) => {
     if (rafId) return;
@@ -9339,6 +10048,34 @@ function initCursorSpotlight() {
       });
     });
   }, { passive: true });
+}
+
+/* ==========================================================================
+   6. HEADER WATER RIPPLE (ИНТЕРАКТИВНАЯ РЯБЬ ВЕРХНЕЙ ПАНЕЛИ)
+   ========================================================================== */
+function initHeaderRipple() {
+  const header = document.querySelector(".site-header");
+  const layer = document.querySelector("#header-ripple-layer");
+  if (!header || !layer) return;
+
+  header.addEventListener("pointermove", (e) => {
+    const rect = header.getBoundingClientRect();
+    const hx = e.clientX - rect.left;
+    const hy = e.clientY - rect.top;
+    header.style.setProperty("--hx", `${hx}px`);
+    header.style.setProperty("--hy", `${hy}px`);
+  }, { passive: true });
+
+  header.addEventListener("pointerdown", (e) => {
+    if (e.target.closest("button, a, input, select")) return;
+    const rect = header.getBoundingClientRect();
+    const drop = document.createElement("div");
+    drop.className = "header-ripple-drop";
+    drop.style.left = `${e.clientX - rect.left}px`;
+    drop.style.top = `${e.clientY - rect.top}px`;
+    layer.append(drop);
+    setTimeout(() => drop.remove(), 750);
+  });
 }
 
 /* ==========================================================================
@@ -9374,16 +10111,17 @@ function initCommandPalette() {
   let activeIndex = 0;
 
   const COMMANDS = [
-    { id: "nav-groups", title: "Перейти: Учебные группы", category: "Навигация", keys: "groups группы", icon: "📁", action: () => window.location.href = "/groups" },
-    { id: "nav-subjects", title: "Перейти: Дисциплины (Предметы)", category: "Навигация", keys: "subjects предметы дисциплины", icon: "📚", action: () => window.location.href = "/subjects" },
-    { id: "nav-students", title: "Перейти: Студенты и зачисление", category: "Навигация", keys: "students студенты состав", icon: "👤", action: () => window.location.href = "/students" },
-    { id: "nav-journal", title: "Перейти: Журнал успеваемости", category: "Навигация", keys: "journal журнал оценки матрица", icon: "📊", action: () => window.location.href = "/journal" },
-    { id: "nav-reports", title: "Перейти: Академические отчёты", category: "Навигация", keys: "reports отчеты группы должники отличники", icon: "📈", action: () => window.location.href = "/reports" },
-    { id: "tool-terminal", title: "Открыть консоль milk13@archarnel", category: "Инструменты", keys: "terminal shell bash fish консоль терминал", icon: "💻", action: () => { togglePalette(false); document.querySelector("#term-toggle-btn")?.click(); } },
-    { id: "tool-xray", title: "Рентген внутренней логики (SQL & API)", category: "Инструменты", keys: "xray sql trace рентген логика", icon: "⚡", action: () => { togglePalette(false); document.querySelector("#xray-toggle-btn")?.click(); } },
-    { id: "theme-next", title: "Сменить тему оформления (Dark / OLED / Light)", category: "Интерфейс", keys: "theme тема dark oled light вид", icon: "🎨", action: () => { togglePalette(false); toggleTheme(); } },
-    { id: "export-excel", title: "Экспорт журнала в Excel (.xlsx)", category: "Экспорт", keys: "excel xlsx экспорт скачать", icon: "📥", action: () => { togglePalette(false); document.querySelector("#btn-export-excel")?.click() || (window.location.href = "/api/journal/export/excel"); } },
-    { id: "export-csv", title: "Экспорт журнала в текстовый CSV", category: "Экспорт", keys: "csv экспорт скачать", icon: "📄", action: () => { togglePalette(false); document.querySelector("#btn-export-csv")?.click() || (window.location.href = "/api/journal/export/csv"); } }
+    { id: "nav-home", title: "Главная страница (Портал)", category: "Навигация", keys: "home главная портал journal antigravity", icon: SVG_ICONS_PACK.home, action: () => window.location.href = "/" },
+    { id: "nav-journal", title: "Журнал успеваемости (Ведомость)", category: "Навигация", keys: "journal журнал оценки матрица ведомость excel", icon: SVG_ICONS_PACK.journal, action: () => window.location.href = "/journal" },
+    { id: "nav-groups", title: "Учебные группы", category: "Навигация", keys: "groups группы поток", icon: SVG_ICONS_PACK.groups, action: () => window.location.href = "/groups" },
+    { id: "nav-subjects", title: "Дисциплины (Предметы)", category: "Навигация", keys: "subjects предметы дисциплины", icon: SVG_ICONS_PACK.subjects, action: () => window.location.href = "/subjects" },
+    { id: "nav-students", title: "Студенты и зачисление", category: "Навигация", keys: "students студенты состав обучающиеся", icon: SVG_ICONS_PACK.students, action: () => window.location.href = "/students" },
+    { id: "nav-reports", title: "Академические отчёты", category: "Навигация", keys: "reports отчеты группы должники отличники", icon: SVG_ICONS_PACK.reports, action: () => window.location.href = "/reports" },
+    { id: "tool-terminal", title: "Консоль разработчика milk13@archarnel", category: "Инструменты", keys: "terminal shell bash fish консоль терминал tui ide", icon: SVG_ICONS_PACK.terminal, action: () => { togglePalette(false); document.querySelector("#term-toggle-btn")?.click(); } },
+    { id: "tool-xray", title: "Рентген внутренней логики (SQL & API)", category: "Инструменты", keys: "xray sql trace рентген логика", icon: SVG_ICONS_PACK.xray, action: () => { togglePalette(false); document.querySelector("#xray-toggle-btn")?.click(); } },
+    { id: "theme-next", title: "Сменить тему (Dark / OLED / Light)", category: "Интерфейс", keys: "theme тема dark oled light вид", icon: SVG_ICONS_PACK.theme, action: () => { togglePalette(false); toggleTheme(); } },
+    { id: "export-excel", title: "Экспорт журнала в Excel (.xlsx)", category: "Экспорт", keys: "excel xlsx экспорт скачать", icon: SVG_ICONS_PACK.excel, action: () => { togglePalette(false); document.querySelector("#btn-export-excel")?.click() || (window.location.href = "/api/journal/export/excel"); } },
+    { id: "export-csv", title: "Экспорт журнала в текстовый CSV", category: "Экспорт", keys: "csv экспорт скачать", icon: SVG_ICONS_PACK.csv, action: () => { togglePalette(false); document.querySelector("#btn-export-csv")?.click() || (window.location.href = "/api/journal/export/csv"); } }
   ];
 
   let filtered = [...COMMANDS];
@@ -9515,6 +10253,7 @@ export function initTheme() {
   initSlidingNavigation();
   initXRayInspector();
   initCursorSpotlight();
+  initHeaderRipple();
   initCommandPalette();
   initLinuxTerminal();
 }
@@ -9537,10 +10276,10 @@ export function cell(value, className = "") {
 }
 
 function getToastStack() {
-  let stack = document.querySelector(".toast-Stack");
+  let stack = document.querySelector(".toast-stack");
   if (!stack) {
     stack = document.createElement("div");
-    stack.className = "toast-Stack";
+    stack.className = "toast-stack";
     document.body.append(stack);
   }
   return stack;
@@ -9760,6 +10499,172 @@ export function fillGroups(select, groups, includeAll = false) {
   </main>
   <footer th:replace="~{partials/footer :: footer}"></footer>
   <script type="module" src="/js/groups.js?v=2.2"></script>
+</body>
+</html>
+```
+
+### `src/main/resources/templates/index.html`
+
+```html
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('journal_theme');
+        document.documentElement.setAttribute('data-theme', (t === 'oled' || t === 'light') ? t : 'dark');
+      } catch (e) {}
+    })();
+  </script>
+  <title>Электронный журнал успеваемости — journal.edu.local</title>
+  <link rel="stylesheet" href="/css/styles.css?v=4.0">
+</head>
+<body class="home-page-body">
+  <!-- Интерактивное физическое поле Антигравитации (Google Antigravity Experience) -->
+  <canvas id="antigravity-canvas" class="antigravity-canvas" aria-hidden="true"></canvas>
+
+  <header th:replace="~{partials/header :: header}"></header>
+
+  <main id="main-content" class="container home-container" aria-busy="false">
+    <div class="home-hero">
+      <div class="home-badge">
+        <span class="home-badge-dot"></span>
+        <span>journal.edu.local • Spring Boot 3.3.5 • SQLite WAL</span>
+      </div>
+
+      <h1 class="home-title">
+        Электронный журнал <span class="home-gradient-text">успеваемости</span>
+      </h1>
+
+      <p class="home-subtitle">
+        Быстрая академическая система учёта с мгновенным откликом, интерактивной Excel-ведомостью, встроенным TUI-терминалом и прозрачным рентгеном SQL-запросов.
+      </p>
+
+      <!-- Быстрые действия и палитра -->
+      <div class="home-actions-row">
+        <a href="/journal" class="button-primary home-main-btn">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          <span>Открыть журнал оценок</span>
+        </a>
+        <button id="home-open-term" class="button-secondary" type="button">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+          <span>Консоль milk13</span>
+          <kbd>Alt+C</kbd>
+        </button>
+        <button id="home-open-palette" class="button-secondary" type="button">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <span>Командная палитра</span>
+          <kbd>Ctrl+K</kbd>
+        </button>
+      </div>
+
+      <!-- Живые системные метрики -->
+      <div class="home-stats-strip">
+        <div class="home-stat-item">
+          <span class="home-stat-val" id="stat-students">—</span>
+          <span class="home-stat-label">Студентов в базе</span>
+        </div>
+        <div class="home-stat-divider"></div>
+        <div class="home-stat-item">
+          <span class="home-stat-val" id="stat-groups">—</span>
+          <span class="home-stat-label">Учебных групп</span>
+        </div>
+        <div class="home-stat-divider"></div>
+        <div class="home-stat-item">
+          <span class="home-stat-val" id="stat-subjects">—</span>
+          <span class="home-stat-label">Дисциплин</span>
+        </div>
+        <div class="home-stat-divider"></div>
+        <div class="home-stat-item">
+          <span class="home-stat-val val-green">100% PASS</span>
+          <span class="home-stat-label">Тесты транзакций</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Интерактивные карточки разделов (Portal Grid) -->
+    <div class="home-grid">
+      <a href="/journal" class="home-card">
+        <div class="home-card-icon-wrap icon-purple">
+          <svg class="home-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+        </div>
+        <div class="home-card-content">
+          <h2 class="home-card-title">Журнал оценок</h2>
+          <p class="home-card-desc">Матрица ведомостей, тактильный Excel-ввод (2..5), аналитика групп, экспорт в Excel/CSV и официальная печать.</p>
+        </div>
+        <span class="home-card-arrow">→</span>
+      </a>
+
+      <a href="/groups" class="home-card">
+        <div class="home-card-icon-wrap icon-pink">
+          <svg class="home-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        </div>
+        <div class="home-card-content">
+          <h2 class="home-card-title">Учебные группы</h2>
+          <p class="home-card-desc">Каталог потоков, численность обучающихся и проверка целостности внешних ключей при удалении.</p>
+        </div>
+        <span class="home-card-arrow">→</span>
+      </a>
+
+      <a href="/students" class="home-card">
+        <div class="home-card-icon-wrap icon-cyan">
+          <svg class="home-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </div>
+        <div class="home-card-content">
+          <h2 class="home-card-title">Студенты и зачисление</h2>
+          <p class="home-card-desc">Составы групп, средние баллы, быстрый фильтр по ФИО и добавление новой группы прямо из формы.</p>
+        </div>
+        <span class="home-card-arrow">→</span>
+      </a>
+
+      <a href="/subjects" class="home-card">
+        <div class="home-card-icon-wrap icon-amber">
+          <svg class="home-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        </div>
+        <div class="home-card-content">
+          <h2 class="home-card-title">Дисциплины</h2>
+          <p class="home-card-desc">Реестр академических предметов и контроль блокировки удаления дисциплин с выставленными баллами.</p>
+        </div>
+        <span class="home-card-arrow">→</span>
+      </a>
+
+      <a href="/reports" class="home-card">
+        <div class="home-card-icon-wrap icon-green">
+          <svg class="home-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"></path><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path></svg>
+        </div>
+        <div class="home-card-content">
+          <h2 class="home-card-title">Академические отчёты</h2>
+          <p class="home-card-desc">Аналитические срезы: средний балл групп, студенты без оценок и список задолженностей со статистикой.</p>
+        </div>
+        <span class="home-card-arrow">→</span>
+      </a>
+
+      <div class="home-card home-card-interactive" id="card-trigger-xray">
+        <div class="home-card-icon-wrap icon-purple">
+          <svg class="home-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        </div>
+        <div class="home-card-content">
+          <h2 class="home-card-title">Рентген внутренней логики</h2>
+          <p class="home-card-desc">Инспектор цепочки Controller → Service → JdbcClient. Показывает точный выполняемый SQL и время в миллисекундах.</p>
+        </div>
+        <span class="home-card-arrow">→</span>
+      </div>
+    </div>
+
+    <!-- Интерактивная подсказка -->
+    <div class="home-antigravity-tip">
+      <span class="tip-sparkle">✦</span>
+      <span>Интерактивная физика Antigravity: перемещайте курсор или кликайте по фону — частицы мягко разлетаются под действием поля невесомости.</span>
+    </div>
+  </main>
+
+  <footer th:replace="~{partials/footer :: footer}"></footer>
+
+  <!-- Скрипт физики Антигравитации -->
+  <script type="module" src="/js/antigravity.js"></script>
 </body>
 </html>
 ```
@@ -9990,9 +10895,12 @@ export function fillGroups(select, groups, includeAll = false) {
     <div class="aurora-blob blob-2"></div>
   </div>
 
+  <!-- Интерактивный волновой слой ряби в шапке -->
+  <div class="header-ripple-layer" id="header-ripple-layer" aria-hidden="true"></div>
+
   <div class="container">
     <div class="brand-row">
-      <a class="brand" href="/groups">
+      <a class="brand" href="/" title="На главную страницу">
         <span class="brand-glyph" aria-hidden="true">λ</span>
         <span>Электронный журнал</span>
         <span class="brand-tag">arch::ed</span>
@@ -10022,6 +10930,7 @@ export function fillGroups(select, groups, includeAll = false) {
     </div>
     <nav id="main-nav" class="navigation" aria-label="Разделы приложения">
       <span id="nav-glider" class="nav-glider" aria-hidden="true"></span>
+      <a href="/" data-nav="home" th:attr="aria-current=${activePage == 'home'} ? 'page' : null">Главная</a>
       <a href="/groups" data-nav="groups" th:attr="aria-current=${activePage == 'groups'} ? 'page' : null">Группы</a>
       <a href="/subjects" data-nav="subjects" th:attr="aria-current=${activePage == 'subjects'} ? 'page' : null">Предметы</a>
       <a href="/students" data-nav="students" th:attr="aria-current=${activePage == 'students'} ? 'page' : null">Студенты</a>

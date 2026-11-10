@@ -17,6 +17,7 @@ const THEME_META = {
 
 /** Координаты смещения градиента для каждой вкладки страницы */
 const AURORA_STATES = {
+  home:     { x1: "50%", y1: "15%", x2: "50%", y2: "75%", c1: "rgba(189, 147, 249, 0.28)", c2: "rgba(255, 121, 198, 0.16)" },
   groups:   { x1: "12%", y1: "18%", x2: "78%", y2: "65%", c1: "rgba(189, 147, 249, 0.22)", c2: "rgba(255, 121, 198, 0.14)" },
   subjects: { x1: "32%", y1: "12%", x2: "62%", y2: "75%", c1: "rgba(167, 139, 250, 0.24)", c2: "rgba(139, 233, 253, 0.12)" },
   students: { x1: "52%", y1: "22%", x2: "20%", y2: "70%", c1: "rgba(192, 132, 252, 0.22)", c2: "rgba(244, 114, 182, 0.15)" },
@@ -82,7 +83,7 @@ function initSlidingNavigation() {
   const activeLink = nav.querySelector('a[aria-current="page"]') || nav.querySelector("a");
   if (!activeLink) return;
 
-  const currentKey = activeLink.dataset.nav || "groups";
+  const currentKey = activeLink.dataset.nav || (window.location.pathname === "/" ? "home" : "groups");
   const prevKey = sessionStorage.getItem("journal_prev_nav_key");
   const prevRectRaw = sessionStorage.getItem("journal_prev_nav_rect");
 
@@ -461,19 +462,41 @@ const VFS = {
    3. ВСТРОЕННЫЙ LINUX-ТЕРМИНАЛ (PAM AUTH + TUI IDE + FISH SHELL)
    ========================================================================== */
 
+const SVG_ICONS_PACK = {
+  home: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>`,
+  groups: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`,
+  subjects: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>`,
+  students: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`,
+  journal: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>`,
+  reports: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"></path><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path></svg>`,
+  terminal: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>`,
+  xray: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>`,
+  theme: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 0 20z" fill="currentColor"></path></svg>`,
+  excel: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`,
+  csv: `<svg class="cmd-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>`,
+  key: `<svg class="pam-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7.5" cy="15.5" r="5.5"></circle><path d="M21 2l-9.6 9.6"></path><path d="M15.5 7.5l3 3"></path></svg>`,
+  java: `<svg class="f-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>`,
+  test: `<svg class="f-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2v7.31"></path><path d="M14 9.3V2"></path><path d="M8.5 2h7"></path><path d="M14 9.3a6.5 6.5 0 1 1-4 0"></path><path d="M5.52 16h12.96"></path></svg>`,
+  sql: `<svg class="f-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>`,
+  config: `<svg class="f-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>`,
+  xml: `<svg class="f-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>`,
+  doc: `<svg class="f-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>`,
+  folder: `<svg class="f-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>`
+};
+
 const PAM_VALID_PASSWORDS = ["admin", "milk13", "root", "1234"];
 const PAM_AUTH_KEY = "journal_term_auth";
 
 const IDE_KEY_FILES = [
-  { path: "/home/milk13/IdeaProjects/jrnl/src/main/java/JournalApplication.java", name: "JournalApplication.java", lang: "Java 21", icon: "☕" },
-  { path: "/home/milk13/IdeaProjects/jrnl/src/test/RollbackTest.java", name: "RollbackTest.java", lang: "Java 21 Test", icon: "🧪" },
-  { path: "/home/milk13/IdeaProjects/jrnl/src/main/java/GroupController.java", name: "GroupController.java", lang: "Java 21", icon: "☕" },
-  { path: "/home/milk13/IdeaProjects/jrnl/src/main/java/JournalService.java", name: "JournalService.java", lang: "Java 21", icon: "☕" },
-  { path: "/home/milk13/IdeaProjects/jrnl/src/main/java/StudentService.java", name: "StudentService.java", lang: "Java 21", icon: "☕" },
-  { path: "/home/milk13/IdeaProjects/jrnl/src/main/resources/schema.sql", name: "schema.sql", lang: "SQL DDL", icon: "🗄️" },
-  { path: "/home/milk13/IdeaProjects/jrnl/src/main/resources/application.properties", name: "application.properties", lang: "Properties", icon: "⚙️" },
-  { path: "/home/milk13/IdeaProjects/jrnl/pom.xml", name: "pom.xml", lang: "Maven XML", icon: "📦" },
-  { path: "/home/milk13/IdeaProjects/jrnl/README.md", name: "README.md", lang: "Markdown", icon: "📄" }
+  { path: "/home/milk13/IdeaProjects/jrnl/src/main/java/JournalApplication.java", name: "JournalApplication.java", lang: "Java 21", icon: SVG_ICONS_PACK.java },
+  { path: "/home/milk13/IdeaProjects/jrnl/src/test/RollbackTest.java", name: "RollbackTest.java", lang: "Java 21 Test", icon: SVG_ICONS_PACK.test },
+  { path: "/home/milk13/IdeaProjects/jrnl/src/main/java/GroupController.java", name: "GroupController.java", lang: "Java 21", icon: SVG_ICONS_PACK.java },
+  { path: "/home/milk13/IdeaProjects/jrnl/src/main/java/JournalService.java", name: "JournalService.java", lang: "Java 21", icon: SVG_ICONS_PACK.java },
+  { path: "/home/milk13/IdeaProjects/jrnl/src/main/java/StudentService.java", name: "StudentService.java", lang: "Java 21", icon: SVG_ICONS_PACK.java },
+  { path: "/home/milk13/IdeaProjects/jrnl/src/main/resources/schema.sql", name: "schema.sql", lang: "SQL DDL", icon: SVG_ICONS_PACK.sql },
+  { path: "/home/milk13/IdeaProjects/jrnl/src/main/resources/application.properties", name: "application.properties", lang: "Properties", icon: SVG_ICONS_PACK.config },
+  { path: "/home/milk13/IdeaProjects/jrnl/pom.xml", name: "pom.xml", lang: "Maven XML", icon: SVG_ICONS_PACK.xml },
+  { path: "/home/milk13/IdeaProjects/jrnl/README.md", name: "README.md", lang: "Markdown", icon: SVG_ICONS_PACK.doc }
 ];
 
 function initLinuxTerminal() {
@@ -522,7 +545,7 @@ function initLinuxTerminal() {
           <div class="pam-subtitle">Доступ к внутреннему TUI редактору, тестам транзакций и консоли Spring Boot</div>
           <form id="pam-form" class="pam-form">
             <div class="pam-input-wrap">
-              <span class="pam-key-icon">🔑</span>
+              <span class="pam-key-icon">${SVG_ICONS_PACK.key}</span>
               <input id="pam-password-input" class="pam-input" type="password" autocomplete="off" placeholder="Введите пароль администратора..." autofocus>
               <button type="submit" class="button-primary pam-submit-btn">Войти</button>
             </div>
@@ -547,7 +570,7 @@ function initLinuxTerminal() {
           <div class="ide-editor-area">
             <div class="ide-editor-tabbar">
               <div class="ide-tab active">
-                <span id="ide-tab-icon" class="ide-tab-icon">☕</span>
+                <span id="ide-tab-icon" class="ide-tab-icon"></span>
                 <span id="ide-tab-name" class="ide-tab-name">JournalApplication.java</span>
                 <span id="ide-tab-lang" class="ide-tab-lang">Java 21</span>
               </div>
@@ -722,10 +745,10 @@ function initLinuxTerminal() {
 
   function loadIdeFile(path) {
     activeIdeFile = path;
-    const fileMeta = IDE_KEY_FILES.find(f => f.path === path) || { name: path.split("/").pop(), lang: "Text", icon: "📄" };
+    const fileMeta = IDE_KEY_FILES.find(f => f.path === path) || { name: path.split("/").pop(), lang: "Text", icon: SVG_ICONS_PACK.doc };
     const content = VFS[path]?.content || "// Файл пуст или создан в VFS";
 
-    ideTabIcon.textContent = fileMeta.icon;
+    ideTabIcon.innerHTML = fileMeta.icon;
     ideTabName.textContent = fileMeta.name;
     ideTabLang.textContent = fileMeta.lang;
     stFilename.textContent = fileMeta.name;
@@ -1364,7 +1387,7 @@ PRAGMA journal_mode = WAL; --> <span style="color:#50fa7b">WAL MODE</span>
    ========================================================================== */
 function initCursorSpotlight() {
   let rafId = null;
-  const selector = ".kpi-card, .chart-card, .toolbar, .editor, .table-scroll, .term-window, .cmd-palette-box";
+  const selector = ".kpi-card, .chart-card, .toolbar, .editor, .table-scroll, .term-window, .cmd-palette-box, .status-card, .home-card, table, tbody tr, .journal-progress-box";
 
   window.addEventListener("pointermove", (e) => {
     if (rafId) return;
@@ -1388,6 +1411,34 @@ function initCursorSpotlight() {
       });
     });
   }, { passive: true });
+}
+
+/* ==========================================================================
+   6. HEADER WATER RIPPLE (ИНТЕРАКТИВНАЯ РЯБЬ ВЕРХНЕЙ ПАНЕЛИ)
+   ========================================================================== */
+function initHeaderRipple() {
+  const header = document.querySelector(".site-header");
+  const layer = document.querySelector("#header-ripple-layer");
+  if (!header || !layer) return;
+
+  header.addEventListener("pointermove", (e) => {
+    const rect = header.getBoundingClientRect();
+    const hx = e.clientX - rect.left;
+    const hy = e.clientY - rect.top;
+    header.style.setProperty("--hx", `${hx}px`);
+    header.style.setProperty("--hy", `${hy}px`);
+  }, { passive: true });
+
+  header.addEventListener("pointerdown", (e) => {
+    if (e.target.closest("button, a, input, select")) return;
+    const rect = header.getBoundingClientRect();
+    const drop = document.createElement("div");
+    drop.className = "header-ripple-drop";
+    drop.style.left = `${e.clientX - rect.left}px`;
+    drop.style.top = `${e.clientY - rect.top}px`;
+    layer.append(drop);
+    setTimeout(() => drop.remove(), 750);
+  });
 }
 
 /* ==========================================================================
@@ -1423,16 +1474,17 @@ function initCommandPalette() {
   let activeIndex = 0;
 
   const COMMANDS = [
-    { id: "nav-groups", title: "Перейти: Учебные группы", category: "Навигация", keys: "groups группы", icon: "📁", action: () => window.location.href = "/groups" },
-    { id: "nav-subjects", title: "Перейти: Дисциплины (Предметы)", category: "Навигация", keys: "subjects предметы дисциплины", icon: "📚", action: () => window.location.href = "/subjects" },
-    { id: "nav-students", title: "Перейти: Студенты и зачисление", category: "Навигация", keys: "students студенты состав", icon: "👤", action: () => window.location.href = "/students" },
-    { id: "nav-journal", title: "Перейти: Журнал успеваемости", category: "Навигация", keys: "journal журнал оценки матрица", icon: "📊", action: () => window.location.href = "/journal" },
-    { id: "nav-reports", title: "Перейти: Академические отчёты", category: "Навигация", keys: "reports отчеты группы должники отличники", icon: "📈", action: () => window.location.href = "/reports" },
-    { id: "tool-terminal", title: "Открыть консоль milk13@archarnel", category: "Инструменты", keys: "terminal shell bash fish консоль терминал", icon: "💻", action: () => { togglePalette(false); document.querySelector("#term-toggle-btn")?.click(); } },
-    { id: "tool-xray", title: "Рентген внутренней логики (SQL & API)", category: "Инструменты", keys: "xray sql trace рентген логика", icon: "⚡", action: () => { togglePalette(false); document.querySelector("#xray-toggle-btn")?.click(); } },
-    { id: "theme-next", title: "Сменить тему оформления (Dark / OLED / Light)", category: "Интерфейс", keys: "theme тема dark oled light вид", icon: "🎨", action: () => { togglePalette(false); toggleTheme(); } },
-    { id: "export-excel", title: "Экспорт журнала в Excel (.xlsx)", category: "Экспорт", keys: "excel xlsx экспорт скачать", icon: "📥", action: () => { togglePalette(false); document.querySelector("#btn-export-excel")?.click() || (window.location.href = "/api/journal/export/excel"); } },
-    { id: "export-csv", title: "Экспорт журнала в текстовый CSV", category: "Экспорт", keys: "csv экспорт скачать", icon: "📄", action: () => { togglePalette(false); document.querySelector("#btn-export-csv")?.click() || (window.location.href = "/api/journal/export/csv"); } }
+    { id: "nav-home", title: "Главная страница (Портал)", category: "Навигация", keys: "home главная портал journal antigravity", icon: SVG_ICONS_PACK.home, action: () => window.location.href = "/" },
+    { id: "nav-journal", title: "Журнал успеваемости (Ведомость)", category: "Навигация", keys: "journal журнал оценки матрица ведомость excel", icon: SVG_ICONS_PACK.journal, action: () => window.location.href = "/journal" },
+    { id: "nav-groups", title: "Учебные группы", category: "Навигация", keys: "groups группы поток", icon: SVG_ICONS_PACK.groups, action: () => window.location.href = "/groups" },
+    { id: "nav-subjects", title: "Дисциплины (Предметы)", category: "Навигация", keys: "subjects предметы дисциплины", icon: SVG_ICONS_PACK.subjects, action: () => window.location.href = "/subjects" },
+    { id: "nav-students", title: "Студенты и зачисление", category: "Навигация", keys: "students студенты состав обучающиеся", icon: SVG_ICONS_PACK.students, action: () => window.location.href = "/students" },
+    { id: "nav-reports", title: "Академические отчёты", category: "Навигация", keys: "reports отчеты группы должники отличники", icon: SVG_ICONS_PACK.reports, action: () => window.location.href = "/reports" },
+    { id: "tool-terminal", title: "Консоль разработчика milk13@archarnel", category: "Инструменты", keys: "terminal shell bash fish консоль терминал tui ide", icon: SVG_ICONS_PACK.terminal, action: () => { togglePalette(false); document.querySelector("#term-toggle-btn")?.click(); } },
+    { id: "tool-xray", title: "Рентген внутренней логики (SQL & API)", category: "Инструменты", keys: "xray sql trace рентген логика", icon: SVG_ICONS_PACK.xray, action: () => { togglePalette(false); document.querySelector("#xray-toggle-btn")?.click(); } },
+    { id: "theme-next", title: "Сменить тему (Dark / OLED / Light)", category: "Интерфейс", keys: "theme тема dark oled light вид", icon: SVG_ICONS_PACK.theme, action: () => { togglePalette(false); toggleTheme(); } },
+    { id: "export-excel", title: "Экспорт журнала в Excel (.xlsx)", category: "Экспорт", keys: "excel xlsx экспорт скачать", icon: SVG_ICONS_PACK.excel, action: () => { togglePalette(false); document.querySelector("#btn-export-excel")?.click() || (window.location.href = "/api/journal/export/excel"); } },
+    { id: "export-csv", title: "Экспорт журнала в текстовый CSV", category: "Экспорт", keys: "csv экспорт скачать", icon: SVG_ICONS_PACK.csv, action: () => { togglePalette(false); document.querySelector("#btn-export-csv")?.click() || (window.location.href = "/api/journal/export/csv"); } }
   ];
 
   let filtered = [...COMMANDS];
@@ -1564,6 +1616,7 @@ export function initTheme() {
   initSlidingNavigation();
   initXRayInspector();
   initCursorSpotlight();
+  initHeaderRipple();
   initCommandPalette();
   initLinuxTerminal();
 }
