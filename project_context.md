@@ -10,294 +10,279 @@
 ├── pom.xml
 ├── project_context.md
 ├── README.md
+├── screens
+│   ├── 2026-11-10_20-50.png
+│   ├── 2026-11-10_21-51.png
+│   ├── 2026-11-10_21-52_1.png
+│   ├── 2026-11-10_21-52.png
+│   └── 2026-11-10_21-53.png
 ├── scripts
 │   ├── setup-local-domain.sh
 │   └── update_context.py
-├── src
-│   ├── main
-│   │   ├── java
-│   │   │   └── ru
-│   │   │       └── edu
-│   │   │           └── journal
-│   │   │               ├── common
-│   │   │               │   ├── DatabaseInitializer.java
-│   │   │               │   ├── exception
-│   │   │               │   │   ├── NotFoundException.java
-│   │   │               │   │   └── ValidationException.java
-│   │   │               │   └── GlobalExceptionHandler.java
-│   │   │               ├── config
-│   │   │               │   ├── DatabaseConfig.java
-│   │   │               │   └── WebMvcConfig.java
-│   │   │               ├── features
-│   │   │               │   ├── groups
-│   │   │               │   │   ├── dto
-│   │   │               │   │   │   ├── GroupDto.java
-│   │   │               │   │   │   └── GroupSaveRequest.java
-│   │   │               │   │   ├── GroupController.java
-│   │   │               │   │   ├── GroupRepository.java
-│   │   │               │   │   └── GroupService.java
-│   │   │               │   ├── journal
-│   │   │               │   │   ├── dto
-│   │   │               │   │   │   ├── BulkGradeRequest.java
-│   │   │               │   │   │   ├── GradeDto.java
-│   │   │               │   │   │   ├── GradeSaveRequest.java
-│   │   │               │   │   │   └── JournalResponse.java
-│   │   │               │   │   ├── JournalController.java
-│   │   │               │   │   ├── JournalExportService.java
-│   │   │               │   │   ├── JournalRepository.java
-│   │   │               │   │   └── JournalService.java
-│   │   │               │   ├── reports
-│   │   │               │   │   ├── ReportController.java
-│   │   │               │   │   ├── ReportRepository.java
-│   │   │               │   │   └── ReportService.java
-│   │   │               │   ├── students
-│   │   │               │   │   ├── dto
-│   │   │               │   │   │   ├── StudentDto.java
-│   │   │               │   │   │   └── StudentSaveRequest.java
-│   │   │               │   │   ├── StudentController.java
-│   │   │               │   │   ├── StudentRepository.java
-│   │   │               │   │   └── StudentService.java
-│   │   │               │   └── subjects
-│   │   │               │       ├── dto
-│   │   │               │       │   ├── SubjectDto.java
-│   │   │               │       │   └── SubjectSaveRequest.java
-│   │   │               │       ├── SubjectController.java
-│   │   │               │       ├── SubjectRepository.java
-│   │   │               │       └── SubjectService.java
-│   │   │               └── JournalApplication.java
-│   │   └── resources
-│   │       ├── application.properties
-│   │       ├── db
-│   │       │   ├── schema.sql
-│   │       │   └── seed.sql
-│   │       ├── static
-│   │       │   ├── css
-│   │       │   │   └── styles.css
-│   │       │   └── js
-│   │       │       ├── antigravity.js
-│   │       │       ├── api.js
-│   │       │       ├── chart-helper.js
-│   │       │       ├── groups.js
-│   │       │       ├── journal.js
-│   │       │       ├── reports.js
-│   │       │       ├── students.js
-│   │       │       ├── subjects.js
-│   │       │       ├── theme.js
-│   │       │       ├── ui.js
-│   │       │       └── vendor
-│   │       │           └── chart.umd.min.js
-│   │       └── templates
-│   │           ├── error.html
-│   │           ├── groups
-│   │           │   └── index.html
-│   │           ├── index.html
-│   │           ├── journal
-│   │           │   └── index.html
-│   │           ├── partials
-│   │           │   ├── footer.html
-│   │           │   └── header.html
-│   │           ├── reports
-│   │           │   └── index.html
-│   │           ├── students
-│   │           │   └── index.html
-│   │           └── subjects
-│   │               └── index.html
-│   └── test
-│       └── java
-│           └── ru
-│               └── edu
-│                   └── journal
-│                       ├── DatabaseBaselineTest.java
-│                       ├── JournalIntegrationTest.java
-│                       └── RollbackTest.java
-└── starter
-    ├── app.py
-    ├── check_db.py
-    ├── check_rollback.py
-    ├── data
-    │   ├── schema.sql
-    │   └── seed.sql
-    ├── db.py
-    ├── features
-    │   ├── groups
-    │   │   ├── api.py
-    │   │   ├── __init__.py
-    │   │   ├── pages.py
-    │   │   ├── repo.py
-    │   │   ├── service.py
-    │   │   ├── static
-    │   │   │   └── groups.js
-    │   │   └── templates
-    │   │       └── groups
-    │   │           └── index.html
-    │   └── __init__.py
-    ├── prepare_db.py
-    ├── README.md
-    ├── requirements.txt
-    ├── static
-    │   ├── css
-    │   │   └── styles.css
-    │   └── js
-    │       ├── api.js
-    │       └── ui.js
-    └── templates
-        ├── base.html
-        ├── error.html
-        └── partials
-            ├── footer.html
-            └── header.html
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── ru
+    │   │       └── edu
+    │   │           └── journal
+    │   │               ├── common
+    │   │               │   ├── DatabaseInitializer.java
+    │   │               │   ├── exception
+    │   │               │   │   ├── NotFoundException.java
+    │   │               │   │   └── ValidationException.java
+    │   │               │   └── GlobalExceptionHandler.java
+    │   │               ├── config
+    │   │               │   ├── DatabaseConfig.java
+    │   │               │   └── WebMvcConfig.java
+    │   │               ├── features
+    │   │               │   ├── groups
+    │   │               │   │   ├── dto
+    │   │               │   │   │   ├── GroupDto.java
+    │   │               │   │   │   └── GroupSaveRequest.java
+    │   │               │   │   ├── GroupController.java
+    │   │               │   │   ├── GroupRepository.java
+    │   │               │   │   └── GroupService.java
+    │   │               │   ├── journal
+    │   │               │   │   ├── dto
+    │   │               │   │   │   ├── BulkGradeRequest.java
+    │   │               │   │   │   ├── GradeDto.java
+    │   │               │   │   │   ├── GradeSaveRequest.java
+    │   │               │   │   │   └── JournalResponse.java
+    │   │               │   │   ├── JournalController.java
+    │   │               │   │   ├── JournalExportService.java
+    │   │               │   │   ├── JournalRepository.java
+    │   │               │   │   └── JournalService.java
+    │   │               │   ├── reports
+    │   │               │   │   ├── ReportController.java
+    │   │               │   │   ├── ReportRepository.java
+    │   │               │   │   └── ReportService.java
+    │   │               │   ├── students
+    │   │               │   │   ├── dto
+    │   │               │   │   │   ├── StudentDto.java
+    │   │               │   │   │   └── StudentSaveRequest.java
+    │   │               │   │   ├── StudentController.java
+    │   │               │   │   ├── StudentRepository.java
+    │   │               │   │   └── StudentService.java
+    │   │               │   └── subjects
+    │   │               │       ├── dto
+    │   │               │       │   ├── SubjectDto.java
+    │   │               │       │   └── SubjectSaveRequest.java
+    │   │               │       ├── SubjectController.java
+    │   │               │       ├── SubjectRepository.java
+    │   │               │       └── SubjectService.java
+    │   │               └── JournalApplication.java
+    │   └── resources
+    │       ├── application.properties
+    │       ├── db
+    │       │   ├── schema.sql
+    │       │   └── seed.sql
+    │       ├── static
+    │       │   ├── css
+    │       │   │   └── styles.css
+    │       │   └── js
+    │       │       ├── antigravity.js
+    │       │       ├── api.js
+    │       │       ├── chart-helper.js
+    │       │       ├── groups.js
+    │       │       ├── journal.js
+    │       │       ├── reports.js
+    │       │       ├── students.js
+    │       │       ├── subjects.js
+    │       │       ├── theme.js
+    │       │       ├── ui.js
+    │       │       └── vendor
+    │       │           └── chart.umd.min.js
+    │       └── templates
+    │           ├── error.html
+    │           ├── groups
+    │           │   └── index.html
+    │           ├── index.html
+    │           ├── journal
+    │           │   └── index.html
+    │           ├── partials
+    │           │   ├── footer.html
+    │           │   └── header.html
+    │           ├── reports
+    │           │   └── index.html
+    │           ├── students
+    │           │   └── index.html
+    │           └── subjects
+    │               └── index.html
+    └── test
+        └── java
+            └── ru
+                └── edu
+                    └── journal
+                        ├── DatabaseBaselineTest.java
+                        ├── JournalIntegrationTest.java
+                        └── RollbackTest.java
 
-52 directories, 95 files
+41 directories, 76 files
 
 ## Содержимое ключевых файлов проекта
 
 ### `README.md`
 
 ```md
-# Электронный журнал успеваемости студентов
+# 🎓 Электронный журнал успеваемости студентов (jrnl)
 
-Информационная система учёта успеваемости, академической успеваемости и аналитики учебного процесса высшего учебного заведения. Проект разработан на стеке **Java 21 (LTS)** и **Spring Boot 3** с архитектурой вертикальных функциональных срезов, чистым SQL без тяжелых ORM-абстракций, интерактивным пользовательским интерфейсом и подсистемой формирования аналитической отчетности.
+<p align="center">
+  <img src="screens/2026-11-10_21-51.png" alt="Главная страница Электронного журнала" width="850">
+</p>
 
----
-
-## Оглавление
-
-1. [Ключевые функциональные возможности](#ключевые-функциональные-возможности)
-2. [Технологический стек](#технологический-стек)
-3. [Архитектура приложения](#архитектура-приложения)
-4. [Модель данных](#модель-данных)
-5. [Спецификация REST API](#спецификация-rest-api)
-6. [Инструкция по развертыванию и запуску](#инструкция-по-развертыванию-и-запуску)
-   - [Запуск автономного JAR-пакета](#1-запуск-автономного-jar-пакета)
-   - [Запуск через Maven Wrapper](#2-запуск-через-maven-wrapper)
-   - [Открытие и запуск в IntelliJ IDEA](#3-открытие-и-запуск-в-intellij-idea)
-7. [Консольные утилиты и обслуживание БД](#консольные-утилиты-и-обслуживание-бд)
-8. [Тестирование и верификация](#тестирование-и-верификация)
-9. [Руководство по интерфейсу и горячие клавиши](#руководство-по-интерфейсу-и-горячие-клавиши)
+<p align="center">
+  <a href="https://www.oracle.com/java/technologies/downloads/#java21"><img src="https://img.shields.io/badge/Java-21%20LTS-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java 21"></a>
+  <a href="https://spring.io/projects/spring-boot"><img src="https://img.shields.io/badge/Spring%20Boot-3.3.5-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" alt="Spring Boot 3.3.5"></a>
+  <a href="https://www.sqlite.org/"><img src="https://img.shields.io/badge/SQLite-WAL%20Mode-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite WAL"></a>
+  <a href="https://poi.apache.org/"><img src="https://img.shields.io/badge/Apache%20POI-5.3.0%20(XLSX)-D22128?style=for-the-badge&logo=apache&logoColor=white" alt="Apache POI"></a>
+  <a href="https://developer.mozilla.org/ru/docs/Web/JavaScript"><img src="https://img.shields.io/badge/Vanilla-ES6%2B%20JS-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="Vanilla JS"></a>
+  <a href="#тестирование-и-верификация"><img src="https://img.shields.io/badge/Tests-10%2F10%20PASS-50fa7b?style=for-the-badge&logo=checkmarx&logoColor=black" alt="Tests 100% Pass"></a>
+  <a href="https://github.com/NikitaLozinsky/journal---/releases"><img src="https://img.shields.io/badge/Release-v2.0.0-bd93f9?style=for-the-badge&logo=github&logoColor=white" alt="Release v2.0.0"></a>
+</p>
 
 ---
 
-## Ключевые функциональные возможности
+## 📌 О проекте
 
-### 1. Управление контингентом и справочниками
-- **Учебные группы:** просмотр перечня групп с автоматическим подсчетом численности контингента, создание новых групп, переименование, каскадная защита от удаления групп, содержащих активных студентов.
-- **Дисциплины (предметы):** ведение реестра академических дисциплин с контролем уникальности наименований; строгая блокировка удаления дисциплин, по которым в системе зафиксированы выставленные оценки.
-- **Студенты:** учет личных данных обучающихся (ФИО, email, академическая группа); регистрация новых студентов; процедура межкафедрального перевода между группами с безусловным сохранением всех накопленных ранее оценок; транзакционное удаление записи студента и всех связанных с ним оценок в рамках единой атомарной транзакции SQLite.
+**«Электронный журнал успеваемости студентов» (jrnl v2.0.0)** — высокопроизводительная академическая система для ведения экзаменационных ведомостей, мониторинга контингента и анализа успеваемости высшего учебного заведения. 
 
-### 2. Поиск, фильтрация и многофакторная сортировка
-- Полнотекстовый поиск обучающихся в реальном времени по подстроке ФИО, адресу электронной почты или названию группы.
-- Динамический фильтр контингента по выбранной учебной группе.
-- Многофакторная сортировка реестра:
-  - по алфавиту ФИО (А → Я, Я → А);
-  - по учебным группам (А → Я, Я → А);
-  - по академическому среднему баллу (по возрастанию / убыванию);
-  - по общему количеству полученных оценок.
-- Интерактивная сортировка в один клик по кликабельным заголовкам столбцов таблицы с визуальной индикацией текущего направления.
-- Отображение точного среднего балла студента с цветовой градацией академического уровня.
-
-### 3. Академический журнал успеваемости и быстрый ввод (Excel-режим)
-- Матричное представление успеваемости: студенты группы расположены построчно, дисциплины — по столбцам.
-- Пустые ячейки наглядно маркируются прочерком при отсутствии записи в базе данных.
-- Визуальная подсветка академических задолженностей (двойки выделяются контрастным фоном).
-- Модальное окно для выставления, изменения и удаления оценки с валидацией значений (строго 2, 3, 4, 5).
-- **Режим быстрого клавиатурного редактирования (Excel-style):**
-  - Навигация по таблице клавишами стрелок (вверх, вниз, влево, вправо) и Enter.
-  - Мгновенное выставление оценки нажатием клавиш 2, 3, 4, 5 (основной ряд или Numpad) с немедленным фоновым сохранением через REST API и автоматическим шагом фокуса на строку вниз.
-  - Моментальное удаление оценки клавишами Delete или Backspace.
-  - Однократный клик мыши переносит фокус; двойной клик открывает полное диалоговое окно.
-
-### 4. Экспорт данных и печатные формы
-- **Экспорт в Microsoft Excel (.xlsx):**
-  - Генерация валидного XLSX-файла средствами Apache POI 5.3.0.
-  - Фирменная стилизация заголовка ведомости, даты формирования и колонок таблицы.
-  - Автоматический расчет ширины столбцов по длине содержимого.
-  - Подсветка неудовлетворительных результатов и автоматическое определение академического статуса каждого обучающегося (*«Отличник»*, *«Хорошист»*, *«Успевает»*, *«Академическая задолженность»*, *«Нет оценок»*).
-- **Экспорт в CSV (.csv):**
-  - Формат данных с разделителем точка с запятой (`;`).
-  - Префикс UTF-8 BOM для безупречного открытия во всех версиях Microsoft Excel и LibreOffice без искажения кодировки.
-- **Печатная версия ведомости (Print / PDF):**
-  - Специализированная таблица стилей `@media print` с альбомной ориентацией страницы А4.
-  - Автоматическое скрытие служебных интерфейсных элементов (меню, фильтров, кнопок управления).
-  - Формирование официальной академической шапки ведомости и блоков для подписей преподавателя и сотрудников деканата.
-
-### 5. Аналитический модуль и интерактивные графики
-- Локальная автономная интеграция библиотеки Chart.js (полное функционирование в изолированных сетях без доступа в интернет).
-- Сводные KPI-карточки (число групп, студентов, зафиксированных оценок, общий средний балл).
-- Сравнительные столбчатые диаграммы успеваемости групп и распределения контингента.
-- Круговые диаграммы структуры оценок и доли академических задолженностей.
-- Аналитический блок в журнале конкретной группы с расчетом абсолютной успеваемости (процент без двоек) и качественной успеваемости (процент четверок и пятерок).
-
-### 6. Эргономика интерфейса и тёмная тема
-- Тёмная графическая тема установлена по умолчанию.
-- Полное предотвращение эффекта мигания белого экрана при переходах между страницами (Zero Flash of Unstyled Content, FOUC) за счет предварительной инициализации цветовых токенов в секции `<head>`.
-- Быстрое переключение между тёмной и светлой темами с сохранением выбора в `localStorage`.
-- Зебра-расцветка строк (`zebra striping`) с плавным выделением при наведении курсора для комфортной работы с большими табличными массивами данных.
+Разработано на современном стеке **Java 21 (LTS)** и **Spring Boot 3.3.5** с архитектурой **вертикальных функциональных срезов (Vertical Slice Architecture)**, прямым быстрым доступом к данным через **Spring `JdbcClient`** без тяжелых ORM-абстракций, транзакционным хранилищем **SQLite в режиме WAL (Write-Ahead Logging)** и реактивным интерфейсом в эстетике **Modern Aurora** (с плавающими световыми градиентами, физическим полем невесомости **Google Antigravity**, встроенным Linux-терминалом и инспектором SQL-запросов).
 
 ---
 
-## Технологический стек
+## 🖼️ Галерея интерфейса (v2.0.0)
 
-| Компонент | Технология | Назначение |
-|---|---|---|
-| Язык программирования | Java 21 (LTS, OpenJDK) | Базовая программная платформа |
-| Фреймворк | Spring Boot 3.3.5 | Инверсия управления, MVC, REST, сборка |
-| СУБД | SQLite 3 (`org.xerial:sqlite-jdbc`) | Локальное реляционное хранилище данных |
-| Доступ к данным | Spring JDBC (`NamedParameterJdbcTemplate`) | Чистый параметризованный SQL |
-| Шаблонизатор | Thymeleaf 3 | Серверная визуализация HTML-страниц |
-| Экспорт в электронные таблицы | Apache POI 5.3.0 (`poi-ooxml`) | Формирование документов формата Microsoft Excel |
-| Графическая аналитика | Chart.js 4.4.1 (автономный бандл) | Клиентская визуализация диаграмм |
-| Клиентский слой | Стандартный ES6+ JavaScript, CSS3 | Реактивный интерфейс без сторонних тяжелых фреймворков |
-| Сборщик проектов | Apache Maven 3.9+ | Управление зависимостями и сборка артефактов |
+| 🌌 Главная страница (Google Antigravity Experience) | 📊 Журнал оценок и быстрый поповер ввода |
+| :---: | :---: |
+| [![Главная страница](screens/2026-11-10_21-51.png)](screens/2026-11-10_21-51.png) | [![Журнал успеваемости](screens/2026-11-10_20-50.png)](screens/2026-11-10_20-50.png) |
+
+| 💻 Встроенный Linux TUI-терминал (PAM & Ranger) | ⚡ Рентген логики (X-Ray SQL & Service Inspector) | ⌘ Командная палитра (Ctrl+K) |
+| :---: | :---: | :---: |
+| [![Терминал](screens/2026-11-10_21-52.png)](screens/2026-11-10_21-52.png) | [![Рентген логики](screens/2026-11-10_21-52_1.png)](screens/2026-11-10_21-52_1.png) | [![Командная палитра](screens/2026-11-10_21-53.png)](screens/2026-11-10_21-53.png) |
 
 ---
 
-## Архитектура приложения
+## ⚡ Ключевые возможности
 
-Проект построен по принципу вертикального разделения на функциональные домены (`Feature-Driven Architecture`). Каждый функциональный срез полностью инкапсулирует контроллер, сервис, репозиторий с прямым SQL и DTO-модели.
+### 1. Академический журнал и тактильный ввод
+* **Интерактивный плавающий поповер (Quick Mark Popover):** клик мышкой по ячейке вызывает аккуратный виджет быстрого выбора `[2] [3] [4] [5] [✕]`. Оценку можно поставить как кликом мыши, так и клавишей на клавиатуре.
+* **Excel-режим с гибким автопереходом:**
+  * Навигация стрелками `←`, `↑`, `→`, `↓`, `Enter` и клавишами Vim (`h`, `j`, `k`, `l`).
+  * Тумблер **«Смещать вниз при вводе»**: при отключении фокус остается ровно на той же ячейке для мгновенного исправления без скачков; при включении — автоматически шагает на строку вниз.
+* **Массовое выставление оценок (Bulk Grading):** возможность выставить или очистить баллы сразу для всей группы или всех групп по отдельной дисциплине либо по всем предметам сразу в один клик.
+* **Живой индикатор прогресса (Progress Bar):** неоновый анимированный трек заполненности ведомости с переходом в изумрудное сияние при 100% заполнении.
 
-```
-src/main/java/ru/edu/journal/
-├── JournalApplication.java                  # Главный класс приложения и обработчик CLI-команд
-├── config/
-│   ├── DatabaseConfig.java                  # Конфигурация SQLite DataSource (PRAGMA foreign_keys = ON)
-│   └── WebMvcConfig.java                    # Конфигурация статических ресурсов и кэширования
-├── common/
-│   ├── DatabaseInitializer.java             # Первичная инициализация схемы и демонстрационных данных
-│   ├── GlobalExceptionHandler.java          # Централизованная обработка ошибок и трансляция в JSON
-│   └── exception/                           # Пользовательские исключения (ValidationException, NotFoundException)
-└── features/
-    ├── groups/                              # Модуль «Учебные группы»
-    │   ├── GroupController.java             # Маршруты /groups и /api/groups
-    │   ├── GroupService.java                # Бизнес-правила валидации и уникальности групп
-    │   ├── GroupRepository.java             # SQL-запросы к таблице groups
-    │   └── dto/                             # GroupDto, GroupSaveRequest
-    ├── subjects/                            # Модуль «Дисциплины»
-    │   ├── SubjectController.java           # Маршруты /subjects и /api/subjects
-    │   ├── SubjectService.java              # Защита от удаления предметов с выставленными оценками
-    │   ├── SubjectRepository.java           # SQL-запросы к таблице subjects
-    │   └── dto/                             # SubjectDto, SubjectSaveRequest
-    ├── students/                            # Модуль «Студенты»
-    │   ├── StudentController.java           # Маршруты /students и /api/students
-    │   ├── StudentService.java              # Транзакционный перевод, каскадное удаление
-    │   ├── StudentRepository.java           # Фильтрация, поиск, расчет средних баллов
-    │   └── dto/                             # StudentDto, StudentSaveRequest
-    ├── journal/                             # Модуль «Журнал успеваемости»
-    │   ├── JournalController.java           # Страница /journal, эндпоинты оценок и экспорта
-    │   ├── JournalService.java              # Логика выставления и обновления оценок (upsert)
-    │   ├── JournalRepository.java           # Построение матрицы оценок группы
-    │   ├── JournalExportService.java        # Потоковая генерация XLSX и CSV с BOM
-    │   └── dto/                             # JournalResponse, GradeDto, GradeSaveRequest
-    └── reports/                             # Модуль «Отчёты и аналитика»
-        ├── ReportController.java            # Страница /reports и REST /api/reports
-        ├── ReportService.java               # Диспетчеризация аналитических срезов
-        └── ReportRepository.java            # Аналитические SQL-агрегации (GROUP BY, HAVING)
+### 2. Экспорт и печать
+* **Microsoft Excel (.xlsx):** потоковая генерация стилизованных таблиц средствами **Apache POI 5.3.0** с цветовым кодированием должников, автоматическим расчетом ширины колонок и академическими статусами.
+* **Формат CSV:** выгрузка с разделителем `;` и обязательным префиксом **UTF-8 BOM** для корректного открытия в Excel и LibreOffice на любой ОС.
+* **Официальная печатная ведомость:** шаблон `@media print` альбомного формата А4 с шапкой ведомости, блоками подписей экзаменаторов и скрытием служебного UI.
+
+### 3. Инструменты разработчика и прозрачность логики
+* **Рентген логики (X-Ray Inspector):** боковая шторка с изменяемой шириной (drag-resize handle), отображающая трассировку вызовов `Controller → Service → JdbcClient`, точный выполняемый SQL и время выполнения каждого запроса в миллисекундах.
+* **Встроенный Linux TUI-терминал:** консоль `milk13@archarnel` с эмуляцией PAM-аутентификации (`sudo`), файловым проводником `ranger`, просмотром исходного кода и системными утилитами.
+* **Командная палитра (`Ctrl+K` / `⌘K`):** быстрый переход по разделам, запуск инструментов и экспорт ведомостей с поддержкой клавиатуры.
+
+### 4. Дизайн Modern Aurora и эргономика
+* **3 темы оформления:** Dracula Dark (по умолчанию), OLED Pitch Black и Alabaster Light.
+* **Интерактивный отклик шапки (Header Aurora Glow):** плавающее неоновое свечение, отслеживающее курсор мыши и адаптирующее цветовую гамму под активную вкладку.
+* **Физика Google Antigravity Experience:** парящие частицы в невесомости на домашней странице с антигравитационным полем отталкивания мыши и гравитационными волнами.
+
+---
+
+## 🏛️ Архитектура системы
+
+### 1. Системная модель автономного Fat JAR
+Приложению не требуются внешние веб-серверы и СУБД: встроенный контейнер Apache Tomcat и легковесная СУБД SQLite упакованы непосредственно в исполняемый Java-пакет.
+
+```mermaid
+flowchart TD
+    subgraph ClientLayer ["Клиентский уровень (Браузер)"]
+        Browser["Пользовательский интерфейс<br>(HTML5 / Modern Aurora CSS / Vanilla JS)"]
+    end
+
+    subgraph JVMLayer ["Java Virtual Machine (JVM 21)"]
+        subgraph ServerContainer ["Встроенный веб-сервер"]
+            Tomcat["Apache Tomcat 10.1 (Порт 5000)<br>Пул рабочих потоков (Worker Threads)"]
+            Dispatcher["Spring DispatcherServlet<br>(Front Controller)"]
+        end
+
+        subgraph Slices ["Вертикальные функциональные срезы"]
+            C_Groups["features/groups"]
+            C_Subjects["features/subjects"]
+            C_Students["features/students"]
+            C_Journal["features/journal"]
+            C_Reports["features/reports"]
+        end
+
+        subgraph DataLayer ["Слой доступа к данным"]
+            JdbcClient["Spring JdbcClient / NamedParameterJdbcTemplate<br>(Чистый параметризованный SQL)"]
+            ConnectionPool["SQLite Connection Pool<br>(PRAGMA foreign_keys = ON; PRAGMA journal_mode = WAL)"]
+        end
+    end
+
+    subgraph StorageLayer ["Файловая система ОС"]
+        DBFile[("instance/journal.db<br>Локальный файл базы данных")]
+    end
+
+    Browser <-->|"HTTP / REST API (JSON / HTML)"| Tomcat
+    Tomcat --> Dispatcher
+    Dispatcher --> C_Groups & C_Subjects & C_Students & C_Journal & C_Reports
+    C_Groups & C_Subjects & C_Students & C_Journal & C_Reports --> JdbcClient
+    JdbcClient --> ConnectionPool
+    ConnectionPool <-->|"Атомарные транзакции (ACID)"| DBFile
 ```
 
 ---
 
-## Модель данных
+### 2. Сквозной цикл обработки запроса и X-Ray трассировка
 
-Реляционная схема хранится в файле `src/main/resources/db/schema.sql` и разворачивается в SQLite с обязательным контролем внешних ключей.
+Диаграмма ниже демонстрирует путь HTTP-запроса от клика в браузере до сохранения в SQLite с параллельной фиксацией в инспекторе логики X-Ray:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as Преподаватель (Браузер)
+    participant UI as JavaScript (journal.js)
+    participant DS as DispatcherServlet
+    participant Ctrl as JournalController
+    participant Srv as JournalService
+    participant Repo as JournalRepository
+    participant DB as SQLite WAL (journal.db)
+    participant XRay as X-Ray Inspector HUD
+
+    User->>UI: Клик по ячейке / нажатие клавиши «5»
+    UI->>UI: Тактильная анимация вспышки ячейки
+    UI->>DS: POST /api/journal/grades {"student_id": 1, "subject_id": 2, "mark": 5}
+    
+    rect rgb(30, 25, 45)
+        Note over DS,Ctrl: Диспетчеризация и валидация DTO
+        DS->>Ctrl: saveGrade(@Valid GradeSaveRequest)
+        Ctrl->>Srv: saveGrade(studentId, subjectId, mark)
+    end
+
+    rect rgb(25, 35, 45)
+        Note over Srv,Repo: Бизнес-логика и UPSERT
+        Srv->>Repo: upsertGrade(studentId, subjectId, mark)
+        Repo->>DB: INSERT INTO grades ... ON CONFLICT DO UPDATE ...
+        DB-->>Repo: 1 row affected (Время: 0.8 ms)
+        Repo-->>Srv: GradeDto (id, studentId, subjectId, mark)
+    end
+
+    Srv-->>Ctrl: Результат операции
+    Ctrl-->>DS: JSON {"item": GradeDto, "message": "Оценка сохранена"}
+    DS-->>UI: HTTP 200 OK (application/json)
+
+    par Обновление интерфейса и X-Ray
+        UI->>UI: Обновление среднего балла студента и прогресс-бара
+        UI->>XRay: Добавление трассировки (Ручка + SQL + 1.2 ms)
+    end
+```
+
+---
+
+### 3. Модель данных и реляционные связи
+
+Реляционная схема хранится в [`src/main/resources/db/schema.sql`](file:///home/milk13/IdeaProjects/jrnl/src/main/resources/db/schema.sql) и гарантирует ссылочную целостность на уровне ядра базы данных:
 
 ```mermaid
 erDiagram
@@ -306,208 +291,167 @@ erDiagram
     SUBJECTS ||--o{ GRADES : "оценивается (1:N)"
 
     GROUPS {
-        INTEGER id PK
-        TEXT name UK "Название группы (непустое, уникальное)"
+        INTEGER id PK "Автоинкремент"
+        TEXT name UK "Уникальное название группы (CHECK length > 0)"
     }
 
     STUDENTS {
-        INTEGER id PK
-        TEXT name "ФИО обучающегося"
-        INTEGER group_id FK "Ссылка на groups(id)"
-        TEXT email "Адрес электронной почты (опционально)"
+        INTEGER id PK "Автоинкремент"
+        TEXT name "ФИО обучающегося (NOT NULL)"
+        INTEGER group_id FK "Ссылка на groups(id) ON DELETE RESTRICT"
+        TEXT email "Email обучающегося (опционально)"
     }
 
     SUBJECTS {
-        INTEGER id PK
-        TEXT name UK "Наименование дисциплины (уникальное)"
+        INTEGER id PK "Автоинкремент"
+        TEXT name UK "Наименование дисциплины (CHECK length > 0)"
     }
 
     GRADES {
-        INTEGER id PK
-        INTEGER student_id FK "Ссылка на students(id)"
-        INTEGER subject_id FK "Ссылка на subjects(id)"
-        INTEGER mark "Оценка (значения: 2, 3, 4, 5)"
+        INTEGER id PK "Автоинкремент"
+        INTEGER student_id FK "Ссылка на students(id) ON DELETE CASCADE"
+        INTEGER subject_id FK "Ссылка на subjects(id) ON DELETE RESTRICT"
+        INTEGER mark "Оценка (CHECK mark BETWEEN 2 AND 5)"
     }
 ```
 
-### Ограничения целостности и индексы
-- Таблица `groups`: ограничение `CHECK(length(trim(name)) > 0)`, индекс `idx_groups_name`.
-- Таблица `subjects`: ограничение `CHECK(length(trim(name)) > 0)`, индекс `idx_subjects_name`.
-- Таблица `students`: внешняя ссылка `REFERENCES groups(id) ON DELETE RESTRICT`, индекс `idx_students_group`.
-- Таблица `grades`: внешние ссылки `REFERENCES students(id) ON DELETE CASCADE` и `REFERENCES subjects(id) ON DELETE RESTRICT`, ограничение `CHECK(mark BETWEEN 2 AND 5)`, уникальный композитный индекс `idx_grades_student_subject UNIQUE(student_id, subject_id)`.
+* **Каскадное удаление оценок студента:** при удалении студента все его оценки атомарно удаляются благодаря `ON DELETE CASCADE`.
+* **Защита целостности справочников:** группу нельзя удалить, пока в ней есть студенты (`RESTRICT`). Дисциплину нельзя удалить, пока по ней есть хотя бы одна оценка (`RESTRICT`).
+* **Уникальный индекс:** пара `(student_id, subject_id)` защищена уникальным композитным индексом `idx_grades_student_subject`.
 
 ---
 
-## Спецификация REST API
+### 4. Алгоритм интерактивного ввода оценок
 
-### 1. Учебные группы
-- `GET /api/groups` — получение списка всех групп с количеством студентов.
-- `POST /api/groups` — создание новой группы (`{"name": "БЭИ2301"}`).
-- `POST /api/groups/{id}` — переименование группы.
-- `DELETE /api/groups/{id}` — удаление пустой группы (возвращает 400 при наличии студентов).
+```mermaid
+flowchart TD
+    Start(["Клик по ячейке ведомости"]) --> SelectCell["Активация ячейки setActiveCell(r, c)<br>Подсветка колонки и строки"]
+    SelectCell --> ShowPopover["Отображение плавающего поповера<br>[2] [3] [4] [5] [✕]"]
+    
+    ShowPopover --> Choice{"Действие пользователя"}
+    
+    Choice -->|"Клик по цифре мыши"| ApplyMark["quickSaveGrade(mark)"]
+    Choice -->|"Нажатие клавиши 2..5"| ApplyMark
+    Choice -->|"Нажатие Delete / Backspace / [✕]"| DeleteMark["quickDeleteGrade()"]
+    Choice -->|"Стрелки / HJKL / Enter"| MoveCell["Переход к соседней ячейке"]
+    Choice -->|"Клик вне таблицы / Esc"| ClosePopover["Скрытие поповера"]
 
-### 2. Дисциплины
-- `GET /api/subjects` — получение списка дисциплин.
-- `POST /api/subjects` — добавление дисциплины (`{"name": "Базы данных"}`).
-- `POST /api/subjects/{id}` — переименование дисциплины.
-- `DELETE /api/subjects/{id}` — удаление дисциплины (возвращает 400 при наличии связанных оценок).
+    ApplyMark --> CheckAuto{"Тумблер «Смещать вниз»?"}
+    DeleteMark --> CheckAuto
 
-### 3. Студенты
-- `GET /api/students` — перечень студентов с поддержкой параметров `?q=...` (поиск по строке) и `?group_id=...` (фильтр по группе). Возвращает средний балл каждого обучающегося.
-- `GET /api/students/{id}` — получение подробных данных студента.
-- `POST /api/students` — регистрация студента (`{"name": "...", "group_id": 1, "email": "..."}`).
-- `POST /api/students/{id}` — изменение данных или перевод в другую группу.
-- `DELETE /api/students/{id}` — транзакционное каскадное удаление студента и всех его оценок.
-
-### 4. Журнал успеваемости и экспорт
-- `GET /api/journal?group_id={id}` — получение матрицы журнала выбранной группы (группа, список предметов, список студентов, массив оценок).
-- `POST /api/journal/grades` — выставление или обновление оценки (`{"student_id": 1, "subject_id": 2, "mark": 5}`).
-- `DELETE /api/journal/grades/{studentId}/{subjectId}` — удаление оценки по предмету.
-- `GET /api/journal/export/excel?group_id={id}` — выгрузка ведомости группы в бинарный файл Microsoft Excel (.xlsx).
-- `GET /api/journal/export/csv?group_id={id}` — выгрузка ведомости группы в текстовый файл CSV (разделитель `;`, кодировка UTF-8 BOM).
-
-### 5. Аналитические отчёты
-- `GET /api/reports?kind=groups` — сводные статистические показатели по группам (контингент, сумма оценок, средний балл).
-- `GET /api/reports?kind=no_grades` — список обучающихся без единой выставленной оценки.
-- `GET /api/reports?kind=failing` — список неуспевающих обучающихся (имеющих хотя бы одну оценку «2»).
+    CheckAuto -->|"ВКЛЮЧЕН (checked)"| StepDown["setActiveCell(r + 1, c)<br>Переход к следующему студенту"]
+    CheckAuto -->|"ВЫКЛЮЧЕН (default)"| KeepFocus["setActiveCell(r, c)<br>Фокус остаётся на той же ячейке"]
+```
 
 ---
 
-## Инструкция по развертыванию и запуску
+## 📂 Структура проекта (Vertical Slices)
 
-Для работы приложения требуется установленная виртуальная машина **Java 21** или выше.
+```
+jrnl/
+├── pom.xml                                  # Дескриптор Maven (Java 21, Spring Boot 3.3.5)
+├── README.md                                # Документация проекта
+├── project_context.md                       # Полный снимок контекста системы
+├── screens/                                 # Скриншоты интерфейса
+├── docs/                                    # Подробные руководства по архитектуре
+│   └── 01-how-it-works-and-architecture.md  # Детальный архитектурный гайд
+├── src/
+│   ├── main/
+│   │   ├── java/ru/edu/journal/
+│   │   │   ├── JournalApplication.java      # Точка входа Spring Boot и CLI
+│   │   │   ├── config/                      # Конфигурация WebMvc и SQLite DataSource
+│   │   │   ├── common/                      # Инициализатор БД и GlobalExceptionHandler
+│   │   │   └── features/                    # Вертикальные функциональные срезы:
+│   │   │       ├── groups/                  # Контроллер, Сервис, Репозиторий и DTO групп
+│   │   │       ├── subjects/                # Реестр дисциплин и бизнес-правила
+│   │   │       ├── students/                # Учет контингента, переводы и средние баллы
+│   │   │       ├── journal/                 # Матрица успеваемости, поповер и экспорт POI
+│   │   │       └── reports/                 # Академические аналитические срезы
+│   │   └── resources/
+│   │       ├── application.properties       # Конфигурация портов и базы данных
+│   │       ├── db/                          # SQL-скрипты: schema.sql и seed.sql
+│   │       ├── static/                      # CSS стили Aurora, JS-модули и vendor Chart.js
+│   │       └── templates/                   # Шаблоны Thymeleaf (HTML5)
+│   └── test/java/ru/edu/journal/            # Интеграционные тесты и тесты транзакций
+└── target/
+    └── journal-2.0.0.jar                    # Готовый автономный исполняемый дистрибутив
+```
 
-### 1. Запуск автономного JAR-пакета
+---
 
-В дистрибутив входит предварительно скомпилированный Fat-JAR архив, содержащий внутри сервер приложений и все библиотеки:
+## ⌨️ Горячие клавиши (Keymap)
 
+| Сочетание клавиш | Контекст | Назначение |
+|---|---|---|
+| <kbd>Ctrl</kbd> + <kbd>K</kbd> / <kbd>⌘</kbd><kbd>K</kbd> | Глобально | Открыть командную палитру поиска и действий |
+| <kbd>Alt</kbd> + <kbd>T</kbd> | Глобально | Циклическое переключение темы (Dracula → OLED → Light) |
+| <kbd>Alt</kbd> + <kbd>C</kbd> / <kbd>Ctrl</kbd> + <kbd>~</kbd> | Глобально | Открыть встроенный Linux TUI-терминал (`milk13@archarnel`) |
+| <kbd>Alt</kbd> + <kbd>L</kbd> | Глобально | Открыть шторку рентгена логики и SQL-запросов (X-Ray) |
+| <kbd>2</kbd>, <kbd>3</kbd>, <kbd>4</kbd>, <kbd>5</kbd> | Журнал оценок | Мгновенное выставление оценки активному студенту |
+| <kbd>Delete</kbd> / <kbd>Backspace</kbd> / <kbd>0</kbd> | Журнал оценок | Очистка (удаление) оценки в текущей ячейке |
+| <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> / <kbd>Enter</kbd> | Журнал оценок | Навигация по таблице ведомости |
+| <kbd>h</kbd> <kbd>j</kbd> <kbd>k</kbd> <kbd>l</kbd> | Журнал оценок | Навигация по ячейкам в стиле Vim |
+| <kbd>Esc</kbd> | Модальные окна | Закрытие поповера, палитры, терминала или шторки |
+
+---
+
+## 🚀 Инструкция по сборке и запуску
+
+Для запуска требуется установленная виртуальная машина **Java 21 (LTS)** или новее.
+
+### 1. Быстрый запуск скомпилированного JAR
 ```bash
-# Запуск веб-сервера из директории проекта
-java -jar target/journal-1.0.0.jar
+# Запуск автономного сервера (порт 5000)
+java -jar target/journal-2.0.0.jar
 ```
+После старта веб-интерфейс доступен в любом браузере по адресу:
+👉 **`http://localhost:5000`** *(или `http://127.0.0.1:5000`)*
 
-После старта веб-интерфейс доступен в браузере по адресу:
-```
-http://127.0.0.1:5000/
-```
+> [!NOTE]
+> При первом запуске файл базы данных `instance/journal.db` создается автоматически и заполняется демонстрационным набором (3 учебные группы, 60 студентов, 3 дисциплины, 162 оценки).
 
-При первом запуске приложение автоматически создаст локальную базу данных `instance/journal.db` и наполнит её демонстрационным набором данных (3 учебные группы, 60 студентов, 3 дисциплины, 162 оценки).
-
-### 2. Запуск через Maven Wrapper
-
-Сборка и запуск из исходного кода с помощью входящего в проект скрипта Maven Wrapper (не требует предварительно установленного Maven):
-
+### 2. Сборка из исходного кода
 ```bash
-# Запуск веб-сервера
-./mvnw spring-boot:run
+# Сборка пакета без тестов
+./mvnw clean package -DskipTests
 
-# Сборка нового JAR-пакета после внесения изменений
+# Полный цикл сборки с выполнением верификационных тестов
 ./mvnw clean package
 ```
 
-Собранный исполняемый файл будет помещен по пути: `target/journal-1.0.0.jar`.
-
-### 3. Открытие и запуск в IntelliJ IDEA
-
-1. Запустите IntelliJ IDEA.
-2. Выберите пункт меню **File → Open...** и укажите корневой каталог проекта: `/home/milk13/IdeaProjects/jrnl`.
-3. Среда разработки автоматически распознает файл `pom.xml`, выполнит импорт зависимостей и настроит структуру модулей.
-4. Убедитесь, что в **Project Structure → Project SDK** выбран Java 21 (или 22/27).
-5. Перейдите к файлу `src/main/java/ru/edu/journal/JournalApplication.java`.
-6. Нажмите кнопку **Run** рядом с объявлением метода `main`.
-
----
-
-## Консольные утилиты и обслуживание БД
-
-Приложение поддерживает запуск со специальными аргументами командной строки для административного обслуживания и валидации базы данных без запуска постоянного веб-сервера:
-
-### Восстановление исходного состояния базы данных
-Пересоздает таблицы из `src/main/resources/db/schema.sql` и заполняет их исходными данными из `src/main/resources/db/seed.sql` в рамках единой транзакции:
-
+### 3. Запуск в режиме разработки
 ```bash
-# Через JAR
-java -jar target/journal-1.0.0.jar --prepare
-
-# Через Maven Wrapper
-./mvnw spring-boot:run -Dspring-boot.run.arguments="--prepare"
-```
-
-### Проверка контрольных показателей базы данных
-Выполняет сверку связности, включения внешних ключей и контрольных сумм записей:
-
-```bash
-java -jar target/journal-1.0.0.jar --check-baseline
-```
-Ожидаемый результат:
-```
-foreign_keys: 1
-foreign_key_check: 0
-groups: 3
-students: 60
-subjects: 3
-grades: 162
-students_without_grades: 6
-PASS: база прошла проверку
-```
-
-### Проверка отката транзакций при сбое
-Имитирует непредвиденную ошибку в середине транзакции удаления студента и проверяет сохранность данных после аварийного отката:
-
-```bash
-java -jar target/journal-1.0.0.jar --check-rollback
-```
-Ожидаемый результат:
-```
-Учебный сбой: Учебная ошибка после удаления оценок.
-PASS: студент и все оценки сохранены после отката
-PASS: обычное удаление убрало студента и его оценки
+./mvnw spring-boot:run
 ```
 
 ---
 
-## Тестирование и верификация
+## 🧪 Тестирование и верификация
 
-В проект включен комплекс автоматических интеграционных и модульных тестов на платформе JUnit 5 и Spring Test:
+В проект включены компонентные и интеграционные тесты с верификацией транзакционной целостности SQLite и сценариев отката:
 
 ```bash
+# Запуск всего набора тестов
 ./mvnw test
 ```
 
-### Состав тестового набора:
-1. `DatabaseBaselineTest` — проверка соответствия реляционной схемы и корректности начального наполнения БД.
-2. `RollbackTest` — проверка механизма транзакционного отката Spring JDBC при искусственных аппаратных или программных сбоях.
-3. `JournalIntegrationTest` — сквозное тестирование всех разделов REST API:
-   - валидация операций с группами и защита от удаления непустых групп;
-   - создание предметов и блокировка удаления дисциплин с оценками;
-   - создание, поиск, фильтрация студентов и межкафедральный перевод с сохранением оценок;
-   - матричный журнал, выставление оценок 2..5, защита от некорректных значений;
-   - генерация бинарных выгрузок Excel (.xlsx) и CSV с проверкой заголовков;
-   - аналитические выборки модуля отчетов.
+### Реализованные тест-сьюты:
+1. **`RollbackTest`** — проверка атомарности транзакций: эмуляция сбоя в середине составной операции гарантирует полный откат изменений в SQLite WAL.
+2. **`JournalIntegrationTest`** — сквозная проверка REST API: создание, редактирование, каскадные запреты удаления непустых справочников и корректность расчета аналитики.
+3. **`DatabaseBaselineTest`** — валидация схемы данных и автоматической инициализации таблиц.
 
 ---
 
-## Руководство по интерфейсу и горячие клавиши
+## 📚 Дополнительная документация
 
-### Раздел «Журнал» — режим быстрого ввода
-Для активации быстрого ввода установите флажок **«Режим быстрого ввода (клавиатура)»** в верхней части страницы журнала.
+* 📖 [**Руководство по архитектуре и внутреннему устройству (01-how-it-works-and-architecture.md)**](docs/01-how-it-works-and-architecture.md) — исчерпывающий разбор жизненного цикла приложения, работы Spring IoC, DispatcherServlet и низкоуровневых параметров SQLite.
+* 📋 [**Полный снимок контекста системы (project_context.md)**](project_context.md) — актуальное дерево всех 75 файлов проекта с их исходным кодом.
 
-| Клавиша / Сочетание | Выполняемое действие |
-|---|---|
-| Стрелка вверх (`ArrowUp`) | Перемещение фокуса на строку выше (предыдущий студент) |
-| Стрелка вниз (`ArrowDown`) / `Enter` | Перемещение фокуса на строку ниже (следующий студент) |
-| Стрелка влево (`ArrowLeft`) | Перемещение фокуса на столбец левее (предыдущий предмет) |
-| Стрелка вправо (`ArrowRight`) | Перемещение фокуса на столбец правее (следующий предмет) |
-| Цифры `2`, `3`, `4`, `5` | Немедленная фиксация оценки в БД и переход к следующему студенту |
-| `Delete` / `Backspace` | Мгновенное удаление оценки из БД в активной ячейке |
-| Одиночный клик мыши | Фокусировка выбранной ячейки таблицы |
-| Двойной клик мыши | Открытие детального модального окна управления оценкой |
+---
 
-### Раздел «Студенты»
-- Ввод любого текста в поле **«Поиск по студентам»** мгновенно фильтрует таблицу без перезагрузки страницы.
-- Нажатие на заголовки столбцов **«ФИО»**, **«Группа»**, **«Оценок»**, **«Средний балл»** упорядочивает список по возрастанию или убыванию.
-- Кнопка **«Добавить студента»** открывает форму привязки к группе с валидацией имени.
-- Кнопка **«Изменить»** в строке студента позволяет перевести его в другую академическую группу с сохранением истории оценок.
+<p align="center">
+  <sub>Разработано для учебного процесса • 2026</sub>
+</p>
 ```
 
 ### `docs/README.md`
@@ -11883,773 +11827,5 @@ class RollbackTest {
         System.out.println("PASS: обычное удаление убрало студента и его оценки");
     }
 }
-```
-
-### `starter/README.md`
-
-```md
-# Электронный журнал
-
-Стартовый проект студента. Три недели, шесть лабораторных пар по 90 минут, всего 12 академических часов.
-Проект использует Flask, Jinja2, обычный JavaScript и модуль Python sqlite3.
-Python 3.11 или новее. В браузере должен быть включён JavaScript.
-
-## Запуск в Debian Linux
-
-Один раз подготовьте системные пакеты:
-
-~~~bash
-sudo apt update
-sudo apt install python3 python3-venv python3-pip sqlite3 unzip
-~~~
-
-После распаковки архива:
-
-~~~bash
-cd journal-starter
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-python prepare_db.py
-python check_db.py --baseline
-python app.py
-~~~
-
-Откройте http://127.0.0.1:5000/. Остановка сервера: Ctrl+C.
-Повторный запуск после закрытия терминала:
-
-~~~bash
-cd journal-starter
-source .venv/bin/activate
-python app.py
-~~~
-
-## Исходная база и восстановление
-
-База instance/journal.db создаётся явно. Исходные данные: 3 группы БЭИ2301,
-БЭИ2302, БЭИ2303, по 20 студентов, 3 предмета и 162 оценки. Без оценок остаются
-студенты с ID 10, 20, 30, 40, 50, 60. Группы и предметы можно добавлять.
-Оценка одна на пару студент и предмет. Пустая ячейка означает отсутствие строки,
-а не оценку 0. Email необязателен, одинаковые имена и email допустимы.
-
-Для восстановления остановите сервер и выполните:
-
-~~~bash
-python prepare_db.py
-python check_db.py --baseline
-python app.py
-~~~
-
-Восстановление заменяет текущие учебные данные исходными. Схема и заполнение
-выполняются одной транзакцией. При SQL-ошибке скрипт откатывает изменения.
-Обработчик with con фиксирует или откатывает транзакцию, а соединение
-дополнительно закрывается в finally. Репозитории commit не вызывают.
-
-## Консоль SQLite
-
-Во втором терминале из корня проекта:
-
-~~~bash
-sqlite3 instance/journal.db
-~~~
-
-Внутри консоли:
-
-~~~sql
-PRAGMA foreign_keys = ON;
-PRAGMA foreign_keys;
-.headers on
-.mode column
-SELECT g.name, COUNT(s.id) AS students
-FROM groups AS g LEFT JOIN students AS s ON s.group_id = g.id
-GROUP BY g.id, g.name;
-PRAGMA foreign_key_check;
-.quit
-~~~
-
-foreign_keys должен вернуть 1; foreign_key_check не должен вернуть строк.
-Настройка включается для каждого соединения отдельно до BEGIN.
-
-## Вертикальные срезы
-
-Каждый каталог features/groups, subjects, students, journal, reports
-объединяет один функциональный раздел. Blueprint создаётся в __init__.py
-и регистрируется в app.py. pages.py возвращает только HTML. api.py читает
-HTTP и JSON. service.py проверяет бизнес-правила, открывает соединение и
-управляет транзакцией. repo.py выполняет SQL через переданное соединение.
-HTML и JS находятся внутри соответствующего среза.
-
-Общие части: db.py, templates/base.html, templates/partials/header.html,
-templates/partials/footer.html, static/css/styles.css, static/js/api.js,
-static/js/ui.js. Переходы между разделами обычными ссылками. Действия
-пользователя обрабатывает JS, который вызывает JSON API.
-
-## План шести пар
-
-1. Вертикальный срез и Blueprint, запуск, БД и готовый пример групп.
-2. Предметы: POST, DELETE, сервис, SQL и два вызова из JS.
-3. Студенты: сохранение, перевод и атомарное удаление с оценками.
-4. Журнал: SELECT, INSERT либо UPDATE оценки и удаление оценки.
-5. Три отчёта: GROUP BY, HAVING, LEFT JOIN и COUNT DISTINCT.
-6. Полный откат, восстановление, README и итоговая демонстрация.
-
-## Проверка отката
-
-После реализации удаления студента:
-
-~~~bash
-python check_rollback.py
-~~~
-
-Скрипт создаёт временную копию БД через sqlite3.backup, вызывает тот же
-service.delete_student, что и API, и вызывает учебный сбой после удаления
-оценок. Параметр simulate_error доступен только в Python и не принимается
-HTTP API. Скрипт сравнивает все строки четырёх таблиц до и после отката,
-затем проверяет обычное удаление на копии. Рабочая база остаётся прежней.
-
-## Контракты API
-
-GET /api/groups и GET /api/subjects возвращают {"items": [...]}.
-POST /api/groups или /api/subjects создаёт запись с JSON {"name": "..."}.
-POST по адресу /api/groups/ID или /api/subjects/ID переименовывает запись.
-Ответ: {"item": {"id": ..., "name": "..."}}, статус 201 при создании и 200 при изменении.
-DELETE /api/groups/ID и /api/subjects/ID возвращает пустой ответ 204.
-
-GET /api/students возвращает items; можно передать group_id и q.
-POST /api/students и POST /api/students/ID принимают name, group_id, email.
-DELETE /api/students/ID удаляет студента и оценки одной транзакцией.
-
-GET /api/journal?group_id=1 возвращает group, students, subjects, grades.
-POST /api/journal/grades принимает student_id, subject_id, mark и возвращает item, статус 200.
-DELETE /api/journal/grades/STUDENT_ID/SUBJECT_ID возвращает 204.
-Повторное удаление пустой оценки также возвращает 204, если родители существуют.
-
-GET /api/reports?kind=groups, no_grades или failing возвращает kind и items.
-В отчёте групп поля id, name, student_count, grade_count, average_mark.
-В остальных отчётах id, name, group_name. Средний балл пустой группы равен null.
-Ошибки полей и зависимостей: 400 и {"error": "..."}; отсутствующая запись: 404.
-Техническая ошибка БД: 500. Тело ответа 204 разбирать как JSON не нужно.
-
-## Сдача
-
-Сохраните проект в Git и фиксируйте результат после каждого этапа.
-К сдаче подготовьте исходники, схему и данные, рабочий скрипт восстановления,
-команды запуска и результаты проверок. Дополните этот README описанием
-самостоятельно реализованных функций. Покажите перевод без потери оценок,
-запрет удаления связанных справочников, отчёты и полный откат.
-
-## Справочные материалы
-
-Flask Blueprint: https://flask.palletsprojects.com/en/stable/blueprints/
-Python sqlite3: https://docs.python.org/3.11/library/sqlite3.html
-Внешние ключи SQLite: https://www.sqlite.org/foreignkeys.html
-Fetch: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-
-## Готовая и самостоятельная части
-
-Группы реализованы полностью. Все HTML/CSS, чтение предметов и студентов, поиск, фильтры и построение журнала готовы. В функциях с TODO LAB2–LAB5 стоят явные заглушки. Это ожидаемое состояние стартового проекта. После подключения JS к API незавершённый сервер отвечает 501. Отчёты начнут возвращать данные после выполнения LAB5.
-
-Изменяйте только отмеченные функции; сохраняйте их имена и параметры. Документация полного задания находится в методичке студента.
-
-### LAB2
-
-- features/subjects/api.py — save_item
-- features/subjects/api.py — delete_item
-- features/subjects/service.py — save_subject
-- features/subjects/service.py — delete_subject
-- features/subjects/repo.py — insert_subject
-- features/subjects/repo.py — update_subject
-- features/subjects/repo.py — delete_subject
-- features/subjects/static/subjects.js — saveRecord
-- features/subjects/static/subjects.js — deleteRecord
-
-### LAB3
-
-- features/students/api.py — save_item
-- features/students/api.py — delete_item
-- features/students/service.py — save_student
-- features/students/service.py — delete_student
-- features/students/repo.py — insert_student
-- features/students/repo.py — update_student
-- features/students/repo.py — delete_grades
-- features/students/repo.py — delete_student
-- features/students/static/students.js — saveRecord
-- features/students/static/students.js — deleteRecord
-
-### LAB4
-
-- features/journal/api.py — save_item
-- features/journal/api.py — delete_item
-- features/journal/service.py — save_grade
-- features/journal/service.py — delete_grade
-- features/journal/repo.py — insert_grade
-- features/journal/repo.py — update_grade
-- features/journal/repo.py — delete_grade
-- features/journal/static/journal.js — saveGrade
-- features/journal/static/journal.js — deleteGrade
-
-### LAB5
-
-- features/reports/repo.py — group_report
-- features/reports/repo.py — no_grades_report
-- features/reports/repo.py — failing_report
-```
-
-### `starter/data/schema.sql`
-
-```sql
--- Удаление идёт от дочерних таблиц к родительским.
-DROP TABLE IF EXISTS grades;
-DROP TABLE IF EXISTS students;
-DROP TABLE IF EXISTS subjects;
-DROP TABLE IF EXISTS groups;
-
-CREATE TABLE groups (
-    id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL UNIQUE CHECK(length(trim(name)) BETWEEN 1 AND 50)
-);
-CREATE TABLE subjects (
-    id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL UNIQUE CHECK(length(trim(name)) > 0)
-);
-CREATE TABLE students (
-    id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL CHECK(length(trim(name)) BETWEEN 1 AND 50),
-    group_id INTEGER NOT NULL REFERENCES groups(id),
-    email TEXT
-);
-CREATE TABLE grades (
-    id INTEGER PRIMARY KEY,
-    student_id INTEGER NOT NULL REFERENCES students(id),
-    subject_id INTEGER NOT NULL REFERENCES subjects(id),
-    mark INTEGER NOT NULL CHECK(mark IN (2, 3, 4, 5)),
-    UNIQUE(student_id, subject_id)
-);
-```
-
-### `starter/data/seed.sql`
-
-```sql
--- Учебные данные: 3 группы, 60 студентов, 3 предмета, 162 оценки.
-INSERT INTO groups (id, name) VALUES (1, 'БЭИ2301');
-INSERT INTO groups (id, name) VALUES (2, 'БЭИ2302');
-INSERT INTO groups (id, name) VALUES (3, 'БЭИ2303');
-INSERT INTO subjects (id, name) VALUES (1, 'Python');
-INSERT INTO subjects (id, name) VALUES (2, 'Базы данных');
-INSERT INTO subjects (id, name) VALUES (3, 'Веб-разработка');
-INSERT INTO students (id, name, group_id, email) VALUES (1, 'Иванов Алексей', 1, 'student01@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (2, 'Петрова Мария', 1, 'student02@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (3, 'Сидоров Илья', 1, 'student03@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (4, 'Смирнова Анна', 1, 'student04@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (5, 'Кузнецов Максим', 1, NULL);
-INSERT INTO students (id, name, group_id, email) VALUES (6, 'Попова Дарья', 1, 'student06@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (7, 'Васильев Никита', 1, '');
-INSERT INTO students (id, name, group_id, email) VALUES (8, 'Соколова Елена', 1, 'student08@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (9, 'Михайлов Артём', 1, 'student09@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (10, 'Новикова Софья', 1, NULL);
-INSERT INTO students (id, name, group_id, email) VALUES (11, 'Фёдоров Павел', 1, 'student11@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (12, 'Морозова Полина', 1, 'student12@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (13, 'Волков Дмитрий', 1, 'student13@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (14, 'Алексеева Алиса', 1, '');
-INSERT INTO students (id, name, group_id, email) VALUES (15, 'Лебедев Кирилл', 1, NULL);
-INSERT INTO students (id, name, group_id, email) VALUES (16, 'Семёнова Виктория', 1, 'student16@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (17, 'Егоров Роман', 1, 'student17@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (18, 'Павлова Ксения', 1, 'student18@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (19, 'Козлов Андрей', 1, 'student19@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (20, 'Степанова Анастасия', 1, NULL);
-INSERT INTO students (id, name, group_id, email) VALUES (21, 'Иванов Алексей', 2, 'student21@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (22, 'Петрова Мария', 2, 'student22@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (23, 'Сидоров Илья', 2, 'student23@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (24, 'Смирнова Анна', 2, 'student24@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (25, 'Кузнецов Максим', 2, NULL);
-INSERT INTO students (id, name, group_id, email) VALUES (26, 'Попова Дарья', 2, 'student26@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (27, 'Васильев Никита', 2, '');
-INSERT INTO students (id, name, group_id, email) VALUES (28, 'Соколова Елена', 2, 'student28@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (29, 'Михайлов Артём', 2, 'student29@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (30, 'Новикова Софья', 2, NULL);
-INSERT INTO students (id, name, group_id, email) VALUES (31, 'Фёдоров Павел', 2, 'student31@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (32, 'Морозова Полина', 2, 'student32@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (33, 'Волков Дмитрий', 2, 'student33@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (34, 'Алексеева Алиса', 2, '');
-INSERT INTO students (id, name, group_id, email) VALUES (35, 'Лебедев Кирилл', 2, NULL);
-INSERT INTO students (id, name, group_id, email) VALUES (36, 'Семёнова Виктория', 2, 'student36@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (37, 'Егоров Роман', 2, 'student37@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (38, 'Павлова Ксения', 2, 'student38@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (39, 'Козлов Андрей', 2, 'student39@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (40, 'Степанова Анастасия', 2, NULL);
-INSERT INTO students (id, name, group_id, email) VALUES (41, 'Иванов Алексей', 3, 'student41@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (42, 'Петрова Мария', 3, 'student42@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (43, 'Сидоров Илья', 3, 'student43@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (44, 'Смирнова Анна', 3, 'student44@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (45, 'Кузнецов Максим', 3, NULL);
-INSERT INTO students (id, name, group_id, email) VALUES (46, 'Попова Дарья', 3, 'student46@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (47, 'Васильев Никита', 3, '');
-INSERT INTO students (id, name, group_id, email) VALUES (48, 'Соколова Елена', 3, 'student48@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (49, 'Михайлов Артём', 3, 'student49@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (50, 'Новикова Софья', 3, NULL);
-INSERT INTO students (id, name, group_id, email) VALUES (51, 'Фёдоров Павел', 3, 'student51@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (52, 'Морозова Полина', 3, 'student52@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (53, 'Волков Дмитрий', 3, 'student53@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (54, 'Алексеева Алиса', 3, '');
-INSERT INTO students (id, name, group_id, email) VALUES (55, 'Лебедев Кирилл', 3, NULL);
-INSERT INTO students (id, name, group_id, email) VALUES (56, 'Семёнова Виктория', 3, 'student56@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (57, 'Егоров Роман', 3, 'student57@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (58, 'Павлова Ксения', 3, 'student58@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (59, 'Козлов Андрей', 3, 'student59@example.edu');
-INSERT INTO students (id, name, group_id, email) VALUES (60, 'Степанова Анастасия', 3, NULL);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (1, 1, 1, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (2, 1, 2, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (3, 1, 3, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (4, 2, 1, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (5, 2, 2, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (6, 2, 3, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (7, 3, 1, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (8, 3, 2, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (9, 3, 3, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (10, 4, 1, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (11, 4, 2, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (12, 4, 3, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (13, 5, 1, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (14, 5, 2, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (15, 5, 3, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (16, 6, 1, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (17, 6, 2, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (18, 6, 3, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (19, 7, 1, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (20, 7, 2, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (21, 7, 3, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (22, 8, 1, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (23, 8, 2, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (24, 8, 3, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (25, 9, 1, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (26, 9, 2, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (27, 9, 3, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (28, 11, 1, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (29, 11, 2, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (30, 11, 3, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (31, 12, 1, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (32, 12, 2, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (33, 12, 3, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (34, 13, 1, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (35, 13, 2, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (36, 13, 3, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (37, 14, 1, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (38, 14, 2, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (39, 14, 3, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (40, 15, 1, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (41, 15, 2, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (42, 15, 3, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (43, 16, 1, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (44, 16, 2, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (45, 16, 3, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (46, 17, 1, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (47, 17, 2, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (48, 17, 3, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (49, 18, 1, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (50, 18, 2, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (51, 18, 3, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (52, 19, 1, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (53, 19, 2, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (54, 19, 3, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (55, 21, 1, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (56, 21, 2, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (57, 21, 3, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (58, 22, 1, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (59, 22, 2, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (60, 22, 3, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (61, 23, 1, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (62, 23, 2, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (63, 23, 3, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (64, 24, 1, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (65, 24, 2, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (66, 24, 3, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (67, 25, 1, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (68, 25, 2, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (69, 25, 3, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (70, 26, 1, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (71, 26, 2, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (72, 26, 3, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (73, 27, 1, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (74, 27, 2, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (75, 27, 3, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (76, 28, 1, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (77, 28, 2, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (78, 28, 3, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (79, 29, 1, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (80, 29, 2, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (81, 29, 3, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (82, 31, 1, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (83, 31, 2, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (84, 31, 3, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (85, 32, 1, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (86, 32, 2, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (87, 32, 3, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (88, 33, 1, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (89, 33, 2, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (90, 33, 3, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (91, 34, 1, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (92, 34, 2, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (93, 34, 3, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (94, 35, 1, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (95, 35, 2, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (96, 35, 3, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (97, 36, 1, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (98, 36, 2, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (99, 36, 3, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (100, 37, 1, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (101, 37, 2, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (102, 37, 3, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (103, 38, 1, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (104, 38, 2, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (105, 38, 3, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (106, 39, 1, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (107, 39, 2, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (108, 39, 3, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (109, 41, 1, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (110, 41, 2, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (111, 41, 3, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (112, 42, 1, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (113, 42, 2, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (114, 42, 3, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (115, 43, 1, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (116, 43, 2, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (117, 43, 3, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (118, 44, 1, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (119, 44, 2, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (120, 44, 3, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (121, 45, 1, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (122, 45, 2, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (123, 45, 3, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (124, 46, 1, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (125, 46, 2, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (126, 46, 3, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (127, 47, 1, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (128, 47, 2, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (129, 47, 3, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (130, 48, 1, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (131, 48, 2, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (132, 48, 3, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (133, 49, 1, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (134, 49, 2, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (135, 49, 3, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (136, 51, 1, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (137, 51, 2, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (138, 51, 3, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (139, 52, 1, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (140, 52, 2, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (141, 52, 3, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (142, 53, 1, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (143, 53, 2, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (144, 53, 3, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (145, 54, 1, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (146, 54, 2, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (147, 54, 3, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (148, 55, 1, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (149, 55, 2, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (150, 55, 3, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (151, 56, 1, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (152, 56, 2, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (153, 56, 3, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (154, 57, 1, 4);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (155, 57, 2, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (156, 57, 3, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (157, 58, 1, 5);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (158, 58, 2, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (159, 58, 3, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (160, 59, 1, 2);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (161, 59, 2, 3);
-INSERT INTO grades (id, student_id, subject_id, mark) VALUES (162, 59, 3, 4);
-```
-
-### `starter/features/groups/static/groups.js`
-
-```js
-import {requestJSON} from "/static/js/api.js";
-import {cell, message, busy, actions, emptyRow} from "/static/js/ui.js";
-const API = "/api/groups";
-const body = document.querySelector("#table-body");
-const editor = document.querySelector("#editor");
-const form = document.querySelector("#edit-form");
-const idInput = document.querySelector("#record-id");
-const nameInput = document.querySelector("#record-name");
-const confirmation = document.querySelector("#confirmation");
-let items = [], pendingId = null, loaded = false;
-nameInput.maxLength = 50;
-
-/** Отправляет добавление или переименование записи. */
-async function saveRecord(recordId, payload) {
-  const url = recordId ? API + "/" + recordId : API;
-  return requestJSON(url, "POST", payload);
-}
-
-/** Отправляет удаление записи. */
-async function deleteRecord(recordId) {
-  return requestJSON(API + "/" + recordId, "DELETE");
-}
-
-/** Строит таблицу по массиву из API. */
-function render() {
-  body.replaceChildren();
-  if (!items.length) { emptyRow(body, 3); return; }
-  for (const item of items) {
-    const row = document.createElement("tr"); row.append(cell(item.name));
-    row.append(cell(item.student_count, "number"));
-    const td = document.createElement("td"); td.append(actions(item.id)); row.append(td); body.append(row);
-  }
-}
-
-/** Обновляет данные, сохраняя старую таблицу при неудачном запросе. */
-async function load(successText = "") {
-  busy(true); message("Загрузка...");
-  try { items = (await requestJSON(API)).items; loaded = true; render(); message(successText); }
-  catch (error) {
-    message((successText ? successText + " Обновление списка не удалось. " : "") + error.message, true);
-    if (!loaded) emptyRow(body, 3, "Данные не загружены");
-  } finally { busy(false); }
-}
-
-/** Открывает одну форму для создания и изменения. */
-function openEditor(item = null) {
-  form.reset(); idInput.value = item ? String(item.id) : ""; nameInput.value = item ? item.name : "";
-  document.querySelector("#editor-title").textContent = item ? "Изменение записи" : "Добавление записи";
-  editor.hidden = false; confirmation.hidden = true; message(); nameInput.focus();
-}
-
-document.querySelector("#add-record").addEventListener("click", function() { openEditor(); });
-document.querySelector("#cancel-edit").addEventListener("click", function() { editor.hidden = true; message(); });
-form.addEventListener("submit", async function(event) {
-  event.preventDefault(); const name = nameInput.value.trim();
-  if (!name) { message("Введите название.", true); nameInput.focus(); return; }
-  busy(true);
-  try {
-    await saveRecord(idInput.value ? Number(idInput.value) : null, {name: name});
-    editor.hidden = true; form.reset(); await load("Изменения сохранены.");
-  } catch (error) { message(error.message, true); }
-  finally { busy(false); }
-});
-body.addEventListener("click", function(event) {
-  const button = event.target.closest("button[data-action]"); if (!button) return;
-  const item = items.find(function(record) { return record.id === Number(button.dataset.id); }); if (!item) return;
-  if (button.dataset.action === "edit") { openEditor(item); return; }
-  pendingId = item.id; editor.hidden = true; confirmation.hidden = false;
-  document.querySelector("#confirmation-text").textContent = "Удалить «" + item.name + "»?"; message();
-});
-document.querySelector("#cancel-delete").addEventListener("click", function() { pendingId = null; confirmation.hidden = true; });
-document.querySelector("#confirm-delete").addEventListener("click", async function() {
-  if (pendingId === null) return; busy(true);
-  try { await deleteRecord(pendingId); confirmation.hidden = true; pendingId = null; await load("Запись удалена."); }
-  catch (error) { message(error.message, true); } finally { busy(false); }
-});
-load();
-```
-
-### `starter/features/groups/templates/groups/index.html`
-
-```html
-{% extends "base.html" %}
-{% block title %}Группы — Электронный журнал{% endblock %}
-{% block content %}
-<div class="page-heading"><h1>Группы</h1><button id="add-record" class="button-primary" type="button">Добавить группу</button></div>
-<p id="status" class="status" role="status" aria-live="polite" hidden></p>
-<section id="editor" class="editor" aria-labelledby="editor-title" hidden>
-  <h2 id="editor-title">Группа</h2>
-  <form id="edit-form">
-    <input id="record-id" type="hidden">
-    <div class="form-fields"><label>Название<input id="record-name" type="text" required></label></div>
-    <div class="button-row"><button class="button-primary" type="submit">Сохранить</button><button id="cancel-edit" type="button">Отмена</button></div>
-  </form>
-</section>
-<section id="confirmation" class="confirmation" aria-label="Подтверждение удаления" hidden>
-  <p id="confirmation-text"></p>
-  <div class="button-row"><button id="confirm-delete" class="button-danger" type="button">Удалить</button><button id="cancel-delete" type="button">Отмена</button></div>
-</section>
-<div class="table-scroll"><table><thead><tr><th>Название</th><th class="number">Студентов</th><th>Действия</th></tr></thead><tbody id="table-body"></tbody></table></div>
-{% endblock %}
-{% block scripts %}<script type="module" src="{{ url_for('groups.static', filename='groups.js') }}"></script>{% endblock %}
-```
-
-### `starter/static/css/styles.css`
-
-```css
-:root { --ink: #202a3c; --muted: #52637b; --line: #dce3ed; --soft: #f4f7fc; --brand: #3658bb; --danger: #a42c39; }
-* { box-sizing: border-box; }
-[hidden] { display: none !important; }
-body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; background: #fff; color: var(--ink); font: 16px/1.5 system-ui, sans-serif; }
-.container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
-.site-header { border-bottom: 1px solid var(--line); padding-top: 20px; }
-.brand { font-size: 22px; font-weight: 600; color: var(--ink); text-decoration: none; }
-.navigation { display: flex; flex-wrap: wrap; gap: 4px 24px; margin-top: 14px; }
-.navigation a { color: var(--muted); text-decoration: none; padding: 10px 0 12px; border-bottom: 3px solid transparent; }
-.navigation a[aria-current="page"] { color: var(--brand); border-bottom-color: var(--brand); font-weight: 600; }
-.page { padding-top: 28px; padding-bottom: 40px; flex: 1; }
-.page-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
-h1 { font-size: 30px; line-height: 1.3; margin: 0 0 6px; }
-h2 { font-size: 19px; margin: 0 0 16px; }
-p { margin: 0 0 14px; }
-.page-heading p { margin-bottom: 0; }
-.muted { color: var(--muted); }
-button, input, select { font: inherit; }
-button { min-height: 40px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 7px; color: var(--ink); background: #fff; cursor: pointer; }
-button:hover { background: var(--soft); }
-button:disabled { opacity: .6; cursor: wait; }
-.button-primary { color: #fff; background: var(--brand); border-color: var(--brand); }
-.button-primary:hover { background: #2948a3; }
-.button-danger { color: var(--danger); }
-.button-row, .row-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-.row-actions button { min-height: 34px; padding: 5px 9px; font-size: 14px; }
-.toolbar, .form-fields { display: flex; align-items: end; flex-wrap: wrap; gap: 16px; margin-bottom: 18px; }
-label { display: flex; flex-direction: column; gap: 6px; flex: 1; max-width: 340px; min-width: 160px; font-size: 14px; font-weight: 600; }
-input, select { width: 100%; min-height: 42px; padding: 8px 10px; border: 1px solid #b7c4d5; border-radius: 6px; background: #fff; color: var(--ink); font-weight: 400; }
-.editor { padding: 20px; margin-bottom: 22px; background: var(--soft); border-radius: 9px; }
-.confirmation { padding: 18px; background: #fff2f3; border-radius: 8px; margin-bottom: 22px; }
-.status { padding: 12px 15px; background: #edf5ff; border-radius: 7px; margin-bottom: 20px; }
-.status.error { background: #fff0f2; color: var(--danger); }
-.table-scroll { width: 100%; overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; text-align: left; }
-th, td { border-bottom: 1px solid var(--line); padding: 13px 14px; vertical-align: middle; }
-th { background: var(--soft); font-size: 14px; color: var(--muted); font-weight: 600; }
-.number { text-align: right; font-variant-numeric: tabular-nums; }
-.grade-cell { text-align: center; }
-.grade-button { min-width: 40px; min-height: 36px; padding: 4px 10px; border-color: transparent; font-weight: 600; }
-.grade-button.empty { color: var(--muted); border: 1px dashed #b7c4d5; }
-.grade-button.failing { color: var(--danger); background: #fff0f2; }
-.empty-row { text-align: center; padding: 28px; color: var(--muted); }
-.site-footer { padding: 18px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
-@media (max-width: 650px) { .container { width: calc(100% - 28px); } .navigation { gap: 4px 16px; } .navigation a { font-size: 14px; } .toolbar, .form-fields { display: grid; grid-template-columns: 1fr; } label { min-width: 0; max-width: none; } .students-table { min-width: 640px; } .journal-table { min-width: 540px; } th, td { padding: 10px; } h1 { font-size: 26px; } }
-@media (pointer: coarse) { button, .row-actions button, .grade-button { min-height: 44px; } .grade-button { min-width: 44px; } }
-```
-
-### `starter/static/js/api.js`
-
-```js
-/** Выполняет JSON-запрос, отдельно обрабатывая сеть, HTTP и ответ 204. */
-export async function requestJSON(url, method = "GET", data = null) {
-  const options = {method: method, headers: {}};
-  if (data !== null) {
-    options.headers["Content-Type"] = "application/json";
-    options.body = JSON.stringify(data);
-  }
-  let response;
-  try { response = await fetch(url, options); }
-  catch (error) { throw new Error("Нет связи с сервером. Проверьте его запуск."); }
-  if (response.status === 204) return null;
-  let payload;
-  try { payload = await response.json(); }
-  catch (error) { throw new Error("Сервер вернул ответ не в формате JSON."); }
-  if (!response.ok) throw new Error(payload.error || "Ошибка HTTP " + response.status);
-  return payload;
-}
-```
-
-### `starter/static/js/ui.js`
-
-```js
-/** Создаёт ячейку, выводя значения через textContent. */
-export function cell(value, className = "") {
-  const td = document.createElement("td");
-  td.textContent = value === null || value === undefined ? "—" : String(value);
-  td.className = className;
-  return td;
-}
-
-/** Показывает сообщение о результате запроса. */
-export function message(text = "", error = false) {
-  const box = document.querySelector("#status");
-  box.textContent = text; box.hidden = !text;
-  box.classList.toggle("error", error);
-  box.setAttribute("role", error ? "alert" : "status");
-}
-
-/** Блокирует повторные действия на время запроса. */
-export function busy(value) {
-  document.querySelector("main").setAttribute("aria-busy", String(value));
-  document.querySelectorAll("main button, main input, main select").forEach(function(control) { control.disabled = value; });
-}
-
-/** Создаёт кнопки строки для делегирования событий. */
-export function actions(id) {
-  const box = document.createElement("div"); box.className = "row-actions";
-  for (const action of ["edit", "delete"]) {
-    const button = document.createElement("button"); button.type = "button";
-    button.dataset.action = action; button.dataset.id = String(id);
-    button.textContent = action === "edit" ? "Изменить" : "Удалить";
-    if (action === "delete") button.className = "button-danger";
-    box.append(button);
-  }
-  return box;
-}
-
-/** Выводит строку пустого состояния таблицы. */
-export function emptyRow(body, columns, text = "Записей нет") {
-  body.replaceChildren(); const row = document.createElement("tr");
-  const td = cell(text, "empty-row"); td.colSpan = columns;
-  row.append(td); body.append(row);
-}
-
-/** Заполняет выбор группы, сохраняя доступный прежний вариант. */
-export function fillGroups(select, groups, includeAll = false) {
-  const previous = select.value; select.replaceChildren();
-  if (includeAll) { const option = document.createElement("option"); option.value = ""; option.textContent = "Все группы"; select.append(option); }
-  for (const group of groups) {
-    const option = document.createElement("option"); option.value = String(group.id); option.textContent = group.name; select.append(option);
-  }
-  if (Array.from(select.options).some(function(option) { return option.value === previous; })) select.value = previous;
-  else if (includeAll) select.value = "";
-}
-```
-
-### `starter/templates/base.html`
-
-```html
-<!doctype html>
-<html lang="ru">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Электронный журнал{% endblock %}</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-</head>
-<body>
-  {% include "partials/header.html" %}
-  <main id="main-content" class="container page" aria-busy="false">
-    {% block content %}{% endblock %}
-  </main>
-  {% include "partials/footer.html" %}
-  {% block scripts %}{% endblock %}
-</body>
-</html>
-```
-
-### `starter/templates/error.html`
-
-```html
-{% extends "base.html" %}
-{% block title %}Страница не найдена{% endblock %}
-{% block content %}
-<h1>Страница не найдена</h1>
-<p>Выберите раздел в меню.</p>
-{% endblock %}
-```
-
-### `starter/templates/partials/footer.html`
-
-```html
-<footer class="site-footer"><div class="container">Электронный журнал · Учебный проект</div></footer>
-```
-
-### `starter/templates/partials/header.html`
-
-```html
-<header class="site-header">
-  <div class="container">
-    <a class="brand" href="{{ url_for('groups.index') }}">Электронный журнал</a>
-    <nav class="navigation" aria-label="Разделы приложения">
-{#      {% for key, label in [('groups', 'Группы'), ('subjects', 'Предметы'), ('students', 'Студенты'), ('journal', 'Журнал'), ('reports', 'Отчёты')] %}#}
-      {% for key, label in [('groups', 'Группы')] %}
-      <a href="{{ url_for(key + '.index') }}"{% if active_page == key %} aria-current="page"{% endif %}>{{ label }}</a>
-      {% endfor %}
-    </nav>
-  </div>
-</header>
 ```
 
