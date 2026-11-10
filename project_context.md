@@ -1,106 +1,112 @@
 # Структура проекта
 .
+├── docs
+│   ├── 01-how-it-works-and-architecture.md
+│   └── README.md
+├── scripts
+│   └── setup-local-domain.sh
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── ru
+│   │   │       └── edu
+│   │   │           └── journal
+│   │   │               ├── common
+│   │   │               │   ├── exception
+│   │   │               │   │   ├── NotFoundException.java
+│   │   │               │   │   └── ValidationException.java
+│   │   │               │   ├── DatabaseInitializer.java
+│   │   │               │   └── GlobalExceptionHandler.java
+│   │   │               ├── config
+│   │   │               │   ├── DatabaseConfig.java
+│   │   │               │   └── WebMvcConfig.java
+│   │   │               ├── features
+│   │   │               │   ├── groups
+│   │   │               │   │   ├── dto
+│   │   │               │   │   │   ├── GroupDto.java
+│   │   │               │   │   │   └── GroupSaveRequest.java
+│   │   │               │   │   ├── GroupController.java
+│   │   │               │   │   ├── GroupRepository.java
+│   │   │               │   │   └── GroupService.java
+│   │   │               │   ├── journal
+│   │   │               │   │   ├── dto
+│   │   │               │   │   │   ├── BulkGradeRequest.java
+│   │   │               │   │   │   ├── GradeDto.java
+│   │   │               │   │   │   ├── GradeSaveRequest.java
+│   │   │               │   │   │   └── JournalResponse.java
+│   │   │               │   │   ├── JournalController.java
+│   │   │               │   │   ├── JournalExportService.java
+│   │   │               │   │   ├── JournalRepository.java
+│   │   │               │   │   └── JournalService.java
+│   │   │               │   ├── reports
+│   │   │               │   │   ├── ReportController.java
+│   │   │               │   │   ├── ReportRepository.java
+│   │   │               │   │   └── ReportService.java
+│   │   │               │   ├── students
+│   │   │               │   │   ├── dto
+│   │   │               │   │   │   ├── StudentDto.java
+│   │   │               │   │   │   └── StudentSaveRequest.java
+│   │   │               │   │   ├── StudentController.java
+│   │   │               │   │   ├── StudentRepository.java
+│   │   │               │   │   └── StudentService.java
+│   │   │               │   └── subjects
+│   │   │               │       ├── dto
+│   │   │               │       │   ├── SubjectDto.java
+│   │   │               │       │   └── SubjectSaveRequest.java
+│   │   │               │       ├── SubjectController.java
+│   │   │               │       ├── SubjectRepository.java
+│   │   │               │       └── SubjectService.java
+│   │   │               └── JournalApplication.java
+│   │   └── resources
+│   │       ├── db
+│   │       │   ├── schema.sql
+│   │       │   └── seed.sql
+│   │       ├── static
+│   │       │   ├── css
+│   │       │   │   └── styles.css
+│   │       │   └── js
+│   │       │       ├── vendor
+│   │       │       │   └── chart.umd.min.js
+│   │       │       ├── api.js
+│   │       │       ├── chart-helper.js
+│   │       │       ├── groups.js
+│   │       │       ├── journal.js
+│   │       │       ├── reports.js
+│   │       │       ├── students.js
+│   │       │       ├── subjects.js
+│   │       │       ├── theme.js
+│   │       │       └── ui.js
+│   │       ├── templates
+│   │       │   ├── groups
+│   │       │   │   └── index.html
+│   │       │   ├── journal
+│   │       │   │   └── index.html
+│   │       │   ├── partials
+│   │       │   │   ├── footer.html
+│   │       │   │   └── header.html
+│   │       │   ├── reports
+│   │       │   │   └── index.html
+│   │       │   ├── students
+│   │       │   │   └── index.html
+│   │       │   ├── subjects
+│   │       │   │   └── index.html
+│   │       │   └── error.html
+│   │       └── application.properties
+│   └── test
+│       └── java
+│           └── ru
+│               └── edu
+│                   └── journal
+│                       ├── DatabaseBaselineTest.java
+│                       ├── JournalIntegrationTest.java
+│                       └── RollbackTest.java
 ├── mvnw
 ├── mvnw.cmd
 ├── pom.xml
 ├── project_context.md
-├── README.md
-└── src
-    ├── main
-    │   ├── java
-    │   │   └── ru
-    │   │       └── edu
-    │   │           └── journal
-    │   │               ├── common
-    │   │               │   ├── DatabaseInitializer.java
-    │   │               │   ├── exception
-    │   │               │   │   ├── NotFoundException.java
-    │   │               │   │   └── ValidationException.java
-    │   │               │   └── GlobalExceptionHandler.java
-    │   │               ├── config
-    │   │               │   ├── DatabaseConfig.java
-    │   │               │   └── WebMvcConfig.java
-    │   │               ├── features
-    │   │               │   ├── groups
-    │   │               │   │   ├── dto
-    │   │               │   │   │   ├── GroupDto.java
-    │   │               │   │   │   └── GroupSaveRequest.java
-    │   │               │   │   ├── GroupController.java
-    │   │               │   │   ├── GroupRepository.java
-    │   │               │   │   └── GroupService.java
-    │   │               │   ├── journal
-    │   │               │   │   ├── dto
-    │   │               │   │   │   ├── GradeDto.java
-    │   │               │   │   │   ├── GradeSaveRequest.java
-    │   │               │   │   │   └── JournalResponse.java
-    │   │               │   │   ├── JournalController.java
-    │   │               │   │   ├── JournalExportService.java
-    │   │               │   │   ├── JournalRepository.java
-    │   │               │   │   └── JournalService.java
-    │   │               │   ├── reports
-    │   │               │   │   ├── ReportController.java
-    │   │               │   │   ├── ReportRepository.java
-    │   │               │   │   └── ReportService.java
-    │   │               │   ├── students
-    │   │               │   │   ├── dto
-    │   │               │   │   │   ├── StudentDto.java
-    │   │               │   │   │   └── StudentSaveRequest.java
-    │   │               │   │   ├── StudentController.java
-    │   │               │   │   ├── StudentRepository.java
-    │   │               │   │   └── StudentService.java
-    │   │               │   └── subjects
-    │   │               │       ├── dto
-    │   │               │       │   ├── SubjectDto.java
-    │   │               │       │   └── SubjectSaveRequest.java
-    │   │               │       ├── SubjectController.java
-    │   │               │       ├── SubjectRepository.java
-    │   │               │       └── SubjectService.java
-    │   │               └── JournalApplication.java
-    │   └── resources
-    │       ├── application.properties
-    │       ├── db
-    │       │   ├── schema.sql
-    │       │   └── seed.sql
-    │       ├── static
-    │       │   ├── css
-    │       │   │   └── styles.css
-    │       │   └── js
-    │       │       ├── api.js
-    │       │       ├── chart-helper.js
-    │       │       ├── groups.js
-    │       │       ├── journal.js
-    │       │       ├── reports.js
-    │       │       ├── students.js
-    │       │       ├── subjects.js
-    │       │       ├── theme.js
-    │       │       ├── ui.js
-    │       │       └── vendor
-    │       │           └── chart.umd.min.js
-    │       └── templates
-    │           ├── error.html
-    │           ├── groups
-    │           │   └── index.html
-    │           ├── journal
-    │           │   └── index.html
-    │           ├── partials
-    │           │   ├── footer.html
-    │           │   └── header.html
-    │           ├── reports
-    │           │   └── index.html
-    │           ├── students
-    │           │   └── index.html
-    │           └── subjects
-    │               └── index.html
-    └── test
-        └── java
-            └── ru
-                └── edu
-                    └── journal
-                        ├── DatabaseBaselineTest.java
-                        ├── JournalIntegrationTest.java
-                        └── RollbackTest.java
+└── README.md
 
-38 directories, 62 files
+40 directories, 66 files
 
 # Файлы проекта
 
@@ -184,7 +190,6 @@
         </plugins>
     </build>
 </project>
-
 ```
 
 ## README.md
@@ -543,13 +548,432 @@ PASS: обычное удаление убрало студента и его о
 - Нажатие на заголовки столбцов **«ФИО»**, **«Группа»**, **«Оценок»**, **«Средний балл»** упорядочивает список по возрастанию или убыванию.
 - Кнопка **«Добавить студента»** открывает форму привязки к группе с валидацией имени.
 - Кнопка **«Изменить»** в строке студента позволяет перевести его в другую академическую группу с сохранением истории оценок.
+```
 
+## docs/01-how-it-works-and-architecture.md
+```md
+# Руководство 01: Как работает проект, веб-сервер и Spring Boot
+
+Добро пожаловать в первое руководство по архитектуре проекта **«Электронный журнал успеваемости студентов» (jrnl)**!
+
+Этот документ создан для того, чтобы простыми словами, на понятных примерах и наглядных схемах объяснить фундаментальные вещи:
+1. Как вообще программа на Java становится работающим веб-сайтом.
+2. Что такое веб-сервер, откуда он берется и как запускается.
+3. Какую работу за нас выполняет фреймворк **Spring Boot**.
+4. Как данные проходят путь от браузера пользователя до файла базы данных SQLite и обратно.
+
+---
+
+## 1. Ментальная модель: что представляет собой проект?
+
+Если говорить простыми словами, этот проект — **автономное сетевое приложение**.
+
+Вам не нужно отдельно скачивать или настраивать серверы баз данных (как PostgreSQL или MySQL) и внешние веб-серверы (как Apache или Nginx). Всё необходимое упаковано прямо внутрь приложения:
+
+```
++------------------------------------------------------------------------+
+|                          Java-процесс (JVM)                            |
+|                                                                        |
+|  +--------------------+   +-------------------+   +-----------------+  |
+|  | Встроенный веб-    |   | Фреймворк         |   | Локальная БД    |  |
+|  | сервер Tomcat      |-->| Spring Boot       |-->| SQLite          |  |
+|  | (порт 5000)        |   | (бизнес-логика)   |   | (файл на диске) |  |
+|  +--------------------+   +-------------------+   +-----------------+  |
+|           ^                                                 |          |
++-----------|-------------------------------------------------|----------+
+            | HTTP-запросы                                    | journal.db
+            v                                                 v
+      [ Браузер ]                                     [ Диск компьютера ]
+```
+
+Когда проект запускается:
+1. В памяти компьютера стартует виртуальная машина Java (**JVM**).
+2. Поднимается встроенный веб-сервер (**Apache Tomcat**), который открывает сетевой порт **5000** и начинает слушать входящие подключения.
+3. Проверяется и подключается файл базы данных [instance/journal.db](file:///home/milk13/IdeaProjects/jrnl/instance/journal.db).
+4. Вы открываете браузер по адресу `http://localhost:5000` и начинаете работать с журналом.
+
+---
+
+## 2. Как в Java создаются сайты и веб-приложения?
+
+### Что такое веб-сайт с точки зрения компьютера?
+Любой веб-сайт — это диалог по протоколу **HTTP** (HyperText Transfer Protocol) между двумя программами:
+* **Клиент (браузер)** отправляет текстовый запрос: *«Привет, дай мне страницу `/students`»*.
+* **Сервер** отправляет текстовый ответ: заголовок `200 OK` и содержимое (HTML-разметку, стили CSS, картинки или JSON-данные).
+
+### Как это устроено в Java: эволюция от сервлетов до Spring Boot
+
+```mermaid
+flowchart LR
+    A["1. Старый подход (2000-е годы)<br>WAR-архив + Внешний сервер Tomcat/JBoss"] --> B["2. Современный подход (Spring Boot)<br>Автономный JAR с встроенным сервером внутри"]
+```
+
+#### Исторический экскурс: как было раньше
+Раньше, чтобы запустить Java-сайт, программисту требовалось:
+1. Установить на операционную систему тяжелый сервер приложений (например, Apache Tomcat или GlassFish).
+2. Написать Java-классы, наследующие `HttpServlet`, и вручную в XML-файлах расписывать, какой URL какому классу соответствует.
+3. Собрать проект в `.war` (Web Application Archive) и вручную скопировать в папку сервера.
+
+#### Современный стандарт: Fat JAR и Embedded Tomcat
+В Spring Boot всё перевернули: **не приложение загружается в сервер, а сервер встроен прямо внутрь приложения!**
+В файле сборщика [pom.xml](file:///home/milk13/IdeaProjects/jrnl/pom.xml) подключен один стартовый модуль:
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+```
+
+Этот модуль автоматически подтягивает библиотеки **Apache Tomcat**. При компиляции проект упаковывается в один исполняемый файл `.jar`. Чтобы запустить сайт, достаточно выполнить команду в консоли:
+```bash
+java -jar target/journal-1.0.0.jar
+```
+Или запустить метод `main()` в вашей IDE.
+
+---
+
+## 3. Что делает Spring Boot в этом проекте?
+
+Фреймворк Spring — это «дирижер оркестра». Без него программисту пришлось бы вручную писать тысячи строк инфраструктурного кода: открывать сокеты, разбирать HTTP-заголовки, создавать объекты, передавать их друг другу и следить за памятью.
+
+Spring Boot берет на себя 4 ключевые задачи:
+
+### 1. Инверсия управления (IoC) и внедрение зависимостей (DI)
+В обычном Java-коде, если одному классу нужен другой, мы пишем:
+```java
+StudentService service = new StudentService(new StudentRepository(...));
+```
+Если классов десятки, связывать их вручную становится кошмаром.
+
+Spring использует подход **Inversion of Control (IoC)**:
+* Он сам создает объекты нужных классов при старте приложения. Такие управляемые объекты называются **Бинами (Beans)**.
+* Контейнер, где они живут, называется **ApplicationContext**.
+* Через **Dependency Injection (DI)** Spring сам передает (внедряет) нужные зависимости через конструктор.
+
+Посмотрим на реальный пример из проекта — [StudentController.java](file:///home/milk13/IdeaProjects/jrnl/src/main/java/ru/edu/journal/features/students/StudentController.java#L13-L20):
+```java
+@Controller
+public class StudentController {
+
+    private final StudentService studentService;
+
+    // Spring сам находит созданный ранее бин StudentService и передает его сюда!
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
+    ...
+}
+```
+
+### 2. Главные аннотации и их роли
+
+| Аннотация | Что означает для Spring | Пример в проекте |
+|---|---|---|
+| `@SpringBootApplication` | Главная точка входа. Включает сканирование компонентов и автоконфигурацию. | [`JournalApplication`](file:///home/milk13/IdeaProjects/jrnl/src/main/java/ru/edu/journal/JournalApplication.java#L23) |
+| `@Controller` | Класс отвечает за обработку входящих HTTP-запросов (веб-страницы и API). | [`StudentController`](file:///home/milk13/IdeaProjects/jrnl/src/main/java/ru/edu/journal/features/students/StudentController.java#L13) |
+| `@Service` | Класс содержит чистую бизнес-логику и бизнес-правила системы. | [`StudentService`](file:///home/milk13/IdeaProjects/jrnl/src/main/java/ru/edu/journal/features/students/StudentService.java) |
+| `@Repository` | Класс отвечает за работу с базой данных (выполнение SQL-запросов). | [`StudentRepository`](file:///home/milk13/IdeaProjects/jrnl/src/main/java/ru/edu/journal/features/students/StudentRepository.java#L12) |
+| `@Configuration` | Класс объявляет глобальные настройки приложения и создает системные бины. | [`DatabaseConfig`](file:///home/milk13/IdeaProjects/jrnl/src/main/java/ru/edu/journal/config/DatabaseConfig.java#L12) |
+| `@Bean` | Метод, возвращающий объект, который Spring должен взять под управление. | Метод `dataSource()` в [`DatabaseConfig`](file:///home/milk13/IdeaProjects/jrnl/src/main/java/ru/edu/journal/config/DatabaseConfig.java#L19) |
+
+### 3. Автоконфигурация (Autoconfiguration)
+Spring Boot анализирует файлы в вашем `classpath` (зависимости из [pom.xml](file:///home/milk13/IdeaProjects/jrnl/pom.xml)):
+* Нашел `spring-boot-starter-web`? Автоматически сконфигурирует Tomcat и диспетчер запросов `DispatcherServlet`.
+* Нашел `spring-boot-starter-thymeleaf`? Автоматически настроит шаблонизатор для рендеринга HTML-страниц из папки `src/main/resources/templates`.
+* Нашел `application.properties`? Считает настройки (порт, путь к БД) и применит их.
+
+### 4. Внешняя конфигурация ([application.properties](file:///home/milk13/IdeaProjects/jrnl/src/main/resources/application.properties))
+Вместо того чтобы зашивать настройки в код, они вынесены в понятный конфигурационный файл:
+```properties
+server.port=5000                       # На каком сетевом порту запускать веб-сервер
+spring.application.name=journal        # Имя приложения
+app.db.path=instance/journal.db        # Где лежит файл базы данных SQLite
+app.db.auto-init=true                  # Нужно ли автоматически создать таблицы при старте
+spring.thymeleaf.cache=false           # Отключение кэша шаблонов для мгновенного обновления верстки
+```
+
+---
+
+## 4. Как запускается веб-приложение: пошаговый жизненный цикл
+
+Ниже показана полная последовательность событий от клика «Run» до готовности сервера принимать клиентов:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Dev as Разработчик / Пользователь
+    participant JVM as Java Virtual Machine
+    participant Main as JournalApplication.main()
+    participant Spring as SpringApplication (IoC Контейнер)
+    participant Tomcat as Встроенный сервер Tomcat
+    participant DBInit as DatabaseInitializer
+    participant Browser as Веб-браузер
+
+    Dev->>JVM: Запуск java ru.edu.journal.JournalApplication
+    JVM->>Main: Вызов метода main(args)
+    Main->>Spring: SpringApplication.run(JournalApplication.class, args)
+    
+    rect rgb(240, 248, 255)
+        Note over Spring,Tomcat: Фаза инициализации контекста
+        Spring->>Spring: Чтение application.properties
+        Spring->>Tomcat: Старт веб-сервера Tomcat на порту 5000
+        Spring->>Spring: Сканирование пакетов ru.edu.journal.*
+        Spring->>Spring: Создание бинов (@Configuration, @Repository, @Service, @Controller)
+        Spring->>Spring: Внедрение зависимостей (DI)
+    end
+
+    rect rgb(255, 250, 240)
+        Note over Spring,DBInit: Фаза запуска раннеров (CommandLineRunner)
+        Spring->>DBInit: Вызов run()
+        DBInit->>DBInit: Проверка файла instance/journal.db
+        alt База данных пуста или отсутствует
+            DBInit->>DBInit: Выполнение schema.sql (создание таблиц)
+            DBInit->>DBInit: Выполнение seed.sql (демо-данные)
+        end
+    end
+
+    Spring->>Main: Событие ApplicationReadyEvent
+    Main-->>Dev: Вывод баннера: "Приложение успешно запущено! http://localhost:5000"
+    
+    Dev->>Browser: Открытие http://localhost:5000
+    Browser->>Tomcat: HTTP GET /
+    Tomcat->>Browser: HTTP 302 Redirect на /groups -> HTML страница
+```
+
+### Разбор ключевых фаз:
+
+1. **Точка входа**: Метод `main` в файле [`JournalApplication.java`](file:///home/milk13/IdeaProjects/jrnl/src/main/java/ru/edu/journal/JournalApplication.java#L40-L42):
+   ```java
+   public static void main(String[] args) {
+       SpringApplication.run(JournalApplication.class, args);
+   }
+   ```
+2. **Создание сетевого слушателя**: Внутри `SpringApplication.run()` создается `ServletWebServerApplicationContext`. Он запускает веб-сервер Tomcat, связывает его с сокетом `0.0.0.0:5000` и запускает фоновый пул потоков (Worker Threads), готовых параллельно обрабатывать запросы пользователей.
+3. **Инициализация базы данных**: Класс [`DatabaseInitializer`](file:///home/milk13/IdeaProjects/jrnl/src/main/java/ru/edu/journal/common/DatabaseInitializer.java) реализует интерфейс `CommandLineRunner`. Это значит, что метод `run()` вызовется автоматически сразу после поднятия контекста, но до того, как сервер начнет принимать реальных пользователей. Он проверяет, есть ли таблицы в SQLite, и если база пустая — накатывает схему [schema.sql](file:///home/milk13/IdeaProjects/jrnl/src/main/resources/db/schema.sql) и начальные данные [seed.sql](file:///home/milk13/IdeaProjects/jrnl/src/main/resources/db/seed.sql).
+4. **Готовность к работе**: Слушатель [`onApplicationReady`](file:///home/milk13/IdeaProjects/jrnl/src/main/java/ru/edu/journal/JournalApplication.java#L44-L68) перехватывает событие готовности и печатает в консоль красивое сообщение с ссылкой для перехода в браузер.
+
+---
+
+## 5. Как обрабатываются HTTP-запросы (Архитектура Spring MVC)
+
+Когда пользователь нажимает ссылку или кнопку в браузере, в приложение прилетает HTTP-запрос. Кто его встречает и как он добирается до нужного метода?
+
+За это отвечает **Spring MVC** и его центральный компонент — **`DispatcherServlet`** (паттерн *Front Controller*):
+
+```mermaid
+flowchart TD
+    Client(["1. Браузер клиента"]) -->|"HTTP GET /api/students"| DS["2. DispatcherServlet<br>(Центральный диспетчер)"]
+    
+    DS -->|"Поиск маршрута"| HM["3. HandlerMapping<br>(Таблица соответствия URL и методов)"]
+    HM -->|"Найден метод"| DS
+    
+    DS -->|"Вызов метода listStudents()"| Ctrl["4. StudentController<br>(@Controller)"]
+    Ctrl -->|"Вызов бизнес-логики"| Srv["5. StudentService<br>(@Service)"]
+    Srv -->|"SQL-запрос"| Repo["6. StudentRepository<br>(@Repository / JdbcClient)"]
+    
+    Repo -->|"Чтение данных"| DB[("7. SQLite база<br>journal.db")]
+    DB -->|"Строки данных"| Repo
+    
+    Repo -->|"Список DTO (StudentDto)"| Srv
+    Srv -->|"Результат"| Ctrl
+    Ctrl -->|"JSON (благодаря @ResponseBody)"| DS
+    DS -->|"HTTP Response 200 OK (application/json)"| Client
+```
+
+### Два типа ответов в нашем проекте: HTML vs JSON
+
+Наш проект использует современную гибридную архитектуру:
+
+```mermaid
+flowchart LR
+    subgraph SSR["1. Серверный рендеринг (Thymeleaf)"]
+        Req1["GET /students"] --> C1["StudentController.index()"]
+        C1 -->|"Возвращает имя шаблона 'students/index'"| View["Thymeleaf Engine"]
+        View -->|"Подставляет переменные в HTML"| HTML["Готовая страница HTML"]
+    end
+
+    subgraph REST["2. REST API (Динамика через Fetch)"]
+        Req2["GET /api/students"] --> C2["StudentController.listStudents()"]
+        C2 -->|"@ResponseBody"| Jack["Jackson JSON Serializer"]
+        Jack -->|"Превращает Java List в JSON"| JSON["{'items': [...]}"]
+    end
+```
+
+1. **Серверные страницы (SSR — Server-Side Rendering)**:
+   * Вы переходите на страницу `http://localhost:5000/students`.
+   * Контроллер [`StudentController`](file:///home/milk13/IdeaProjects/jrnl/src/main/java/ru/edu/journal/features/students/StudentController.java#L22-L26) возвращает строку `"students/index"`.
+   * Шаблонизатор **Thymeleaf** берет файл [src/main/resources/templates/students/index.html](file:///home/milk13/IdeaProjects/jrnl/src/main/resources/templates/students/index.html), собирает его вместе с шапкой ([header.html](file:///home/milk13/IdeaProjects/jrnl/src/main/resources/templates/partials/header.html)) и подвалом ([footer.html](file:///home/milk13/IdeaProjects/jrnl/src/main/resources/templates/partials/footer.html)) и отдает браузеру готовый HTML-каркас.
+2. **REST API для динамики**:
+   * Страница в браузере загрузилась, и клиентский JavaScript ([students.js](file:///home/milk13/IdeaProjects/jrnl/src/main/resources/static/js/students.js)) делает фоновый запрос `fetch('/api/students')`.
+   * Метод [`listStudents`](file:///home/milk13/IdeaProjects/jrnl/src/main/java/ru/edu/journal/features/students/StudentController.java#L28-L33) помечен аннотацией `@ResponseBody`. Это говорит Spring: *«Не ищи HTML-шаблон, а преврати возвращаемые Java-объекты прямо в формат JSON!»*.
+   * Браузер получает чистые данные и мгновенно перерисовывает таблицу без перезагрузки всей страницы.
+
+---
+
+## 6. Архитектурный стиль проекта: Вертикальные срезы (Vertical Slices)
+
+Большинство традиционных руководств предлагают раскладывать код «горизонтально»: все контроллеры в один общий пакет `controllers`, все сервисы в `services`, а все репозитории в `repositories`. Когда проект разрастается, в такой структуре становится сложно ориентироваться.
+
+В нашем проекте применен более продвинутый подход — **Vertical Slice Architecture (Архитектура вертикальных срезов)**:
+
+```
+src/main/java/ru/edu/journal/
+├── JournalApplication.java          # Главная точка входа
+├── config/                          # Глобальные конфигурации
+│   ├── DatabaseConfig.java          # Настройка подключения к SQLite
+│   └── WebMvcConfig.java            # Маршрутизация, перенаправления, статика
+├── common/                          # Общие утилиты и обработчики
+│   ├── DatabaseInitializer.java     # Инициализация БД при старте
+│   └── GlobalExceptionHandler.java  # Перехват и форматирование ошибок
+└── features/                        # ВЕРТИКАЛЬНЫЕ СРЕЗЫ (Функциональные модули):
+    ├── students/                    # Всё, что касается студентов
+    │   ├── dto/                     # Объекты передачи данных (StudentDto, StudentSaveRequest)
+    │   ├── StudentController.java   # HTTP эндпоинты
+    │   ├── StudentService.java      # Бизнес-правила
+    │   └── StudentRepository.java   # SQL-запросы к таблице students
+    ├── groups/                      # Всё, что касается учебных групп
+    ├── subjects/                    # Всё, что касается предметов
+    ├── journal/                     # Матрица оценок и Excel-режим
+    └── reports/                     # Аналитика, графики и отчеты
+```
+
+### Преимущества такой структуры:
+* **Высокая связность (High Cohesion):** если вам нужно доработать логику студентов, вы открываете папку `features/students` — контроллер, сервис, репозиторий и DTO находятся в одном месте.
+* **Изолированность:** изменения в модуле `reports` никак случайно не сломают модуль `students`.
+
+---
+
+## 7. Внутреннее устройство одного среза: от контроллера до базы данных
+
+Давайте разберем пошагово, как устроен срез на примере сохранения нового студента:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as Пользователь (Форма в браузере)
+    participant JS as students.js
+    participant Ctrl as StudentController
+    participant Srv as StudentService
+    participant Repo as StudentRepository
+    participant DB as SQLite (journal.db)
+
+    User->>JS: Заполнение формы и клик "Сохранить"
+    JS->>Ctrl: POST /api/students (JSON с именем, группой и email)
+    
+    Note over Ctrl: Валидация входных данных (DTO)
+    Ctrl->>Srv: saveStudent(request, null)
+    
+    Note over Srv: Бизнес-проверки:<br>1. Существует ли указанная группа?<br>2. Корректен ли email?<br>3. Не пустое ли имя?
+    
+    Srv->>Repo: create(name, groupId, email)
+    Repo->>DB: INSERT INTO students (name, group_id, email) VALUES (...)
+    DB-->>Repo: Сгенерированный id новой записи
+    
+    Repo->>DB: SELECT * FROM students WHERE id = ?
+    DB-->>Repo: Данные созданной записи
+    Repo-->>Srv: Объект StudentDto
+    Srv-->>Ctrl: Объект StudentDto
+    Ctrl-->>JS: HTTP 201 Created + JSON созданного студента
+    JS-->>User: Отображение зеленого уведомления и добавление строки в таблицу
+```
+
+### За что отвечает каждый класс в этой цепочке:
+
+1. **[`StudentSaveRequest`](file:///home/milk13/IdeaProjects/jrnl/src/main/java/ru/edu/journal/features/students/dto/StudentSaveRequest.java)** — DTO (Data Transfer Object). Простой Java-класс (или Record), описывающий контракт входящих данных: какие поля мы ждем от клиента.
+2. **[`StudentController`](file:///home/milk13/IdeaProjects/jrnl/src/main/java/ru/edu/journal/features/students/StudentController.java)** — принимает HTTP-запрос, переводит JSON в Java-объект, вызывает сервис и возвращает соответствующий HTTP-статус (`201 CREATED` при успехе или `400 BAD REQUEST` при ошибке).
+3. **[`StudentService`](file:///home/milk13/IdeaProjects/jrnl/src/main/java/ru/edu/journal/features/students/StudentService.java)** — «мозг» приложения. Проверяет бизнес-правила (например, что группа действительно существует), управляет транзакциями и координирует действия.
+4. **[`StudentRepository`](file:///home/milk13/IdeaProjects/jrnl/src/main/java/ru/edu/journal/features/students/StudentRepository.java)** — общается с SQLite через современный Spring API `JdbcClient`. Здесь пишутся прямые, быстрые и понятные SQL-запросы без лишней магии.
+5. **[`StudentDto`](file:///home/milk13/IdeaProjects/jrnl/src/main/java/ru/edu/journal/features/students/dto/StudentDto.java)** — объект, в который упаковываются данные из базы для отправки клиенту (включая вычисленный средний балл и количество оценок).
+
+---
+
+## 8. Итоговая шпаргалка терминов
+
+| Термин | Что это простыми словами |
+|---|---|
+| **JVM** | Виртуальная машина Java — среда, которая непосредственно выполняет скомпилированный байткод Java. |
+| **Веб-сервер (Tomcat)** | Сетевая программа, которая слушает порт (в нашем случае 5000), принимает подключения по TCP/IP и общается по протоколу HTTP. |
+| **Spring Boot** | Фреймворк, который автоматически настраивает компоненты приложения, внедряет зависимости и запускает встроенный Tomcat. |
+| **IoC / Bean** | Контейнер Spring сам создает объекты классов (бины) и связывает их между собой. |
+| **Controller** | Класс-приемная для веб-запросов. Связывает URL адрес страницы или API с кодом на Java. |
+| **Thymeleaf** | Шаблонизатор, который генерирует HTML на сервере перед отправкой в браузер. |
+| **REST API** | Набор эндпоинтов, возвращающих "сырые" данные в формате JSON (для асинхронных скриптов фронтенда). |
+| **JdbcClient** | Легковесный и удобный инструмент Spring для выполнения SQL-запросов в базу данных. |
+| **SQLite** | Встраиваемая база данных, хранящаяся в одном файле на диске, не требующая установки отдельного сервера СУБД. |
+
+---
+
+## Что изучать дальше?
+
+В следующем руководстве [02-database-and-sqlite.md] мы детально разберем:
+* Как устроен файл [schema.sql](file:///home/milk13/IdeaProjects/jrnl/src/main/resources/db/schema.sql) и реляционная структура таблиц (`groups`, `students`, `subjects`, `grades`).
+* Почему мы выбрали чистый SQL и `JdbcClient` вместо Hibernate/JPA.
+* Как обеспечивается целостность данных, внешние ключи (Foreign Keys) и транзакции при переводе и удалении студентов.
+```
+
+## scripts/setup-local-domain.sh
+```bash
+#!/usr/bin/env bash
+# Скрипт привязки локального домена http://journal.edu.local к порту 5000 на Arch Linux
+set -euo pipefail
+
+DOMAIN="journal.edu.local"
+APP_PORT=5000
+
+echo "=== Настройка локального домена http://${DOMAIN} ==="
+
+if [ "$EUID" -ne 0 ]; then
+    echo "Запуск от имени суперпользователя (sudo)..."
+    exec sudo bash "$0" "$@"
+fi
+
+# 1. Добавление записи в /etc/hosts
+if grep -qE "\s+${DOMAIN}(\s|$)" /etc/hosts; then
+    echo "✓ Домен ${DOMAIN} уже присутствует в /etc/hosts"
+else
+    echo "127.0.0.1 ${DOMAIN}" >> /etc/hosts
+    echo "✓ Добавлена запись '127.0.0.1 ${DOMAIN}' в /etc/hosts"
+fi
+
+# 2. Настройка перенаправления входящего трафика с 80 на 5000 через iptables
+if command -v iptables >/dev/null 2>&1; then
+    # Перенаправление для локальных запросов (OUTPUT)
+    if ! iptables -t nat -C OUTPUT -p tcp -d 127.0.0.1 --dport 80 -j REDIRECT --to-port ${APP_PORT} 2>/dev/null; then
+        iptables -t nat -I OUTPUT -p tcp -d 127.0.0.1 --dport 80 -j REDIRECT --to-port ${APP_PORT}
+        echo "✓ Настроено локальное перенаправление: 127.0.0.1:80 -> 127.0.0.1:${APP_PORT} (iptables OUTPUT)"
+    else
+        echo "✓ Правило iptables OUTPUT (порт 80 -> ${APP_PORT}) уже активно"
+    fi
+
+    # Перенаправление для внешних запросов (PREROUTING)
+    if ! iptables -t nat -C PREROUTING -p tcp --dport 80 -j REDIRECT --to-port ${APP_PORT} 2>/dev/null; then
+        iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-port ${APP_PORT}
+        echo "✓ Настроено внешнее перенаправление: :80 -> :${APP_PORT} (iptables PREROUTING)"
+    else
+        echo "✓ Правило iptables PREROUTING (порт 80 -> ${APP_PORT}) уже активно"
+    fi
+else
+    echo "⚠️ iptables не найден, перенаправление с порта 80 не настроено."
+fi
+
+echo ""
+echo "=========================================================="
+echo "ГОТОВО! Домен http://${DOMAIN} успешно привязан."
+echo "Запустите приложение и открывайте в браузере:"
+echo "👉 http://${DOMAIN}"
+echo "(или http://${DOMAIN}:${APP_PORT})"
+echo "=========================================================="
 ```
 
 ## src/main/resources/application.properties
 ```properties
 server.port=5000
+server.forward-headers-strategy=native
 spring.application.name=journal
+
+# Публичный адрес для отображения в консоли
+app.public-url=http://journal.edu.local
 
 # SQLite Database
 app.db.path=instance/journal.db
@@ -562,7 +986,6 @@ spring.thymeleaf.cache=false
 spring.web.resources.static-locations=classpath:/static/
 spring.web.resources.cache.period=0
 spring.web.resources.chain.cache=false
-
 ```
 
 ## src/main/resources/db/schema.sql
@@ -577,16 +1000,19 @@ CREATE TABLE groups (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL UNIQUE CHECK(length(trim(name)) BETWEEN 1 AND 50)
 );
+
 CREATE TABLE subjects (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL UNIQUE CHECK(length(trim(name)) > 0)
 );
+
 CREATE TABLE students (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL CHECK(length(trim(name)) BETWEEN 1 AND 50),
     group_id INTEGER NOT NULL REFERENCES groups(id),
     email TEXT
 );
+
 CREATE TABLE grades (
     id INTEGER PRIMARY KEY,
     student_id INTEGER NOT NULL REFERENCES students(id),
@@ -595,6 +1021,13 @@ CREATE TABLE grades (
     UNIQUE(student_id, subject_id)
 );
 
+-- Индексы для ускорения JOIN, фильтрации и сортировки
+CREATE INDEX idx_groups_name ON groups(name);
+CREATE INDEX idx_subjects_name ON subjects(name);
+CREATE INDEX idx_students_group ON students(group_id);
+CREATE INDEX idx_students_name ON students(name);
+CREATE INDEX idx_grades_student ON grades(student_id);
+CREATE INDEX idx_grades_subject ON grades(subject_id);
 ```
 
 ## src/main/resources/db/seed.sql
@@ -828,33 +1261,1652 @@ INSERT INTO grades (id, student_id, subject_id, mark) VALUES (159, 58, 3, 3);
 INSERT INTO grades (id, student_id, subject_id, mark) VALUES (160, 59, 1, 2);
 INSERT INTO grades (id, student_id, subject_id, mark) VALUES (161, 59, 2, 3);
 INSERT INTO grades (id, student_id, subject_id, mark) VALUES (162, 59, 3, 4);
+```
 
+## src/main/resources/static/css/styles.css
+```css
+:root {
+  /* ТЕМА 1: DRACULA / OBSIDIAN LAVENDER (По умолчанию) */
+  color-scheme: dark;
+  --bg: #0b0a10;
+  --surface: rgba(20, 19, 29, 0.84);
+  --surface-solid: #14131d;
+  --surface-elevated: #1c1a29;
+  --ink: #f4f2ff;
+  --muted: #938fa8;
+  --line: #29263c;
+  --line-glow: rgba(189, 147, 249, 0.38);
+  --soft: #1f1c30;
+  --brand: #bd93f9;
+  --brand-pink: #ff79c6;
+  --brand-hover: #a87ffb;
+  --brand-soft: rgba(189, 147, 249, 0.14);
+  --brand-ink: #09080d;
+  --danger: #ff5555;
+  --input-bg: #0e0d15;
+  --input-border: #312d47;
+  --editor-bg: #151420;
+  --confirm-bg: #29121a;
+  --status-bg: #1a162b;
+  --status-color: #e4d8ff;
+  --status-err-bg: #2c121b;
+  --status-err-color: #ff9e9e;
+  --table-th-bg: #13111c;
+  --table-row-odd: rgba(14, 13, 21, 0.78);
+  --table-row-even: rgba(20, 19, 29, 0.78);
+  --table-row-hover: rgba(189, 147, 249, 0.11);
+  --grade-empty-border: #322e4a;
+  --grade-failing-bg: rgba(255, 85, 85, 0.18);
+  --grade-failing-color: #ff8080;
+  --kpi-bg: rgba(20, 19, 29, 0.82);
+  --kpi-border: #29263c;
+  --kpi-val: #ffffff;
+  --card-bg: rgba(20, 19, 29, 0.82);
+  --card-border: #29263c;
+  --shadow: 0 10px 30px -6px rgba(0, 0, 0, 0.55);
+
+  /* Координаты живого градиента Aurora */
+  --aurora-x1: 15%;
+  --aurora-y1: 15%;
+  --aurora-x2: 80%;
+  --aurora-y2: 65%;
+  --aurora-c1: rgba(189, 147, 249, 0.22);
+  --aurora-c2: rgba(255, 121, 198, 0.14);
+
+  /* Ширина боковой панели «Рентген логики» (изменяется перетаскиванием) */
+  --xray-width: 440px;
+}
+
+[data-theme="oled"] {
+  /* ТЕМА 2: TRUE OLED PITCH BLACK */
+  color-scheme: dark;
+  --bg: #000000;
+  --surface: rgba(8, 8, 12, 0.92);
+  --surface-solid: #07070b;
+  --surface-elevated: #100f18;
+  --ink: #ffffff;
+  --muted: #8b87a1;
+  --line: #1e1b2e;
+  --line-glow: rgba(196, 181, 253, 0.5);
+  --soft: #12101b;
+  --brand: #c4b5fd;
+  --brand-pink: #f472b6;
+  --brand-hover: #b19bfa;
+  --brand-soft: rgba(196, 181, 253, 0.16);
+  --brand-ink: #000000;
+  --danger: #ff6b6b;
+  --input-bg: #000000;
+  --input-border: #252238;
+  --editor-bg: #07070b;
+  --confirm-bg: #200910;
+  --status-bg: #120e21;
+  --status-color: #ece4ff;
+  --status-err-bg: #240a12;
+  --status-err-color: #ffb3b3;
+  --table-th-bg: #06060a;
+  --table-row-odd: #000000;
+  --table-row-even: #050509;
+  --table-row-hover: #141124;
+  --grade-empty-border: #252238;
+  --grade-failing-bg: rgba(255, 85, 85, 0.22);
+  --grade-failing-color: #ff9999;
+  --kpi-bg: #050509;
+  --kpi-border: #1e1b2e;
+  --kpi-val: #ffffff;
+  --card-bg: #050509;
+  --card-border: #1e1b2e;
+  --shadow: 0 0 0 1px #1e1b2e;
+}
+
+[data-theme="light"] {
+  /* ТЕМА 3: ALABASTER VIOLET (Бело-фиолетовая) */
+  color-scheme: light;
+  --bg: #f8f7fc;
+  --surface: rgba(255, 255, 255, 0.88);
+  --surface-solid: #ffffff;
+  --surface-elevated: #ffffff;
+  --ink: #171429;
+  --muted: #655f7f;
+  --line: #e4dff2;
+  --line-glow: rgba(124, 58, 237, 0.28);
+  --soft: #f2eefc;
+  --brand: #7c3aed;
+  --brand-pink: #db2777;
+  --brand-hover: #6d28d9;
+  --brand-soft: rgba(124, 58, 237, 0.1);
+  --brand-ink: #ffffff;
+  --danger: #dc2626;
+  --input-bg: #ffffff;
+  --input-border: #d5cee8;
+  --editor-bg: #ffffff;
+  --confirm-bg: #fff1f2;
+  --status-bg: #f3effe;
+  --status-color: #3b1c71;
+  --status-err-bg: #fef2f2;
+  --status-err-color: #991b1b;
+  --table-th-bg: #f3f0fa;
+  --table-row-odd: #ffffff;
+  --table-row-even: #faf9fe;
+  --table-row-hover: #f1ecfd;
+  --grade-empty-border: #d5cee8;
+  --grade-failing-bg: #fee2e2;
+  --grade-failing-color: #b91c1c;
+  --kpi-bg: #ffffff;
+  --kpi-border: #e4dff2;
+  --kpi-val: #1e1b4b;
+  --card-bg: #ffffff;
+  --card-border: #e4dff2;
+  --shadow: 0 8px 24px -4px rgba(23, 20, 41, 0.06);
+  --aurora-c1: rgba(124, 58, 237, 0.13);
+  --aurora-c2: rgba(219, 39, 119, 0.08);
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html, body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--ink);
+  font: 15px/1.5 "Inter", "JetBrains Mono", system-ui, -apple-system, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
+  transition: padding-right 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body.xray-open {
+  padding-right: var(--xray-width, 440px);
+}
+
+body.xray-resizing {
+  transition: none !important;
+  user-select: none !important;
+  cursor: ew-resize !important;
+}
+
+body.xray-resizing * {
+  user-select: none !important;
+  cursor: ew-resize !important;
+}
+
+/* ==========================================================================
+   Плавающий фоновый градиент (Aurora Mesh Backdrop)
+   ========================================================================== */
+
+.aurora-backdrop {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.aurora-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(95px);
+  transition: left 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+              top 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+              background 0.9s ease;
+}
+
+.aurora-blob.blob-1 {
+  width: 520px;
+  height: 520px;
+  left: var(--aurora-x1);
+  top: var(--aurora-y1);
+  background: var(--aurora-c1);
+  transform: translate(-50%, -50%);
+}
+
+.aurora-blob.blob-2 {
+  width: 460px;
+  height: 460px;
+  left: var(--aurora-x2);
+  top: var(--aurora-y2);
+  background: var(--aurora-c2);
+  transform: translate(-50%, -50%);
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  width: min(1200px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   Шапка и навигация со скользящей кареткой (Sliding Glider)
+   ========================================================================== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-bottom: 1px solid var(--line);
+  padding-top: 12px;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.brand-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.brand-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, var(--brand), var(--brand-pink));
+  color: #09080d;
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 800;
+  font-size: 15px;
+  box-shadow: 0 0 14px var(--line-glow);
+}
+
+.brand-tag {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 99px;
+  background: var(--brand-soft);
+  color: var(--brand);
+  border: 1px solid var(--line-glow);
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.header-pill-btn,
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 5px 12px;
+  min-height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+
+.header-pill-btn:hover,
+.theme-toggle-btn:hover {
+  border-color: var(--brand);
+  box-shadow: 0 0 14px var(--brand-soft);
+}
+
+.term-btn {
+  font-family: "JetBrains Mono", monospace;
+  color: var(--brand);
+}
+
+.theme-toggle-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: var(--brand);
+}
+
+.theme-svg-icon {
+  width: 15px;
+  height: 15px;
+  display: block;
+}
+
+.xray-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--brand-pink);
+  box-shadow: 0 0 8px var(--brand-pink);
+}
+
+.xray-badge {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 99px;
+  background: var(--brand-soft);
+  color: var(--brand);
+  transition: transform 0.2s ease;
+}
+
+.xray-badge.bump {
+  transform: scale(1.3);
+}
+
+.navigation {
+  position: relative;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 10px;
+  padding: 4px;
+}
+
+.nav-glider {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(189, 147, 249, 0.22), rgba(255, 121, 198, 0.16));
+  border: 1px solid var(--line-glow);
+  box-shadow: 0 0 18px var(--brand-soft);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+}
+
+.navigation a {
+  position: relative;
+  z-index: 1;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 16px;
+  border-radius: 8px;
+  transition: color 0.18s ease;
+}
+
+/* Элегантное подчёркивание при наведении курсора на вкладку */
+.navigation a::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--brand), var(--brand-pink));
+  box-shadow: 0 0 10px var(--line-glow);
+  opacity: 0;
+  transform: scaleX(0.35);
+  transition: opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1), transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.navigation a:hover {
+  color: var(--ink);
+}
+
+.navigation a:hover:not([aria-current="page"])::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.navigation a[aria-current="page"] {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Контент, карточки, таблицы
+   ========================================================================== */
+
+.page {
+  padding-top: 28px;
+  padding-bottom: 48px;
+  flex: 1;
+}
+
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+h1 {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0;
+  background: linear-gradient(95deg, var(--ink) 30%, var(--brand) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+h2 { font-size: 17px; font-weight: 600; margin: 0 0 14px; color: var(--ink); }
+p { margin: 0 0 14px; }
+.muted { color: var(--muted); }
+
+/* ==========================================================================
+   Векторные иконки интерфейса (Monochrome SVG Icons)
+   ========================================================================== */
+
+.btn-icon {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  vertical-align: -2px;
+}
+
+.btn-icon.brand-icon {
+  color: var(--brand);
+}
+
+.btn-icon.danger-icon {
+  color: var(--danger);
+}
+
+.btn-icon.no-margin {
+  margin: 0;
+}
+
+.th-bulk-icon {
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+
+.term-top-icon {
+  width: 13px;
+  height: 13px;
+  vertical-align: -2px;
+  margin-right: 4px;
+}
+
+button, input, select { font: inherit; }
+
+button, .button-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 7px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  background: var(--surface);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+button:hover, .button-secondary:hover {
+  border-color: var(--brand);
+  background: var(--surface-elevated);
+  color: var(--ink);
+  box-shadow: 0 0 12px var(--brand-soft);
+}
+
+button:active, .button-secondary:active {
+  transform: translateY(1px);
+}
+
+.button-primary,
+button.button-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: var(--brand-ink) !important;
+  background: linear-gradient(135deg, var(--brand), var(--brand-pink)) !important;
+  border: 1px solid transparent !important;
+  font-weight: 700;
+  box-shadow: 0 4px 15px var(--brand-soft);
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+
+.button-primary:hover,
+button.button-primary:hover {
+  color: var(--brand-ink) !important;
+  background: linear-gradient(135deg, var(--brand), var(--brand-pink)) !important;
+  border-color: transparent !important;
+  filter: brightness(1.12);
+  box-shadow: 0 6px 20px var(--brand-soft);
+  transform: translateY(-1px);
+}
+
+.button-primary:active,
+button.button-primary:active {
+  transform: translateY(0);
+  filter: brightness(0.96);
+}
+
+.button-danger,
+button.button-danger {
+  color: var(--danger) !important;
+  border: 1px solid rgba(255, 85, 85, 0.45) !important;
+  background: var(--surface) !important;
+  font-weight: 600;
+  transition: all 0.16s ease;
+}
+
+.button-danger:hover,
+button.button-danger:hover {
+  color: #ffffff !important;
+  background: var(--danger) !important;
+  border-color: var(--danger) !important;
+  box-shadow: 0 4px 16px rgba(255, 85, 85, 0.35);
+  transform: translateY(-1px);
+}
+
+.button-danger:active,
+button.button-danger:active {
+  transform: translateY(0);
+  filter: brightness(0.96);
+}
+
+.button-row, .row-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.row-actions button { min-height: 32px; padding: 4px 10px; font-size: 13px; }
+
+.toolbar, .form-fields {
+  display: flex;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  background: var(--surface);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+.form-fields { padding: 0; background: transparent; border: none; box-shadow: none; }
+.toolbar-actions { display: flex; gap: 8px; align-items: center; }
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  max-width: 320px;
+  min-width: 150px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+input, select {
+  width: 100%;
+  min-height: 38px;
+  padding: 7px 11px;
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  background: var(--input-bg);
+  color: var(--ink);
+  font-size: 14px;
+  text-transform: none;
+  letter-spacing: normal;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px var(--brand-soft);
+}
+
+.results-meta { font-size: 13px; color: var(--muted); align-self: center; margin-left: auto; }
+
+.editor {
+  padding: 20px;
+  margin-bottom: 20px;
+  background: var(--editor-bg);
+  border-radius: 12px;
+  border: 1px solid var(--brand);
+  box-shadow: var(--shadow);
+}
+
+.confirmation {
+  padding: 16px 20px;
+  background: var(--confirm-bg);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border: 1px solid var(--danger);
+}
+
+.status {
+  padding: 10px 14px;
+  background: var(--status-bg);
+  color: var(--status-color);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border: 1px solid var(--brand);
+}
+
+.status.error { background: var(--status-err-bg); color: var(--status-err-color); border-color: var(--danger); }
+
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow);
+}
+
+table { width: 100%; border-collapse: collapse; text-align: left; }
+th, td { border-bottom: 1px solid var(--line); padding: 12px 15px; vertical-align: middle; }
+th {
+  background: var(--table-th-bg);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  font-weight: 600;
+  user-select: none;
+  white-space: nowrap;
+}
+
+th.sortable { cursor: pointer; }
+th.sortable:hover { color: var(--brand); }
+th.sortable::after { content: " ⇅"; opacity: 0.35; font-size: 11px; }
+th.sortable[aria-sort="ascending"]::after { content: " ▲"; opacity: 1; color: var(--brand); }
+th.sortable[aria-sort="descending"]::after { content: " ▼"; opacity: 1; color: var(--brand); }
+
+tbody tr:nth-child(odd) { background-color: var(--table-row-odd); }
+tbody tr:nth-child(even) { background-color: var(--table-row-even); }
+tbody tr:hover { background-color: var(--table-row-hover) !important; }
+
+.number { text-align: right; font-variant-numeric: tabular-nums; }
+.th-actions { text-align: right; white-space: nowrap; }
+.row-actions { justify-content: flex-end; }
+
+.mark-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.mark-badge.excellent { background: rgba(80, 250, 123, 0.16); color: #50fa7b; border: 1px solid rgba(80, 250, 123, 0.35); }
+.mark-badge.good { background: var(--brand-soft); color: var(--brand); border: 1px solid var(--line-glow); }
+.mark-badge.fair { background: rgba(241, 250, 140, 0.16); color: #f1fa8c; border: 1px solid rgba(241, 250, 140, 0.35); }
+.mark-badge.failing { background: rgba(255, 85, 85, 0.18); color: #ff5555; border: 1px solid rgba(255, 85, 85, 0.4); }
+.mark-badge.empty { color: var(--muted); }
+
+.grade-cell { text-align: center; }
+.grade-button {
+  min-width: 40px;
+  min-height: 34px;
+  padding: 4px 10px;
+  border-radius: 7px;
+  font-weight: 700;
+  border: 1px solid var(--line);
+  background: var(--surface-elevated);
+  color: var(--ink);
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.grade-button:hover {
+  border-color: var(--brand) !important;
+  background: var(--surface-elevated) !important;
+  color: var(--ink) !important;
+  box-shadow: 0 0 10px var(--brand-soft);
+  transform: translateY(-1px);
+}
+
+.grade-button.empty {
+  color: var(--muted) !important;
+  border: 1px dashed var(--grade-empty-border) !important;
+  background: transparent !important;
+}
+
+.grade-button.empty:hover {
+  color: var(--brand) !important;
+  border: 1px solid var(--brand) !important;
+  background: var(--brand-soft) !important;
+  box-shadow: 0 0 10px var(--brand-soft);
+}
+
+.grade-button.failing {
+  color: var(--grade-failing-color) !important;
+  background: var(--grade-failing-bg) !important;
+  border: 1px solid var(--danger) !important;
+}
+
+.grade-button.failing:hover {
+  color: var(--grade-failing-color) !important;
+  background: var(--grade-failing-bg) !important;
+  border-color: var(--danger) !important;
+  box-shadow: 0 0 12px rgba(255, 85, 85, 0.4);
+}
+
+.grade-button:focus, .grade-button.cell-active {
+  outline: 2px solid var(--brand) !important;
+  box-shadow: 0 0 12px var(--line-glow);
+}
+
+.empty-row { text-align: center; padding: 28px; color: var(--muted); }
+.site-footer { padding: 18px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; position: relative; z-index: 1; }
+
+/* KPI & Графики */
+.analytics-section { margin-top: 14px; margin-bottom: 24px; }
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 20px; }
+.kpi-card {
+  background: var(--kpi-bg);
+  border: 1px solid var(--kpi-border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  box-shadow: var(--shadow);
+  border-left: 3px solid var(--brand);
+}
+.kpi-title { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; }
+.kpi-value { font-size: 25px; font-weight: 800; color: var(--kpi-val); }
+.kpi-sub { font-size: 12px; color: var(--muted); }
+
+.charts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; margin-bottom: 22px; }
+.chart-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 18px; box-shadow: var(--shadow); }
+.chart-title { font-size: 15px; font-weight: 600; margin: 0 0 12px; }
+.chart-canvas-wrap { position: relative; width: 100%; height: 245px; }
+
+.view-tabs {
+  display: inline-flex;
+  gap: 6px;
+  padding: 4px;
+  background: var(--input-bg);
+  border-radius: 8px;
+  border: 1px solid var(--line);
+}
+
+.view-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  min-height: 30px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.view-tab-btn:hover {
+  color: var(--ink) !important;
+  background: var(--surface-elevated) !important;
+  border-color: var(--line) !important;
+}
+
+.view-tab-btn.active,
+button.view-tab-btn.active {
+  background: linear-gradient(135deg, var(--brand), var(--brand-pink)) !important;
+  color: var(--brand-ink) !important;
+  border-color: transparent !important;
+  font-weight: 700;
+  box-shadow: 0 2px 10px var(--brand-soft);
+}
+
+.view-tab-btn.active:hover,
+button.view-tab-btn.active:hover {
+  background: linear-gradient(135deg, var(--brand), var(--brand-pink)) !important;
+  color: var(--brand-ink) !important;
+  border-color: transparent !important;
+  filter: brightness(1.12);
+  box-shadow: 0 4px 14px var(--brand-soft);
+}
+
+.heading-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.toggle-mode-label { display: flex; flex-direction: row; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; color: var(--ink); min-width: auto; max-width: none; }
+.toggle-mode-label input[type="checkbox"] { width: 17px; height: 17px; min-height: 17px; accent-color: var(--brand); }
+.quick-edit-hint {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  padding: 10px 14px; background: var(--brand-soft); border: 1px solid var(--line-glow);
+  border-radius: 8px; font-size: 13px; margin-bottom: 18px;
+}
+.hint-badge { font-weight: 700; color: var(--brand); text-transform: uppercase; font-size: 11px; }
+kbd {
+  display: inline-block; padding: 1px 6px; font-size: 11px;
+  font-family: "JetBrains Mono", monospace; font-weight: 600;
+  color: var(--ink); background: var(--surface-solid); border: 1px solid var(--line); border-radius: 4px;
+}
+
+/* ==========================================================================
+   Разделители групп в журнале, массовое оценивание и создание группы
+   ========================================================================== */
+
+.th-bulk-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 6px;
+  min-height: 22px;
+  font-size: 11px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--surface-elevated);
+  color: var(--brand);
+  cursor: pointer;
+  vertical-align: middle;
+  transition: all 0.14s ease;
+}
+
+.th-bulk-btn:hover {
+  background: var(--brand);
+  color: var(--brand-ink);
+  border-color: var(--brand);
+  transform: scale(1.05);
+}
+
+.group-divider-row td {
+  background: var(--surface-elevated) !important;
+  border-top: 2px solid var(--brand) !important;
+  border-bottom: 1px solid var(--line) !important;
+  padding: 8px 14px !important;
+  position: sticky;
+  left: 0;
+  z-index: 8;
+}
+
+.group-divider-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.group-divider-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.group-divider-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  color: var(--brand);
+}
+
+.group-divider-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+}
+
+.group-divider-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.group-divider-pill.avg {
+  color: var(--brand);
+  border-color: var(--line-glow);
+  background: var(--brand-soft);
+}
+
+.button-small {
+  padding: 4px 10px;
+  min-height: 28px;
+  font-size: 12px;
+}
+
+.input-with-action {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  width: 100%;
+}
+
+.input-with-action select {
+  flex: 1;
+}
+
+.quick-add-btn {
+  flex-shrink: 0;
+  min-height: 38px;
+  padding: 0 12px;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.quick-group-box {
+  margin-top: 10px;
+  padding: 12px 14px;
+  background: var(--surface-elevated);
+  border: 1px solid var(--brand);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.quick-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand);
+}
+
+.close-icon-btn {
+  background: none !important;
+  border: none !important;
+  color: var(--muted) !important;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  min-height: auto;
+  box-shadow: none !important;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.close-icon-btn:hover {
+  background: none !important;
+  border: none !important;
+  color: var(--ink) !important;
+  box-shadow: none !important;
+  transform: scale(1.15);
+}
+
+.quick-group-inputs {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.quick-group-inputs input {
+  flex: 1;
+  min-width: 140px;
+  min-height: 34px;
+}
+
+.quick-group-error {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--danger);
+  font-weight: 500;
+}
+
+.bulk-hint-box {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: var(--surface-elevated);
+  border-left: 3px solid var(--brand);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ==========================================================================
+   Шторка «Рентген логики» (X-Ray Backend Inspector Drawer)
+   ========================================================================== */
+
+.xray-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: var(--xray-width, 440px);
+  min-width: 280px;
+  max-width: 85vw;
+  z-index: 80;
+  background: color-mix(in srgb, var(--surface-solid) 96%, transparent);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-left: 1px solid var(--line);
+  box-shadow: -10px 0 35px rgba(0, 0, 0, 0.55);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  visibility: hidden;
+  pointer-events: none;
+}
+
+body.xray-open .xray-drawer {
+  transform: translateX(0);
+  visibility: visible;
+  pointer-events: auto;
+}
+
+body.xray-resizing .xray-drawer {
+  transition: none !important;
+}
+
+/* Ресайзер панели «Рентген логики» (потяните левую грань) */
+.xray-resizer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -5px;
+  width: 10px;
+  cursor: ew-resize;
+  z-index: 90;
+  background: transparent;
+  user-select: none;
+}
+
+.xray-resizer::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 42px;
+  border-radius: 3px;
+  background: var(--line);
+  transition: all 0.15s ease;
+}
+
+.xray-resizer:hover::after,
+body.xray-resizing .xray-resizer::after {
+  background: var(--brand);
+  height: 64px;
+  box-shadow: 0 0 12px var(--brand);
+}
+
+.xray-resizer:hover,
+body.xray-resizing .xray-resizer {
+  background: rgba(189, 147, 249, 0.12);
+}
+
+@media (max-width: 768px) {
+  body.xray-open {
+    padding-right: 0 !important;
+  }
+  .xray-drawer {
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+  .xray-resizer {
+    display: none !important;
+  }
+}
+
+.xray-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.xray-title { font-weight: 700; font-size: 15px; color: var(--brand); }
+.xray-subtitle { font-size: 12px; color: var(--muted); }
+.xray-header-actions { display: flex; gap: 6px; }
+.xray-mini-btn { min-height: 28px; padding: 3px 9px; font-size: 12px; }
+
+.xray-feed {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.xray-empty {
+  text-align: center;
+  padding: 36px 16px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.xray-card {
+  background: var(--input-bg);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--brand);
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 12px;
+  animation: fade-in 0.2s ease;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.xray-card-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.xray-method {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 11px;
+}
+.xray-method.m-get { background: rgba(139, 233, 253, 0.16); color: #8be9fd; }
+.xray-method.m-post { background: rgba(80, 250, 123, 0.16); color: #50fa7b; }
+.xray-method.m-delete { background: rgba(255, 85, 85, 0.18); color: #ff5555; }
+
+.xray-url { font-weight: 600; color: var(--ink); word-break: break-all; }
+.xray-meta { margin-left: auto; color: var(--muted); font-size: 11px; white-space: nowrap; }
+
+.xray-payload {
+  margin-bottom: 8px;
+  padding: 5px 8px;
+  background: var(--surface-solid);
+  border-radius: 6px;
+  font-family: "JetBrains Mono", monospace;
+  color: var(--brand-pink);
+}
+
+.xray-pipeline {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+  padding: 6px 8px;
+  background: var(--surface-solid);
+  border-radius: 6px;
+}
+
+.xray-step { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.step-tag {
+  font-size: 10px;
+  text-transform: uppercase;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-weight: 700;
+  min-width: 68px;
+  text-align: center;
+}
+
+.tx-badge {
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(255, 121, 198, 0.16);
+  color: var(--brand-pink);
+  font-family: "JetBrains Mono", monospace;
+}
+
+.xray-sql-box {
+  background: #07060c;
+  border: 1px solid #262338;
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+.xray-sql-label { font-size: 10px; color: #8be9fd; text-transform: uppercase; margin-bottom: 4px; font-weight: 700; }
+.xray-sql-code {
+  margin: 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11.5px;
+  color: #f1fa8c;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ==========================================================================
+   Встроенный Linux-терминал (Ghostty + Fish + Ranger)
+   ========================================================================== */
+
+.term-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(4, 4, 8, 0.72);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.term-window {
+  width: min(940px, 96vw);
+  height: min(600px, 86vh);
+  background: #0c0b11;
+  color: #f8f8f2;
+  border: 2px solid #bd93f9;
+  border-radius: 10px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 25px rgba(189, 147, 249, 0.25);
+  display: flex;
+  flex-direction: column;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  overflow: hidden;
+}
+
+.term-titlebar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  background: #14121d;
+  border-bottom: 1px solid #282639;
+  font-size: 12.5px;
+}
+
+.term-title-left { display: flex; align-items: center; gap: 8px; color: #bd93f9; font-weight: 600; }
+.term-arch-icon { color: #8be9fd; font-weight: 800; }
+.term-title-actions { display: flex; gap: 6px; }
+.term-top-btn {
+  min-height: 26px;
+  padding: 2px 9px;
+  font-size: 12px;
+  background: #1e1b2e;
+  color: #f8f8f2;
+  border: 1px solid #34304b;
+  border-radius: 5px;
+}
+.term-top-btn.close:hover { background: #ff5555; color: #000; }
+
+.term-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 16px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.term-entry { margin-top: 10px; }
+.fish-prompt-top { display: flex; align-items: center; gap: 10px; font-size: 12.5px; }
+.fp-arch { color: #8be9fd; font-weight: 800; }
+.fp-cwd { color: #bd93f9; font-weight: 700; }
+.fp-ms { color: #6272a4; }
+.fp-heart { color: #ff79c6; }
+.fish-prompt-cmd { display: flex; align-items: center; gap: 8px; }
+.term-time { color: #8be9fd; font-size: 12.5px; }
+.term-chevron { color: #ff79c6; font-weight: 700; }
+.fp-typed { color: #50fa7b; font-weight: 600; }
+
+.term-output { margin: 4px 0 10px; color: #e2e0ec; }
+.term-pre { margin: 0; font-family: inherit; white-space: pre-wrap; }
+.term-code-box {
+  margin: 4px 0;
+  padding: 10px;
+  background: #14131f;
+  border-left: 3px solid #bd93f9;
+  border-radius: 4px;
+  color: #f1fa8c;
+  overflow-x: auto;
+}
+
+.hl-dir { color: #bd93f9; font-weight: 700; }
+.hl-file { color: #f8f8f2; }
+.hl-cmd { color: #ff79c6; font-weight: 600; }
+.term-err { color: #ff5555; }
+
+.ff-grid { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; }
+.ff-ascii { margin: 0; color: #ff79c6; font-size: 11.5px; line-height: 1.2; }
+.ff-info { font-size: 12.5px; line-height: 1.55; }
+.ff-key { color: #bd93f9; font-weight: 700; }
+.ff-host { color: #ff79c6; font-weight: 700; }
+.ff-sep { color: #44475a; }
+
+.term-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #12101b;
+  border-top: 1px solid #282639;
+}
+
+.term-input {
+  flex: 1;
+  border: none !important;
+  background: transparent !important;
+  color: #f8f8f2 !important;
+  font-family: "JetBrains Mono", monospace !important;
+  font-size: 13.5px !important;
+  min-height: 28px !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+/* 3-колоночный файловый менеджер Ranger внутри терминала */
+.term-ranger {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #0c0b11;
+  font-size: 12.5px;
+  overflow: hidden;
+}
+
+.ranger-header {
+  padding: 6px 12px;
+  background: #161422;
+  color: #50fa7b;
+  font-weight: 700;
+  border-bottom: 1px solid #282639;
+}
+
+.ranger-columns {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1.3fr 2.2fr;
+  overflow: hidden;
+}
+
+.ranger-col {
+  border-right: 1px solid #282639;
+  padding: 6px;
+  overflow-y: auto;
+}
+
+.ranger-item, .r-item {
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.r-item.selected {
+  background: #bd93f9;
+  color: #09080d;
+  font-weight: 700;
+}
+
+.r-code {
+  margin: 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11.5px;
+  color: #f1fa8c;
+  white-space: pre-wrap;
+}
+
+.ranger-footer {
+  padding: 5px 12px;
+  background: #161422;
+  color: #8be9fd;
+  font-size: 11.5px;
+  border-top: 1px solid #282639;
+}
+
+/* Печать */
+.print-sheet-header, .print-sheet-footer { display: none; }
+@media print {
+  .site-header, .site-footer, .page-heading, .toolbar, .quick-edit-hint,
+  .analytics-section, .status, .editor, .confirmation, #status, .xray-drawer, .term-overlay, .aurora-backdrop {
+    display: none !important;
+  }
+  body { background: #fff !important; color: #000 !important; }
+  .print-sheet-header, .print-sheet-footer { display: block !important; }
+}
 ```
 
 ## src/main/resources/static/js/api.js
-```js
-/** Выполняет JSON-запрос, отдельно обрабатывая сеть, HTTP и ответ 204. */
+```javascript
+/** Сопоставление REST-маршрутов с архитектурой классов и SQL-запросами проекта */
+function buildArchitectureTrace(url, method, reqData, status, serverMs, controllerHeader) {
+  const cleanUrl = url.split("?")[0];
+  const params = new URLSearchParams(url.split("?")[1] || "");
+
+  let controller = controllerHeader || "DispatcherServlet";
+  let service = "";
+  let repo = "";
+  let tx = false;
+  let sql = "";
+
+  // 1. Учебные группы
+  if (cleanUrl === "/api/groups" && method === "GET") {
+    controller = controllerHeader || "GroupController.listGroups()";
+    service = "GroupService.listGroups()";
+    repo = "GroupRepository.findAllWithStudentCount()";
+    sql = `SELECT g.id, g.name, COUNT(s.id) AS student_count\nFROM groups AS g\nLEFT JOIN students AS s ON s.group_id = g.id\nGROUP BY g.id, g.name\nORDER BY g.name, g.id;`;
+  } else if (cleanUrl === "/api/groups" && method === "POST") {
+    const name = reqData?.name || "";
+    controller = controllerHeader || "GroupController.createGroup()";
+    service = "GroupService.saveGroup(name, null)";
+    repo = "GroupRepository.insert(name)";
+    tx = true;
+    sql = `INSERT INTO groups (name) VALUES ('${name}');\nSELECT id, name FROM groups WHERE id = last_insert_rowid();`;
+  } else if (cleanUrl.startsWith("/api/groups/") && method === "POST") {
+    const id = cleanUrl.split("/").pop();
+    const name = reqData?.name || "";
+    controller = controllerHeader || "GroupController.updateGroup()";
+    service = `GroupService.saveGroup('${name}', ${id})`;
+    repo = "GroupRepository.update(id, name)";
+    tx = true;
+    sql = `UPDATE groups SET name = '${name}' WHERE id = ${id};`;
+  } else if (cleanUrl.startsWith("/api/groups/") && method === "DELETE") {
+    const id = cleanUrl.split("/").pop();
+    controller = controllerHeader || "GroupController.deleteGroup()";
+    service = `GroupService.deleteGroup(${id})`;
+    repo = "GroupRepository.countStudents() → delete()";
+    tx = true;
+    sql = `SELECT COUNT(*) FROM students WHERE group_id = ${id};\nDELETE FROM groups WHERE id = ${id};`;
+  }
+
+  // 2. Предметы
+  else if (cleanUrl === "/api/subjects" && method === "GET") {
+    controller = controllerHeader || "SubjectController.listSubjects()";
+    service = "SubjectService.listSubjects()";
+    repo = "SubjectRepository.findAll()";
+    sql = `SELECT id, name FROM subjects ORDER BY name, id;`;
+  } else if (cleanUrl.startsWith("/api/subjects") && method === "POST") {
+    const id = cleanUrl.split("/")[3] || null;
+    const name = reqData?.name || "";
+    controller = controllerHeader || (id ? "SubjectController.updateSubject()" : "SubjectController.createSubject()");
+    service = `SubjectService.saveSubject('${name}', ${id})`;
+    repo = id ? "SubjectRepository.update()" : "SubjectRepository.insert()";
+    tx = true;
+    sql = id
+      ? `UPDATE subjects SET name = '${name}' WHERE id = ${id};`
+      : `INSERT INTO subjects (name) VALUES ('${name}');`;
+  } else if (cleanUrl.startsWith("/api/subjects/") && method === "DELETE") {
+    const id = cleanUrl.split("/").pop();
+    controller = controllerHeader || "SubjectController.deleteSubject()";
+    service = `SubjectService.deleteSubject(${id})`;
+    repo = "SubjectRepository.countGrades() → delete()";
+    tx = true;
+    sql = `SELECT COUNT(*) FROM grades WHERE subject_id = ${id};\nDELETE FROM subjects WHERE id = ${id};`;
+  }
+
+  // 3. Студенты
+  else if (cleanUrl === "/api/students" && method === "GET") {
+    const gId = params.get("group_id") || "NULL";
+    const q = params.get("q") ? `'${params.get("q")}'` : "NULL";
+    controller = controllerHeader || "StudentController.listStudents()";
+    service = "StudentService.listStudents(groupId, query)";
+    repo = "StudentRepository.findAll()";
+    sql = `SELECT s.id, s.name, s.group_id, g.name AS group_name, s.email,\n       COUNT(gr.id) AS grade_count, ROUND(AVG(gr.mark), 2) AS average_mark\nFROM students AS s\nJOIN groups AS g ON g.id = s.group_id\nLEFT JOIN grades AS gr ON gr.student_id = s.id\nWHERE (${gId} IS NULL OR s.group_id = ${gId})\n  AND (${q} IS NULL OR LOWER(s.name) LIKE '%' || LOWER(${q}) || '%')\nGROUP BY s.id, s.name, s.group_id, g.name, s.email\nORDER BY s.name, s.id;`;
+  } else if (cleanUrl.startsWith("/api/students") && method === "POST") {
+    const id = cleanUrl.split("/")[3] || null;
+    const n = reqData?.name || "";
+    const g = reqData?.group_id || "NULL";
+    const em = reqData?.email ? `'${reqData.email}'` : "NULL";
+    controller = controllerHeader || (id ? "StudentController.updateStudent()" : "StudentController.createStudent()");
+    service = `StudentService.saveStudent(req, ${id})`;
+    repo = id ? "StudentRepository.update()" : "StudentRepository.insert()";
+    tx = true;
+    sql = id
+      ? `UPDATE students SET name = '${n}', group_id = ${g}, email = ${em} WHERE id = ${id};`
+      : `INSERT INTO students (name, group_id, email) VALUES ('${n}', ${g}, ${em});`;
+  } else if (cleanUrl.startsWith("/api/students/") && method === "DELETE") {
+    const id = cleanUrl.split("/").pop();
+    controller = controllerHeader || "StudentController.deleteStudent()";
+    service = `StudentService.deleteStudent(${id}, false)`;
+    repo = "StudentRepository.deleteGrades() → delete()";
+    tx = true;
+    sql = `BEGIN TRANSACTION;\nDELETE FROM grades WHERE student_id = ${id};\nDELETE FROM students WHERE id = ${id};\nCOMMIT;`;
+  }
+
+  // 4. Журнал и оценки
+  else if (cleanUrl === "/api/journal" && method === "GET") {
+    const gId = params.get("group_id") || 1;
+    controller = controllerHeader || "JournalController.getJournal()";
+    service = `JournalService.getJournal(${gId})`;
+    repo = "GroupRepository + JournalRepository + SubjectRepository";
+    if (gId === "all") {
+      sql = `SELECT * FROM groups ORDER BY name;\nSELECT s.*, ROUND(AVG(gr.mark), 2) FROM students s LEFT JOIN grades gr ON gr.student_id = s.id GROUP BY s.id;\nSELECT gr.id, gr.student_id, gr.subject_id, gr.mark FROM grades gr;`;
+    } else {
+      sql = `SELECT id, name FROM groups WHERE id = ${gId};\nSELECT s.*, COUNT(gr.id), ROUND(AVG(gr.mark), 2) FROM students s LEFT JOIN grades gr ON gr.student_id = s.id WHERE s.group_id = ${gId} GROUP BY s.id;\nSELECT gr.id, gr.student_id, gr.subject_id, gr.mark FROM grades gr JOIN students s ON s.id = gr.student_id WHERE s.group_id = ${gId};`;
+    }
+  } else if (cleanUrl === "/api/journal/grades" && method === "POST") {
+    const sId = reqData?.student_id;
+    const subId = reqData?.subject_id;
+    const m = reqData?.mark;
+    controller = controllerHeader || "JournalController.saveGrade()";
+    service = `JournalService.saveGrade(student=${sId}, subject=${subId}, mark=${m})`;
+    repo = "JournalRepository.findGrade() → insertGrade() / updateGrade()";
+    tx = true;
+    sql = `SELECT id FROM grades WHERE student_id = ${sId} AND subject_id = ${subId};\n-- Upsert (INSERT или UPDATE в рамках @Transactional):\nINSERT INTO grades (student_id, subject_id, mark) VALUES (${sId}, ${subId}, ${m})\n  ON CONFLICT(student_id, subject_id) DO UPDATE SET mark = ${m};`;
+  } else if (cleanUrl === "/api/journal/grades/bulk" && method === "POST") {
+    const gId = reqData?.group_id;
+    const subId = reqData?.subject_id;
+    const m = reqData?.mark;
+    controller = controllerHeader || "JournalController.saveBulkGrades()";
+    service = `JournalService.saveBulkGrades(group=${gId || 'ALL'}, subject=${subId || 'ALL'}, mark=${m})`;
+    repo = "JournalRepository.bulkInsert()";
+    tx = true;
+    sql = `-- Массовое выставление оценок (ON CONFLICT DO UPDATE):\nINSERT INTO grades (student_id, subject_id, mark)\nSELECT s.id, sub.id, ${m}\nFROM students s, subjects sub\nWHERE (${gId ? `s.group_id = ${gId}` : '1=1'}) AND (${subId ? `sub.id = ${subId}` : '1=1'})\nON CONFLICT(student_id, subject_id) DO UPDATE SET mark = excluded.mark;`;
+  } else if (cleanUrl.startsWith("/api/journal/grades/") && method === "DELETE") {
+    const parts = cleanUrl.split("/");
+    const subId = parts.pop();
+    const sId = parts.pop();
+    controller = controllerHeader || "JournalController.deleteGrade()";
+    service = `JournalService.deleteGrade(${sId}, ${subId})`;
+    repo = "JournalRepository.deleteGrade()";
+    tx = true;
+    sql = `DELETE FROM grades WHERE student_id = ${sId} AND subject_id = ${subId};`;
+  }
+
+  // 5. Отчёты
+  else if (cleanUrl === "/api/reports" && method === "GET") {
+    const kind = params.get("kind") || "groups";
+    controller = controllerHeader || "ReportController.getReport()";
+    service = `ReportService.getReport('${kind}')`;
+    repo = `ReportRepository.${kind === "groups" ? "groupReport" : kind === "no_grades" ? "noGradesReport" : "failingReport"}()`;
+    if (kind === "groups") {
+      sql = `SELECT g.id, g.name, COUNT(DISTINCT s.id) AS student_count,\n       COUNT(gr.id) AS grade_count, ROUND(AVG(gr.mark), 2) AS average_mark\nFROM groups g LEFT JOIN students s ON s.group_id = g.id\nLEFT JOIN grades gr ON gr.student_id = s.id\nGROUP BY g.id, g.name ORDER BY g.name;`;
+    } else if (kind === "no_grades") {
+      sql = `SELECT s.id, s.name, g.name AS group_name\nFROM students s JOIN groups g ON g.id = s.group_id\nLEFT JOIN grades gr ON gr.student_id = s.id\nGROUP BY s.id HAVING COUNT(gr.id) = 0;`;
+    } else {
+      sql = `SELECT s.id, s.name, g.name AS group_name\nFROM students s JOIN groups g ON g.id = s.group_id\nJOIN grades gr ON gr.student_id = s.id\nGROUP BY s.id HAVING MIN(gr.mark) = 2;`;
+    }
+  }
+
+  return {
+    id: Date.now() + Math.random(),
+    time: new Date().toLocaleTimeString("ru-RU", { hour12: false }),
+    method,
+    url,
+    status,
+    durationMs: serverMs,
+    controller,
+    service,
+    repo,
+    tx,
+    sql,
+    payload: reqData
+  };
+}
+
+/** Выполняет JSON-запрос, отдельно обрабатывая сеть, HTTP, 204 и телеметрию для шторки. */
 export async function requestJSON(url, method = "GET", data = null) {
-  const options = {method: method, headers: {}};
+  const options = { method, headers: {} };
   if (data !== null) {
     options.headers["Content-Type"] = "application/json";
     options.body = JSON.stringify(data);
   }
+  const t0 = performance.now();
   let response;
-  try { response = await fetch(url, options); }
-  catch (error) { throw new Error("Нет связи с сервером. Проверьте его запуск."); }
+  try {
+    response = await fetch(url, options);
+  } catch (error) {
+    throw new Error("Нет связи с сервером. Проверьте его запуск.");
+  }
+
+  const clientMs = (performance.now() - t0).toFixed(1);
+  const serverMs = response.headers.get("X-Exec-Time-Ms") || clientMs;
+  const controllerHeader = response.headers.get("X-Java-Controller");
+
+  // Отправляем событие в шторку «Рентген логики»
+  try {
+    const trace = buildArchitectureTrace(url, method, data, response.status, serverMs, controllerHeader);
+    window.dispatchEvent(new CustomEvent("journal:apicall", { detail: trace }));
+  } catch ( ignored ) {}
+
   if (response.status === 204) return null;
   let payload;
-  try { payload = await response.json(); }
-  catch (error) { throw new Error("Сервер вернул ответ не в формате JSON."); }
+  try {
+    payload = await response.json();
+  } catch (error) {
+    throw new Error("Сервер вернул ответ не в формате JSON.");
+  }
   if (!response.ok) throw new Error(payload.error || "Ошибка HTTP " + response.status);
   return payload;
 }
-
 ```
 
 ## src/main/resources/static/js/chart-helper.js
-```js
+```javascript
 // chart-helper.js - Унифицированный хелпер для интерактивных графиков и диаграмм с поддержкой тем
 const activeCharts = new Map();
 
@@ -862,33 +2914,34 @@ const activeCharts = new Map();
  * Получает цветовую схему для графиков в зависимости от активной темы оформления.
  */
 export function getChartThemeColors() {
-  const isDark = document.documentElement.getAttribute("data-theme") !== "light";
+  const theme = document.documentElement.getAttribute("data-theme") || "dark";
+  const isDark = theme !== "light";
+  const isOled = isDark && document.documentElement.getAttribute("data-oled") === "true";
   return {
     isDark,
-    textColor: isDark ? "#cbd5e1" : "#475569",
-    headingColor: isDark ? "#f1f5f9" : "#1e293b",
-    gridColor: isDark ? "rgba(255, 255, 255, 0.08)" : "rgba(0, 0, 0, 0.06)",
-    tooltipBg: isDark ? "#1e293b" : "#0f172a",
-    tooltipTitle: isDark ? "#f8fafc" : "#ffffff",
-    tooltipBody: isDark ? "#e2e8f0" : "#f1f5f9",
-    borderColor: isDark ? "#334155" : "#e2e8f0",
-    // Стандартные палитры
+    isOled,
+    textColor: isDark ? (isOled ? "#8a889e" : "#a3a0b8") : "#5b5675",
+    headingColor: isDark ? "#f3f2f7" : "#161426",
+    gridColor: isOled ? "rgba(255, 255, 255, 0.06)" : (isDark ? "rgba(255, 255, 255, 0.08)" : "rgba(22, 20, 38, 0.06)"),
+    tooltipBg: isOled ? "#0a0a0f" : (isDark ? "#21212e" : "#161426"),
+    tooltipTitle: "#ffffff",
+    tooltipBody: "#e4dcff",
+    borderColor: isDark ? (isOled ? "#1b1b29" : "#2e2e42") : "#e4e0f2",
     palette: [
-      "#3b82f6", // синий
+      "#8b5cf6", // фиолетовый
+      "#c084fc", // лавандовый
       "#10b981", // изумрудный
       "#f59e0b", // янтарный
-      "#ef4444", // красный
-      "#8b5cf6", // фиолетовый
-      "#06b6d4", // бирюзовый
       "#ec4899", // розовый
-      "#64748b"  // сланцевый
+      "#6366f1", // индиго
+      "#06b6d4", // бирюзовый
+      "#ef4444"  // красный
     ],
-    // Палитра для оценок (5, 4, 3, 2)
     marks: {
-      5: "#22c55e", // зеленый (отлично)
-      4: "#3b82f6", // синий (хорошо)
-      3: "#f59e0b", // желтый (удовл)
-      2: "#ef4444"  // красный (двойка)
+      5: "#22c55e",
+      4: "#a78bfa",
+      3: "#f59e0b",
+      2: "#ef4444"
     }
   };
 }
@@ -1105,11 +3158,10 @@ window.addEventListener("themechange", () => {
     chart.update();
   }
 });
-
 ```
 
 ## src/main/resources/static/js/journal.js
-```js
+```javascript
 import {requestJSON} from "/js/api.js";
 import {message, busy, fillGroups} from "/js/ui.js";
 import {createBarChart, createDoughnutChart, destroyChart} from "/js/chart-helper.js";
@@ -1117,8 +3169,11 @@ import {createBarChart, createDoughnutChart, destroyChart} from "/js/chart-helpe
 const GROUPS_API = "/api/groups";
 const JOURNAL_API = "/api/journal";
 const GRADES_API = "/api/journal/grades";
+const BULK_GRADES_API = "/api/journal/grades/bulk";
 
 const groupSelect = document.querySelector("#group-select");
+const studentFilterInput = document.querySelector("#journal-student-filter");
+const statusFilterSelect = document.querySelector("#journal-status-filter");
 const tableHead = document.querySelector("#table-head");
 const tableBody = document.querySelector("#table-body");
 const editor = document.querySelector("#editor");
@@ -1129,6 +3184,16 @@ const subjectIdInput = document.querySelector("#record-subject-id");
 const markSelect = document.querySelector("#record-mark");
 const deleteButton = document.querySelector("#delete-grade");
 const cancelButton = document.querySelector("#cancel-edit");
+
+const bulkEditor = document.querySelector("#bulk-editor");
+const bulkForm = document.querySelector("#bulk-form");
+const bulkGroupSelect = document.querySelector("#bulk-group-select");
+const bulkSubjectSelect = document.querySelector("#bulk-subject-select");
+const bulkMarkSelect = document.querySelector("#bulk-mark-select");
+const bulkOverwriteCheckbox = document.querySelector("#bulk-overwrite-checkbox");
+const cancelBulkEditBtn = document.querySelector("#cancel-bulk-edit");
+const btnBulkGrade = document.querySelector("#btn-bulk-grade");
+const bulkActionHint = document.querySelector("#bulk-action-hint");
 
 const toggleAnalyticsBtn = document.querySelector("#toggle-analytics");
 const analyticsSection = document.querySelector("#journal-analytics");
@@ -1144,43 +3209,40 @@ const printGroupName = document.querySelector("#print-group-name");
 const printDate = document.querySelector("#print-date");
 
 let journalData = null, groups = [];
-let gridMatrix = []; // [row][col] -> HTMLButtonElement
+let gridMatrix = [];
 let activeRow = -1, activeCol = -1;
 
-/** Переключение видимости блока аналитики */
+const CHART_ICON_SVG = `<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>`;
+
 if (toggleAnalyticsBtn && analyticsSection) {
   toggleAnalyticsBtn.addEventListener("click", () => {
     const isHidden = analyticsSection.hidden;
     analyticsSection.hidden = !isHidden;
     toggleAnalyticsBtn.setAttribute("aria-expanded", String(isHidden));
-    toggleAnalyticsBtn.textContent = isHidden ? "📊 Скрыть аналитику" : "📊 Показать аналитику";
+    toggleAnalyticsBtn.innerHTML = `${CHART_ICON_SVG}<span class="btn-text">${isHidden ? "Скрыть аналитику" : "Показать аналитику"}</span>`;
   });
 }
 
-/** Переключение подсказки быстрого ввода */
 if (quickEditCheckbox && quickEditHint) {
   quickEditCheckbox.addEventListener("change", () => {
     quickEditHint.hidden = !quickEditCheckbox.checked;
   });
 }
 
-/** Экспорт в Excel (.xlsx) */
 if (btnExportExcel) {
   btnExportExcel.addEventListener("click", () => {
-    if (!groupSelect.value) return;
-    window.location.href = `/api/journal/export/excel?group_id=${groupSelect.value}`;
+    const q = groupSelect.value ? `?group_id=${groupSelect.value}` : "";
+    window.location.href = `/api/journal/export/excel${q}`;
   });
 }
 
-/** Экспорт в CSV (.csv) */
 if (btnExportCsv) {
   btnExportCsv.addEventListener("click", () => {
-    if (!groupSelect.value) return;
-    window.location.href = `/api/journal/export/csv?group_id=${groupSelect.value}`;
+    const q = groupSelect.value ? `?group_id=${groupSelect.value}` : "";
+    window.location.href = `/api/journal/export/csv${q}`;
   });
 }
 
-/** Печать ведомости */
 if (btnPrint) {
   btnPrint.addEventListener("click", () => {
     if (journalData && journalData.group) {
@@ -1191,7 +3253,138 @@ if (btnPrint) {
   });
 }
 
-/** Создает карточку KPI показателя. */
+function updateBulkHint() {
+  if (!bulkActionHint) return;
+  const gVal = bulkGroupSelect ? bulkGroupSelect.value : "";
+  const sVal = bulkSubjectSelect ? bulkSubjectSelect.value : "";
+  const mark = bulkMarkSelect ? Number(bulkMarkSelect.value) : 5;
+  const overwrite = bulkOverwriteCheckbox ? bulkOverwriteCheckbox.checked : true;
+
+  let groupName = "ВСЕМ студентам ВСЕХ групп";
+  if (gVal) {
+    const grp = groups.find(g => String(g.id) === String(gVal));
+    groupName = grp ? `студентам группы «${grp.name}»` : `группе ID ${gVal}`;
+  }
+
+  let subjectName = "по ВСЕМ предметам";
+  if (sVal && journalData && journalData.subjects) {
+    const sub = journalData.subjects.find(s => String(s.id) === String(sVal));
+    subjectName = sub ? `по предмету «${sub.name}»` : `предмету ID ${sVal}`;
+  }
+
+  if (mark === 0) {
+    bulkActionHint.innerHTML = `<svg class="btn-icon danger-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> Будут <strong>удалены все оценки</strong>: ${groupName} ${subjectName}.`;
+  } else {
+    const overwriteText = overwrite ? "с перезаписью существующих" : "только в незаполненные ячейки (без перезаписи)";
+    bulkActionHint.innerHTML = `<svg class="btn-icon brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Будет выставлена оценка <strong>${mark}</strong>: ${groupName} ${subjectName} (${overwriteText}).`;
+  }
+}
+
+if (bulkGroupSelect) bulkGroupSelect.addEventListener("change", updateBulkHint);
+if (bulkSubjectSelect) bulkSubjectSelect.addEventListener("change", updateBulkHint);
+if (bulkMarkSelect) bulkMarkSelect.addEventListener("change", updateBulkHint);
+if (bulkOverwriteCheckbox) bulkOverwriteCheckbox.addEventListener("change", updateBulkHint);
+
+if (btnBulkGrade) {
+  btnBulkGrade.addEventListener("click", () => {
+    openBulkEditor();
+  });
+}
+
+if (cancelBulkEditBtn) {
+  cancelBulkEditBtn.addEventListener("click", () => {
+    if (bulkEditor) bulkEditor.hidden = true;
+    message();
+  });
+}
+
+if (bulkForm) {
+  bulkForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    busy(true);
+    try {
+      const gId = bulkGroupSelect && bulkGroupSelect.value ? Number(bulkGroupSelect.value) : null;
+      const sId = bulkSubjectSelect && bulkSubjectSelect.value ? Number(bulkSubjectSelect.value) : null;
+      const mark = Number(bulkMarkSelect.value);
+      const overwrite = bulkOverwriteCheckbox.checked;
+
+      const res = await requestJSON(BULK_GRADES_API, "POST", {
+        group_id: gId,
+        subject_id: sId,
+        mark: mark,
+        overwrite_existing: overwrite
+      });
+      if (bulkEditor) bulkEditor.hidden = true;
+      const count = res.count !== undefined ? res.count : 0;
+      await loadJournal(groupSelect.value, `Массовое действие выполнено: обновлено записей — ${count}.`);
+    } catch (err) {
+      message("Ошибка массового оценивания: " + err.message, true);
+    } finally {
+      busy(false);
+    }
+  });
+}
+
+function openBulkEditor(preselectedSubjectId = null, preselectedGroupId = null) {
+  if (editor) editor.hidden = true;
+
+  // Заполняем список групп
+  if (bulkGroupSelect) {
+    bulkGroupSelect.replaceChildren();
+    const optAllG = document.createElement("option");
+    optAllG.value = "";
+    optAllG.textContent = "Все группы";
+    bulkGroupSelect.append(optAllG);
+
+    for (const g of groups) {
+      const opt = document.createElement("option");
+      opt.value = String(g.id);
+      opt.textContent = g.name;
+      bulkGroupSelect.append(opt);
+    }
+
+    if (preselectedGroupId !== null && preselectedGroupId !== undefined) {
+      bulkGroupSelect.value = String(preselectedGroupId);
+    } else if (groupSelect && groupSelect.value) {
+      bulkGroupSelect.value = groupSelect.value;
+    } else {
+      bulkGroupSelect.value = "";
+    }
+  }
+
+  // Заполняем список предметов
+  if (bulkSubjectSelect) {
+    bulkSubjectSelect.replaceChildren();
+    const optAllS = document.createElement("option");
+    optAllS.value = "";
+    optAllS.textContent = "Все предметы";
+    bulkSubjectSelect.append(optAllS);
+
+    if (journalData && journalData.subjects) {
+      for (const s of journalData.subjects) {
+        const opt = document.createElement("option");
+        opt.value = String(s.id);
+        opt.textContent = s.name;
+        bulkSubjectSelect.append(opt);
+      }
+    }
+
+    if (preselectedSubjectId !== null && preselectedSubjectId !== undefined) {
+      bulkSubjectSelect.value = String(preselectedSubjectId);
+    } else {
+      bulkSubjectSelect.value = "";
+    }
+  }
+
+  updateBulkHint();
+  bulkEditor.hidden = false;
+  bulkEditor.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  bulkMarkSelect.focus();
+}
+
+if (studentFilterInput) studentFilterInput.addEventListener("input", render);
+if (statusFilterSelect) statusFilterSelect.addEventListener("change", render);
+
 function createKpiCard(title, value, subtitle = "") {
   const card = document.createElement("div");
   card.className = "kpi-card";
@@ -1211,18 +3404,18 @@ function createKpiCard(title, value, subtitle = "") {
   return card;
 }
 
-/** Загружает список групп и инициализирует выбор. */
 async function init() {
   busy(true);
   try {
     const groupsResp = await requestJSON(GROUPS_API);
     groups = groupsResp.items;
-    fillGroups(groupSelect, groups, false);
+    fillGroups(groupSelect, groups, true);
     if (groups.length) {
+      groupSelect.value = String(groups[0].id);
       await loadJournal(groups[0].id);
     } else {
-      renderEmpty("Нет доступных групп");
-      renderAnalyticsEmpty();
+      groupSelect.value = "";
+      await loadJournal("");
     }
   } catch (error) {
     message("Ошибка загрузки групп: " + error.message, true);
@@ -1231,19 +3424,16 @@ async function init() {
   }
 }
 
-/** Загружает данные журнала для выбранной группы. */
-async function loadJournal(groupId, successText = "") {
-  busy(true); message("Загрузка журнала...");
+async function loadJournal(groupId = "", successText = "") {
+  busy(true);
+  message("Загрузка журнала...");
   try {
-    journalData = await requestJSON(JOURNAL_API + "?group_id=" + groupId);
+    const url = groupId ? (JOURNAL_API + "?group_id=" + groupId) : JOURNAL_API;
+    journalData = await requestJSON(url);
     render();
     renderAnalytics();
-    if (printGroupName && journalData.group) {
-      printGroupName.textContent = journalData.group.name;
-    }
-    if (printDate) {
-      printDate.textContent = new Date().toLocaleDateString("ru-RU");
-    }
+    if (printGroupName && journalData.group) printGroupName.textContent = journalData.group.name;
+    if (printDate) printDate.textContent = new Date().toLocaleDateString("ru-RU");
     message(successText);
   } catch (error) {
     message((successText ? successText + " " : "") + error.message, true);
@@ -1254,14 +3444,13 @@ async function loadJournal(groupId, successText = "") {
   }
 }
 
-/** Отображает пустое состояние журнала. */
 function renderEmpty(text) {
   tableHead.replaceChildren();
   tableBody.replaceChildren();
   gridMatrix = [];
   const tr = document.createElement("tr");
   const td = document.createElement("td");
-  td.colSpan = 5;
+  td.colSpan = 6;
   td.className = "empty-row";
   td.textContent = text;
   tr.append(td);
@@ -1274,7 +3463,6 @@ function renderAnalyticsEmpty() {
   destroyChart("journal-canvas-subjects");
 }
 
-/** Рендерит аналитику и графики группы. */
 function renderAnalytics() {
   kpiContainer.replaceChildren();
   destroyChart("journal-canvas-marks");
@@ -1291,9 +3479,7 @@ function renderAnalytics() {
 
   for (const g of grades) {
     sumMarks += g.mark;
-    if (markCounts[g.mark] !== undefined) {
-      markCounts[g.mark]++;
-    }
+    if (markCounts[g.mark] !== undefined) markCounts[g.mark]++;
   }
 
   const avgMark = totalGrades > 0 ? (sumMarks / totalGrades).toFixed(2) : "—";
@@ -1308,22 +3494,14 @@ function renderAnalytics() {
     createKpiCard("Успеваемость", passRate, "Доля без двоек")
   );
 
-  if (totalGrades === 0) {
-    return;
-  }
-
-  // 1. Диаграмма распределения оценок
-  const markLabels = ["Отлично (5)", "Хорошо (4)", "Удовл. (3)", "Неуд. (2)"];
-  const markData = [markCounts[5], markCounts[4], markCounts[3], markCounts[2]];
-  const markColors = ["#22c55e", "#3b82f6", "#f59e0b", "#ef4444"];
+  if (totalGrades === 0) return;
 
   createDoughnutChart("journal-canvas-marks", {
-    labels: markLabels,
-    data: markData,
-    backgroundColors: markColors
+    labels: ["Отлично (5)", "Хорошо (4)", "Удовл. (3)", "Неуд. (2)"],
+    data: [markCounts[5], markCounts[4], markCounts[3], markCounts[2]],
+    backgroundColors: ["#22c55e", "#a78bfa", "#f59e0b", "#ef4444"]
   });
 
-  // 2. Диаграмма среднего балла по предметам
   const subjLabels = [];
   const subjAverages = [];
   const subjBarColors = [];
@@ -1334,38 +3512,49 @@ function renderAnalytics() {
     if (subGrades.length > 0) {
       const avg = Number((subGrades.reduce((sum, g) => sum + g.mark, 0) / subGrades.length).toFixed(2));
       subjAverages.push(avg);
-      if (avg >= 4.5) subjBarColors.push("#10b981");
-      else if (avg >= 3.8) subjBarColors.push("#3b82f6");
+      if (avg >= 4.5) subjBarColors.push("#22c55e");
+      else if (avg >= 3.8) subjBarColors.push("#a78bfa");
       else if (avg >= 3.0) subjBarColors.push("#f59e0b");
       else subjBarColors.push("#ef4444");
     } else {
       subjAverages.push(0);
-      subjBarColors.push("#94a3b8");
+      subjBarColors.push("#64748b");
     }
   }
 
   createBarChart("journal-canvas-subjects", {
     labels: subjLabels,
-    datasets: [{
-      label: "Средний балл",
-      data: subjAverages,
-      backgroundColor: subjBarColors
-    }],
+    datasets: [{ label: "Средний балл", data: subjAverages, backgroundColor: subjBarColors }],
     yAxisTitle: "Балл (от 2 до 5)",
     yMax: 5,
     stepSize: 1
   });
 }
 
-/** Устанавливает активную ячейку в матрице по координатам (row, col). */
+/** Обновляет бейдж среднего балла в строке студента на лету */
+function updateStudentRowAverage(studentId) {
+  const badge = tableBody.querySelector(`span[data-avg-for="${studentId}"]`);
+  if (!badge || !journalData) return;
+  const studentGrades = journalData.grades.filter(g => g.student_id === studentId);
+  badge.className = "mark-badge";
+  if (!studentGrades.length) {
+    badge.classList.add("empty");
+    badge.textContent = "—";
+    return;
+  }
+  const avg = studentGrades.reduce((s, g) => s + g.mark, 0) / studentGrades.length;
+  badge.textContent = avg.toFixed(2);
+  if (avg >= 4.5) badge.classList.add("excellent");
+  else if (avg >= 3.8) badge.classList.add("good");
+  else if (avg >= 3.0) badge.classList.add("fair");
+  else badge.classList.add("failing");
+}
+
 function setActiveCell(r, c) {
   if (!gridMatrix.length) return;
-  // Снимаем активность с предыдущей
   if (activeRow >= 0 && activeCol >= 0 && gridMatrix[activeRow] && gridMatrix[activeRow][activeCol]) {
     gridMatrix[activeRow][activeCol].classList.remove("cell-active");
   }
-
-  // Ограничиваем границы
   const maxR = gridMatrix.length - 1;
   const maxC = gridMatrix[0] ? gridMatrix[0].length - 1 : 0;
   activeRow = Math.max(0, Math.min(r, maxR));
@@ -1378,21 +3567,15 @@ function setActiveCell(r, c) {
   }
 }
 
-/** Моментальное сохранение оценки с клавиатуры (Excel mode). */
 async function quickSaveGrade(btn, r, c, mark) {
   const studentId = Number(btn.dataset.studentId);
   const subjectId = Number(btn.dataset.subjectId);
 
-  // Мгновенная визуальная реакция
   btn.textContent = String(mark);
   btn.dataset.hasGrade = "true";
   btn.dataset.mark = String(mark);
   btn.classList.remove("empty");
-  if (mark === 2) {
-    btn.classList.add("failing");
-  } else {
-    btn.classList.remove("failing");
-  }
+  btn.classList.toggle("failing", mark === 2);
   btn.classList.add("cell-saving");
 
   try {
@@ -1402,19 +3585,16 @@ async function quickSaveGrade(btn, r, c, mark) {
       mark: mark
     });
 
-    // Обновляем локальные данные в памяти
     if (journalData && journalData.grades) {
       const existingIdx = journalData.grades.findIndex(
         g => g.student_id === studentId && g.subject_id === subjectId
       );
       const gradeObj = res.item || { id: Date.now(), student_id: studentId, subject_id: subjectId, mark: mark };
-      if (existingIdx >= 0) {
-        journalData.grades[existingIdx] = gradeObj;
-      } else {
-        journalData.grades.push(gradeObj);
-      }
+      if (existingIdx >= 0) journalData.grades[existingIdx] = gradeObj;
+      else journalData.grades.push(gradeObj);
     }
 
+    updateStudentRowAverage(studentId);
     renderAnalytics();
   } catch (error) {
     message("Ошибка сохранения оценки: " + error.message, true);
@@ -1423,8 +3603,7 @@ async function quickSaveGrade(btn, r, c, mark) {
   }
 }
 
-/** Быстрое удаление оценки с клавиатуры (Del/Backspace). */
-async function quickDeleteGrade(btn, r, c) {
+async function quickDeleteGrade(btn) {
   const studentId = Number(btn.dataset.studentId);
   const subjectId = Number(btn.dataset.subjectId);
   if (btn.dataset.hasGrade !== "true") return;
@@ -1438,12 +3617,12 @@ async function quickDeleteGrade(btn, r, c) {
 
   try {
     await requestJSON(GRADES_API + "/" + studentId + "/" + subjectId, "DELETE");
-
     if (journalData && journalData.grades) {
       journalData.grades = journalData.grades.filter(
         g => !(g.student_id === studentId && g.subject_id === subjectId)
       );
     }
+    updateStudentRowAverage(studentId);
     renderAnalytics();
   } catch (error) {
     message("Ошибка удаления оценки: " + error.message, true);
@@ -1452,7 +3631,6 @@ async function quickDeleteGrade(btn, r, c) {
   }
 }
 
-/** Рендерит матрицу оценок. */
 function render() {
   tableHead.replaceChildren();
   tableBody.replaceChildren();
@@ -1463,7 +3641,6 @@ function render() {
   if (!journalData) return;
   const { students, subjects, grades } = journalData;
 
-  // Шапка таблицы
   const headRow = document.createElement("tr");
   const thStudent = document.createElement("th");
   thStudent.textContent = "Студент";
@@ -1471,9 +3648,33 @@ function render() {
 
   for (const subject of subjects) {
     const th = document.createElement("th");
-    th.textContent = subject.name;
+    th.style.textAlign = "center";
+
+    const wrap = document.createElement("div");
+    wrap.className = "th-subject-header";
+
+    const span = document.createElement("span");
+    span.textContent = subject.name;
+
+    const bulkBtn = document.createElement("button");
+    bulkBtn.type = "button";
+    bulkBtn.className = "th-bulk-btn";
+    bulkBtn.innerHTML = `<svg class="th-bulk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>`;
+    bulkBtn.title = `Заполнить предмет «${subject.name}» для всей группы`;
+    bulkBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openBulkEditor(subject.id, groupSelect.value ? Number(groupSelect.value) : null);
+    });
+
+    wrap.append(span, bulkBtn);
+    th.append(wrap);
     headRow.append(th);
   }
+
+  const thAvg = document.createElement("th");
+  thAvg.textContent = "Ср. балл";
+  thAvg.className = "number";
+  headRow.append(thAvg);
   tableHead.append(headRow);
 
   if (!students.length) {
@@ -1481,14 +3682,88 @@ function render() {
     return;
   }
 
-  // Создаем быстрый поиск оценок по ключу "studentId:subjectId"
   const gradesMap = new Map();
   for (const g of grades) {
     gradesMap.set(g.student_id + ":" + g.subject_id, g);
   }
 
-  // Тело таблицы
-  students.forEach((student, rIdx) => {
+  const q = studentFilterInput ? studentFilterInput.value.trim().toLowerCase() : "";
+  const statusFilter = statusFilterSelect ? statusFilterSelect.value : "all";
+
+  const filteredStudents = students.filter(st => {
+    if (q && !st.name.toLowerCase().includes(q)) return false;
+    if (statusFilter === "all") return true;
+    const stGrades = grades.filter(g => g.student_id === st.id);
+    if (statusFilter === "no_grades") return stGrades.length === 0;
+    if (statusFilter === "failing") return stGrades.some(g => g.mark === 2);
+    if (statusFilter === "excellent") return stGrades.length > 0 && stGrades.every(g => g.mark === 5);
+    return true;
+  });
+
+  if (!filteredStudents.length) {
+    renderEmpty("Нет студентов по выбранному фильтру");
+    return;
+  }
+
+  const isMultiGroup = !journalData.group || journalData.group.id === 0;
+  let currentGroupId = null;
+
+  filteredStudents.forEach((student, rIdx) => {
+    if (isMultiGroup && student.group_id !== currentGroupId) {
+      currentGroupId = student.group_id;
+      const groupName = student.group_name || `Группа ${currentGroupId}`;
+      const groupStudents = students.filter(st => st.group_id === currentGroupId);
+      const groupGrades = grades.filter(g => groupStudents.some(st => st.id === g.student_id));
+      const groupAvg = groupGrades.length > 0
+        ? (groupGrades.reduce((sum, g) => sum + g.mark, 0) / groupGrades.length).toFixed(2)
+        : "—";
+
+      const dividerRow = document.createElement("tr");
+      dividerRow.className = "group-divider-row";
+      dividerRow.dataset.groupId = String(currentGroupId);
+
+      const tdDivider = document.createElement("td");
+      tdDivider.colSpan = subjects.length + 2;
+
+      const dividerWrap = document.createElement("div");
+      dividerWrap.className = "group-divider-content";
+
+      const infoBox = document.createElement("div");
+      infoBox.className = "group-divider-info";
+
+      const iconSpan = document.createElement("span");
+      iconSpan.className = "group-divider-icon";
+      iconSpan.innerHTML = `<svg class="btn-icon brand-icon no-margin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`;
+
+      const nameSpan = document.createElement("span");
+      nameSpan.className = "group-divider-name";
+      nameSpan.textContent = `Группа: ${groupName}`;
+
+      const countPill = document.createElement("span");
+      countPill.className = "group-divider-pill";
+      countPill.textContent = `${groupStudents.length} студ.`;
+
+      const avgPill = document.createElement("span");
+      avgPill.className = "group-divider-pill avg";
+      avgPill.textContent = `Ср. балл: ${groupAvg}`;
+
+      infoBox.append(iconSpan, nameSpan, countPill, avgPill);
+
+      const groupActionBtn = document.createElement("button");
+      groupActionBtn.type = "button";
+      groupActionBtn.className = "button-secondary button-small";
+      groupActionBtn.innerHTML = `<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg><span>Оценить группу</span>`;
+      groupActionBtn.title = `Массовое оценивание для группы «${groupName}»`;
+      groupActionBtn.addEventListener("click", () => {
+        openBulkEditor(null, currentGroupId);
+      });
+
+      dividerWrap.append(infoBox, groupActionBtn);
+      tdDivider.append(dividerWrap);
+      dividerRow.append(tdDivider);
+      tableBody.append(dividerRow);
+    }
+
     const row = document.createElement("tr");
     const tdName = document.createElement("td");
     tdName.textContent = student.name;
@@ -1500,9 +3775,7 @@ function render() {
       const td = document.createElement("td");
       td.className = "grade-cell";
 
-      const key = student.id + ":" + subject.id;
-      const grade = gradesMap.get(key);
-
+      const grade = gradesMap.get(student.id + ":" + subject.id);
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "grade-button";
@@ -1517,9 +3790,7 @@ function render() {
         btn.textContent = String(grade.mark);
         btn.dataset.hasGrade = "true";
         btn.dataset.mark = String(grade.mark);
-        if (grade.mark === 2) {
-          btn.classList.add("failing");
-        }
+        if (grade.mark === 2) btn.classList.add("failing");
       } else {
         btn.textContent = "—";
         btn.dataset.hasGrade = "false";
@@ -1531,65 +3802,57 @@ function render() {
       row.append(td);
     });
 
+    const tdAvg = document.createElement("td");
+    tdAvg.className = "number";
+    const avgBadge = document.createElement("span");
+    avgBadge.dataset.avgFor = String(student.id);
+    tdAvg.append(avgBadge);
+    row.append(tdAvg);
+
     gridMatrix.push(rowButtons);
     tableBody.append(row);
+    updateStudentRowAverage(student.id);
   });
 }
 
-/** Открывает форму выставления/изменения оценки. */
 function openGradeEditor(btn) {
-  const studentId = btn.dataset.studentId;
-  const subjectId = btn.dataset.subjectId;
-  const studentName = btn.dataset.studentName;
-  const subjectName = btn.dataset.subjectName;
   const hasGrade = btn.dataset.hasGrade === "true";
-  const currentMark = btn.dataset.mark;
-
+  if (bulkEditor) bulkEditor.hidden = true;
   form.reset();
-  studentIdInput.value = studentId;
-  subjectIdInput.value = subjectId;
-  markSelect.value = hasGrade ? currentMark : "5";
+  studentIdInput.value = btn.dataset.studentId;
+  subjectIdInput.value = btn.dataset.subjectId;
+  markSelect.value = hasGrade ? btn.dataset.mark : "5";
   deleteButton.hidden = !hasGrade;
 
-  editorTitle.textContent = "Оценка: " + studentName + " — " + subjectName;
+  editorTitle.textContent = "Оценка: " + btn.dataset.studentName + " — " + btn.dataset.subjectName;
   editor.hidden = false;
   message();
   markSelect.focus();
 }
 
 groupSelect.addEventListener("change", function() {
-  editor.hidden = true;
-  if (groupSelect.value) {
-    loadJournal(Number(groupSelect.value));
-  }
+  if (editor) editor.hidden = true;
+  if (bulkEditor) bulkEditor.hidden = true;
+  loadJournal(groupSelect.value);
 });
 
-// Клик по ячейке
 tableBody.addEventListener("click", function(event) {
   const btn = event.target.closest("button.grade-button");
   if (!btn) return;
   const isQuick = quickEditCheckbox ? quickEditCheckbox.checked : false;
-
-  const r = Number(btn.dataset.row);
-  const c = Number(btn.dataset.col);
-
-  if (isQuick) {
-    setActiveCell(r, c);
-  } else {
-    openGradeEditor(btn);
-  }
+  if (isQuick) setActiveCell(Number(btn.dataset.row), Number(btn.dataset.col));
+  else openGradeEditor(btn);
 });
 
-// Двойной клик всегда открывает подробную форму
 tableBody.addEventListener("dblclick", function(event) {
   const btn = event.target.closest("button.grade-button");
   if (!btn) return;
   openGradeEditor(btn);
 });
 
-// Обработка клавиатурной навигации и быстрого ввода (Excel-режим)
+// Обработка клавиатурной навигации по матрице (Стрелки + Vim HJKL + Цифры 2..5)
 tableBody.addEventListener("keydown", function(event) {
-  const isQuick = quickEditCheckbox ? quickEditCheckbox.checked : false;
+  const isQuick = quickEditCheckbox ? quickEditCheckbox.checked : true;
   if (!isQuick) return;
 
   const btn = event.target.closest("button.grade-button");
@@ -1600,25 +3863,35 @@ tableBody.addEventListener("keydown", function(event) {
 
   switch (event.key) {
     case "ArrowDown":
+    case "j":
+    case "J":
+    case "Enter":
       event.preventDefault();
       setActiveCell(r + 1, c);
       break;
     case "ArrowUp":
+    case "k":
+    case "K":
       event.preventDefault();
       setActiveCell(r - 1, c);
       break;
     case "ArrowRight":
+    case "l":
+    case "L":
       event.preventDefault();
       setActiveCell(r, c + 1);
       break;
     case "ArrowLeft":
+    case "h":
+    case "H":
       event.preventDefault();
       setActiveCell(r, c - 1);
       break;
-    case "Enter":
+    case " ":
+    case "e":
+    case "E":
       event.preventDefault();
-      // Enter смещает вниз
-      setActiveCell(r + 1, c);
+      openGradeEditor(btn);
       break;
     case "2":
     case "3":
@@ -1626,37 +3899,31 @@ tableBody.addEventListener("keydown", function(event) {
     case "5":
       event.preventDefault();
       quickSaveGrade(btn, r, c, Number(event.key));
-      // Автопереход вниз как в Excel
       setActiveCell(r + 1, c);
       break;
     case "Delete":
     case "Backspace":
+    case "x":
+    case "X":
       event.preventDefault();
-      quickDeleteGrade(btn, r, c);
+      quickDeleteGrade(btn);
       break;
   }
 });
 
-cancelButton.addEventListener("click", function() {
-  editor.hidden = true;
-  message();
-});
+cancelButton.addEventListener("click", function() { editor.hidden = true; message(); });
 
 form.addEventListener("submit", async function(event) {
   event.preventDefault();
-  const studentId = Number(studentIdInput.value);
-  const subjectId = Number(subjectIdInput.value);
-  const mark = Number(markSelect.value);
-
   busy(true);
   try {
     await requestJSON(GRADES_API, "POST", {
-      student_id: studentId,
-      subject_id: subjectId,
-      mark: mark
+      student_id: Number(studentIdInput.value),
+      subject_id: Number(subjectIdInput.value),
+      mark: Number(markSelect.value)
     });
     editor.hidden = true;
-    await loadJournal(Number(groupSelect.value), "Оценка сохранена.");
+    await loadJournal(groupSelect.value, "Оценка сохранена.");
   } catch (error) {
     message(error.message, true);
   } finally {
@@ -1665,14 +3932,11 @@ form.addEventListener("submit", async function(event) {
 });
 
 deleteButton.addEventListener("click", async function() {
-  const studentId = Number(studentIdInput.value);
-  const subjectId = Number(subjectIdInput.value);
-
   busy(true);
   try {
-    await requestJSON(GRADES_API + "/" + studentId + "/" + subjectId, "DELETE");
+    await requestJSON(GRADES_API + "/" + Number(studentIdInput.value) + "/" + Number(subjectIdInput.value), "DELETE");
     editor.hidden = true;
-    await loadJournal(Number(groupSelect.value), "Оценка удалена.");
+    await loadJournal(groupSelect.value, "Оценка удалена.");
   } catch (error) {
     message(error.message, true);
   } finally {
@@ -1681,11 +3945,10 @@ deleteButton.addEventListener("click", async function() {
 });
 
 init();
-
 ```
 
 ## src/main/resources/static/js/groups.js
-```js
+```javascript
 import {requestJSON} from "/js/api.js";
 import {cell, message, busy, actions, emptyRow} from "/js/ui.js";
 
@@ -1807,11 +4070,10 @@ document.querySelector("#confirm-delete").addEventListener("click", async functi
 });
 
 load();
-
 ```
 
 ## src/main/resources/static/js/students.js
-```js
+```javascript
 import {requestJSON} from "/js/api.js";
 import {cell, message, busy, actions, emptyRow, fillGroups} from "/js/ui.js";
 
@@ -1833,8 +4095,17 @@ const emailInput = document.querySelector("#record-email");
 const confirmation = document.querySelector("#confirmation");
 const confirmationText = document.querySelector("#confirmation-text");
 
+const btnQuickCreateGroup = document.querySelector("#btn-quick-create-group");
+const quickGroupModal = document.querySelector("#quick-group-modal");
+const quickGroupName = document.querySelector("#quick-group-name");
+const submitQuickGroup = document.querySelector("#submit-quick-group");
+const cancelQuickGroup = document.querySelector("#cancel-quick-group");
+const closeQuickGroup = document.querySelector("#close-quick-group");
+const quickGroupError = document.querySelector("#quick-group-error");
+
 let items = [], groups = [], pendingItem = null, loaded = false;
 let currentSort = "name_asc";
+let lastSelectedGroupId = "";
 nameInput.maxLength = 50;
 
 /** Отправляет сохранение студента. */
@@ -2015,19 +4286,98 @@ async function load(successText = "") {
   }
 }
 
+function renderGroupInputOptions(selectedId = null) {
+  groupInput.replaceChildren();
+  for (const g of groups) {
+    const opt = document.createElement("option");
+    opt.value = String(g.id);
+    opt.textContent = g.name;
+    groupInput.append(opt);
+  }
+  const optCreate = document.createElement("option");
+  optCreate.value = "__create_new__";
+  optCreate.textContent = "+ Создать новую группу...";
+  groupInput.append(optCreate);
+
+  if (selectedId) {
+    groupInput.value = String(selectedId);
+    lastSelectedGroupId = String(selectedId);
+  } else if (groups.length) {
+    groupInput.value = String(groups[0].id);
+    lastSelectedGroupId = String(groups[0].id);
+  }
+}
+
+function showQuickGroupCreator() {
+  if (!quickGroupModal) return;
+  quickGroupModal.hidden = false;
+  quickGroupName.value = "";
+  if (quickGroupError) quickGroupError.hidden = true;
+  quickGroupName.focus();
+}
+
+function hideQuickGroupCreator() {
+  if (!quickGroupModal) return;
+  quickGroupModal.hidden = true;
+  quickGroupName.value = "";
+  if (quickGroupError) quickGroupError.hidden = true;
+  if (groupInput.value === "__create_new__") {
+    groupInput.value = lastSelectedGroupId || (groups.length ? String(groups[0].id) : "");
+  }
+}
+
+async function createQuickGroup() {
+  const name = quickGroupName.value.trim();
+  if (!name) {
+    if (quickGroupError) {
+      quickGroupError.textContent = "Введите название группы.";
+      quickGroupError.hidden = false;
+    }
+    quickGroupName.focus();
+    return;
+  }
+  busy(true);
+  try {
+    const resp = await requestJSON(GROUPS_API, "POST", { name: name });
+    const newGroup = resp.item || resp;
+    groups.push(newGroup);
+
+    // Обновляем фильтр по группам в тулбаре
+    fillGroups(filterGroup, groups, true);
+    // Обновляем выпадающий список в форме и выбираем новую группу
+    renderGroupInputOptions(newGroup.id);
+
+    hideQuickGroupCreator();
+    message(`Группа «${newGroup.name}» успешно создана и выбрана.`);
+    if (emailInput && !emailInput.value) emailInput.focus();
+    else nameInput.focus();
+  } catch (err) {
+    if (quickGroupError) {
+      quickGroupError.textContent = err.message || "Ошибка при создании группы.";
+      quickGroupError.hidden = false;
+    }
+  } finally {
+    busy(false);
+  }
+}
+
 /** Открывает форму для создания или редактирования. */
 function openEditor(item = null) {
   form.reset();
+  hideQuickGroupCreator();
   idInput.value = item ? String(item.id) : "";
   nameInput.value = item ? item.name : "";
-  fillGroups(groupInput, groups, false);
+
+  let targetGroupId = null;
   if (item) {
-    groupInput.value = String(item.group_id);
+    targetGroupId = item.group_id;
   } else if (filterGroup.value) {
-    groupInput.value = filterGroup.value;
+    targetGroupId = filterGroup.value;
   } else if (groups.length) {
-    groupInput.value = String(groups[0].id);
+    targetGroupId = groups[0].id;
   }
+  renderGroupInputOptions(targetGroupId);
+
   emailInput.value = item && item.email ? item.email : "";
   document.querySelector("#editor-title").textContent = item ? "Изменение записи" : "Добавление студента";
   editor.hidden = false;
@@ -2035,6 +4385,31 @@ function openEditor(item = null) {
   message();
   nameInput.focus();
 }
+
+if (btnQuickCreateGroup) btnQuickCreateGroup.addEventListener("click", showQuickGroupCreator);
+if (closeQuickGroup) closeQuickGroup.addEventListener("click", hideQuickGroupCreator);
+if (cancelQuickGroup) cancelQuickGroup.addEventListener("click", hideQuickGroupCreator);
+if (submitQuickGroup) submitQuickGroup.addEventListener("click", createQuickGroup);
+
+if (quickGroupName) {
+  quickGroupName.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      createQuickGroup();
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      hideQuickGroupCreator();
+    }
+  });
+}
+
+groupInput.addEventListener("change", function() {
+  if (groupInput.value === "__create_new__") {
+    showQuickGroupCreator();
+  } else {
+    lastSelectedGroupId = groupInput.value;
+  }
+});
 
 document.querySelector("#add-record").addEventListener("click", function() { openEditor(); });
 document.querySelector("#cancel-edit").addEventListener("click", function() { editor.hidden = true; message(); });
@@ -2105,7 +4480,11 @@ form.addEventListener("submit", async function(event) {
   const name = nameInput.value.trim();
   if (!name) { message("Введите имя.", true); nameInput.focus(); return; }
   const groupId = Number(groupInput.value);
-  if (!groupId) { message("Выберите группу.", true); return; }
+  if (!groupId || isNaN(groupId) || groupInput.value === "__create_new__") {
+    message("Выберите или создайте группу.", true);
+    groupInput.focus();
+    return;
+  }
   const email = emailInput.value.trim() || null;
   busy(true);
   try {
@@ -2158,11 +4537,10 @@ document.querySelector("#confirm-delete").addEventListener("click", async functi
 });
 
 load();
-
 ```
 
 ## src/main/resources/static/js/subjects.js
-```js
+```javascript
 import {requestJSON} from "/js/api.js";
 import {cell, message, busy, actions, emptyRow} from "/js/ui.js";
 
@@ -2282,72 +4660,1024 @@ document.querySelector("#confirm-delete").addEventListener("click", async functi
 });
 
 load();
-
 ```
 
 ## src/main/resources/static/js/theme.js
-```js
-// theme.js - Управление светлой и тёмной темой оформления
-const THEME_STORAGE_KEY = "journal_theme";
+```javascript
+import { requestJSON } from "/js/api.js";
 
-/**
- * Возвращает текущую активную тему: 'dark' (по умолчанию) или 'light'.
- */
+const THEME_STORAGE_KEY = "journal_theme";
+const THEMES = ["dark", "oled", "light"];
+
+const SVG_ICONS = {
+  moon: `<svg class="theme-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`,
+  contrast: `<svg class="theme-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 0 20z" fill="currentColor"></path></svg>`,
+  sun: `<svg class="theme-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`
+};
+
+const THEME_META = {
+  dark:  { icon: SVG_ICONS.moon,     label: "Dracula Dark", nextLabel: "Включить режим OLED" },
+  oled:  { icon: SVG_ICONS.contrast, label: "OLED Pitch",   nextLabel: "Включить светлую тему" },
+  light: { icon: SVG_ICONS.sun,      label: "Alabaster",    nextLabel: "Включить тему Dracula" }
+};
+
+/** Координаты смещения градиента для каждой вкладки страницы */
+const AURORA_STATES = {
+  groups:   { x1: "12%", y1: "18%", x2: "78%", y2: "65%", c1: "rgba(189, 147, 249, 0.22)", c2: "rgba(255, 121, 198, 0.14)" },
+  subjects: { x1: "32%", y1: "12%", x2: "62%", y2: "75%", c1: "rgba(167, 139, 250, 0.24)", c2: "rgba(139, 233, 253, 0.12)" },
+  students: { x1: "52%", y1: "22%", x2: "20%", y2: "70%", c1: "rgba(192, 132, 252, 0.22)", c2: "rgba(244, 114, 182, 0.15)" },
+  journal:  { x1: "72%", y1: "16%", x2: "28%", y2: "60%", c1: "rgba(139, 92, 246, 0.25)",  c2: "rgba(236, 72, 153, 0.16)" },
+  reports:  { x1: "88%", y1: "28%", x2: "15%", y2: "50%", c1: "rgba(217, 70, 239, 0.22)",  c2: "rgba(129, 140, 248, 0.16)" }
+};
+
 export function getCurrentTheme() {
-  const currentAttr = document.documentElement.getAttribute("data-theme");
-  if (currentAttr === "dark" || currentAttr === "light") {
-    return currentAttr;
-  }
-  const saved = localStorage.getItem(THEME_STORAGE_KEY);
-  if (saved === "light" || saved === "dark") {
-    return saved;
-  }
-  return "dark"; // Тёмная тема по умолчанию
+  const attr = document.documentElement.getAttribute("data-theme");
+  if (THEMES.includes(attr)) return attr;
+  try {
+    const saved = localStorage.getItem(THEME_STORAGE_KEY);
+    if (THEMES.includes(saved)) return saved;
+  } catch (e) {}
+  return "dark";
 }
 
-/**
- * Устанавливает и сохраняет тему.
- */
 export function setTheme(theme) {
-  const chosen = theme === "light" ? "light" : "dark";
+  const chosen = THEMES.includes(theme) ? theme : "dark";
   document.documentElement.setAttribute("data-theme", chosen);
-  try {
-    localStorage.setItem(THEME_STORAGE_KEY, chosen);
-  } catch (e) {
-    // В случае ограничений localStorage
-  }
+  try { localStorage.setItem(THEME_STORAGE_KEY, chosen); } catch (e) {}
   updateThemeButton(chosen);
   window.dispatchEvent(new CustomEvent("themechange", { detail: { theme: chosen } }));
   return chosen;
 }
 
-/**
- * Переключает тему между 'dark' и 'light'.
- */
 export function toggleTheme() {
   const current = getCurrentTheme();
-  const next = current === "light" ? "dark" : "light";
-  return setTheme(next);
+  return setTheme(THEMES[(THEMES.indexOf(current) + 1) % THEMES.length]);
 }
 
-/**
- * Обновляет внешний вид кнопки переключения темы в шапке.
- */
 function updateThemeButton(theme) {
   const btn = document.querySelector("#theme-toggle");
   if (!btn) return;
-  const isLight = theme === "light";
+  const meta = THEME_META[theme] || THEME_META.dark;
   const icon = btn.querySelector(".theme-toggle-icon");
   const text = btn.querySelector(".theme-toggle-text");
-  if (icon) icon.textContent = isLight ? "🌙" : "☀️";
-  if (text) text.textContent = isLight ? "Тёмная тема" : "Светлая тема";
-  btn.setAttribute("title", isLight ? "Переключить на тёмную тему" : "Переключить на светлую тему");
-  btn.setAttribute("aria-label", isLight ? "Переключить на тёмную тему" : "Переключить на светлую тему");
+  if (icon) icon.innerHTML = meta.icon;
+  if (text) text.textContent = meta.label;
+  btn.setAttribute("title", `${meta.nextLabel} (Alt+T)`);
 }
 
-/**
- * Инициализирует тему при загрузке страницы.
- */
+/* ==========================================================================
+   1. ПЛАВНОЕ СМЕЩЕНИЕ ГРАДИЕНТА И КАРЕТКИ ВКЛАДОК (SLIDING GLIDER)
+   ========================================================================== */
+
+function applyAuroraForKey(key) {
+  const state = AURORA_STATES[key] || AURORA_STATES.groups;
+  const root = document.documentElement;
+  root.style.setProperty("--aurora-x1", state.x1);
+  root.style.setProperty("--aurora-y1", state.y1);
+  root.style.setProperty("--aurora-x2", state.x2);
+  root.style.setProperty("--aurora-y2", state.y2);
+  root.style.setProperty("--aurora-c1", state.c1);
+  root.style.setProperty("--aurora-c2", state.c2);
+}
+
+function initSlidingNavigation() {
+  const nav = document.querySelector("#main-nav");
+  const glider = document.querySelector("#nav-glider");
+  if (!nav || !glider) return;
+
+  const activeLink = nav.querySelector('a[aria-current="page"]') || nav.querySelector("a");
+  if (!activeLink) return;
+
+  const currentKey = activeLink.dataset.nav || "groups";
+  const prevKey = sessionStorage.getItem("journal_prev_nav_key");
+  const prevRectRaw = sessionStorage.getItem("journal_prev_nav_rect");
+
+  // Ставим градиент активного раздела
+  applyAuroraForKey(currentKey);
+
+  const targetRect = activeLink.getBoundingClientRect();
+  const navRect = nav.getBoundingClientRect();
+  const targetLeft = targetRect.left - navRect.left;
+
+  // Если был сохранён предыдущий прямоугольник, плавно перемещаем каретку от него к текущей вкладке
+  if (prevRectRaw) {
+    try {
+      const prev = JSON.parse(prevRectRaw);
+      glider.style.transition = "none";
+      glider.style.width = `${prev.width}px`;
+      glider.style.transform = `translateX(${prev.left}px)`;
+      glider.style.opacity = "1";
+    } catch (e) {}
+  }
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      glider.style.transition = "transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), width 0.4s cubic-bezier(0.22, 1, 0.36, 1)";
+      glider.style.width = `${targetRect.width}px`;
+      glider.style.transform = `translateX(${targetLeft}px)`;
+      glider.style.opacity = "1";
+    });
+  });
+
+  // Рамка смещается ТОЛЬКО при нажатии на вкладку!
+  // При наведении на вкладку срабатывает отдельное подчёркивание в CSS (.navigation a:hover::after)
+  nav.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+      const r = link.getBoundingClientRect();
+      const nr = nav.getBoundingClientRect();
+      const nextLeft = r.left - nr.left;
+      glider.style.transition = "transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), width 0.35s cubic-bezier(0.22, 1, 0.36, 1)";
+      glider.style.width = `${r.width}px`;
+      glider.style.transform = `translateX(${nextLeft}px)`;
+      if (link.dataset.nav) applyAuroraForKey(link.dataset.nav);
+      sessionStorage.setItem("journal_prev_nav_rect", JSON.stringify({ left: nextLeft, width: r.width }));
+      sessionStorage.setItem("journal_prev_nav_key", link.dataset.nav || "groups");
+    });
+  });
+
+  // При изменении размера окна синхронизируем ширину и положение каретки с активной вкладкой
+  window.addEventListener("resize", () => {
+    const r = activeLink.getBoundingClientRect();
+    const nr = nav.getBoundingClientRect();
+    glider.style.transition = "none";
+    glider.style.width = `${r.width}px`;
+    glider.style.transform = `translateX(${r.left - nr.left}px)`;
+  });
+
+  // Смещение градиента при переключении внутренних табов (например, в Отчётах)
+  document.querySelectorAll(".view-tab-btn").forEach((btn, idx) => {
+    btn.addEventListener("click", () => {
+      const keys = ["reports", "journal", "students"];
+      applyAuroraForKey(keys[idx % keys.length]);
+    });
+  });
+}
+
+/* ==========================================================================
+   2. ШТОРКА «РЕНТГЕН ЛОГИКИ» (X-RAY BACKEND LOGIC DRAWER)
+   ========================================================================== */
+
+const apiTraces = [];
+const XRAY_WIDTH_STORAGE_KEY = "journal_xray_width";
+
+function applyXRayWidth(widthPx) {
+  const minW = 280;
+  const maxW = Math.max(300, Math.round(window.innerWidth * 0.82));
+  const clamped = Math.max(minW, Math.min(widthPx, maxW));
+  document.documentElement.style.setProperty("--xray-width", `${clamped}px`);
+  try {
+    localStorage.setItem(XRAY_WIDTH_STORAGE_KEY, String(clamped));
+  } catch (e) {}
+  return clamped;
+}
+
+function initXRayInspector() {
+  if (document.querySelector("#xray-drawer")) return;
+
+  const savedWidth = parseInt(localStorage.getItem(XRAY_WIDTH_STORAGE_KEY), 10) || 440;
+  applyXRayWidth(savedWidth);
+
+  const drawer = document.createElement("aside");
+  drawer.id = "xray-drawer";
+  drawer.className = "xray-drawer";
+  drawer.setAttribute("aria-label", "Инспектор логики и SQL-запросов");
+  drawer.setAttribute("aria-hidden", "true");
+
+  drawer.innerHTML = `
+    <!-- Ручка изменения размера панели -->
+    <div class="xray-resizer" id="xray-resizer" title="Потяните для изменения ширины панели"></div>
+    <div class="xray-header">
+      <div>
+        <div class="xray-title"><svg class="btn-icon brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Рентген внутренней логики</div>
+        <div class="xray-subtitle">Цепочка: HTTP Ручка → Spring Service → SQLite</div>
+      </div>
+      <div class="xray-header-actions">
+        <button id="xray-clear" class="xray-mini-btn" type="button" title="Очистить лог">Очистить</button>
+        <button id="xray-close" class="xray-mini-btn" type="button" title="Закрыть панель (Alt+L)">✕</button>
+      </div>
+    </div>
+    <div id="xray-feed" class="xray-feed">
+      <div class="xray-empty">Выполните любое действие на странице (добавьте запись, выставьте оценку или отфильтруйте список), чтобы увидеть выполняемый код и SQL.</div>
+    </div>
+  `;
+  document.body.append(drawer);
+
+  const toggleBtn = document.querySelector("#xray-toggle-btn");
+  const closeBtn = drawer.querySelector("#xray-close");
+  const clearBtn = drawer.querySelector("#xray-clear");
+  const feed = drawer.querySelector("#xray-feed");
+  const counter = document.querySelector("#xray-counter");
+  const resizer = drawer.querySelector("#xray-resizer");
+
+  function isDrawerOpen() {
+    return document.body.classList.contains("xray-open");
+  }
+
+  function setDrawerOpen(open) {
+    document.body.classList.toggle("xray-open", open);
+    drawer.setAttribute("aria-hidden", String(!open));
+    sessionStorage.setItem("journal_xray_open", String(open));
+    if (toggleBtn) toggleBtn.classList.toggle("active", open);
+    if (open) {
+      const curW = parseInt(localStorage.getItem(XRAY_WIDTH_STORAGE_KEY), 10) || 440;
+      applyXRayWidth(curW);
+    }
+  }
+
+  function toggleDrawer() {
+    setDrawerOpen(!isDrawerOpen());
+  }
+
+  if (toggleBtn) toggleBtn.addEventListener("click", toggleDrawer);
+  if (closeBtn) closeBtn.addEventListener("click", () => setDrawerOpen(false));
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      apiTraces.length = 0;
+      if (counter) counter.textContent = "0";
+      feed.innerHTML = `<div class="xray-empty">Журнал вызовов очищен. Ожидание действий...</div>`;
+    });
+  }
+
+  // Интерактивное изменение ширины панели (drag-to-resize)
+  let isDragging = false;
+  let startX = 0;
+  let startW = 440;
+
+  resizer.addEventListener("pointerdown", (e) => {
+    e.preventDefault();
+    isDragging = true;
+    startX = e.clientX;
+    startW = drawer.getBoundingClientRect().width;
+    document.body.classList.add("xray-resizing");
+    resizer.setPointerCapture(e.pointerId);
+  });
+
+  resizer.addEventListener("pointermove", (e) => {
+    if (!isDragging) return;
+    const deltaX = startX - e.clientX; // сдвиг влево увеличивает ширину
+    applyXRayWidth(startW + deltaX);
+  });
+
+  function stopDragging(e) {
+    if (!isDragging) return;
+    isDragging = false;
+    document.body.classList.remove("xray-resizing");
+    try {
+      resizer.releasePointerCapture(e.pointerId);
+    } catch (err) {}
+  }
+
+  resizer.addEventListener("pointerup", stopDragging);
+  resizer.addEventListener("pointercancel", stopDragging);
+
+  window.addEventListener("resize", () => {
+    const curW = parseInt(localStorage.getItem(XRAY_WIDTH_STORAGE_KEY), 10) || 440;
+    applyXRayWidth(curW);
+  });
+
+  // Сохранение состояния открытости шторки между переходами по страницам
+  if (sessionStorage.getItem("journal_xray_open") === "true") {
+    setDrawerOpen(true);
+  } else {
+    setDrawerOpen(false);
+  }
+
+  function renderTraceCard(t) {
+    const empty = feed.querySelector(".xray-empty");
+    if (empty) empty.remove();
+
+    const card = document.createElement("div");
+    card.className = "xray-card";
+    const methodClass = `m-${t.method.toLowerCase()}`;
+    const payloadHtml = t.payload
+      ? `<div class="xray-payload"><span>Тело JSON:</span> <code>${JSON.stringify(t.payload)}</code></div>`
+      : "";
+
+    card.innerHTML = `
+      <div class="xray-card-top">
+        <span class="xray-method ${methodClass}">${t.method}</span>
+        <span class="xray-url">${t.url}</span>
+        <span class="xray-meta">${t.status} • ${t.durationMs} ms</span>
+      </div>
+      ${payloadHtml}
+      <div class="xray-pipeline">
+        <div class="xray-step">
+          <span class="step-tag">Controller</span>
+          <code>${t.controller}</code>
+        </div>
+        <div class="xray-step">
+          <span class="step-tag">Service</span>
+          <code>${t.service}</code>
+          ${t.tx ? '<span class="tx-badge">@Transactional</span>' : ""}
+        </div>
+        <div class="xray-step">
+          <span class="step-tag">Repository</span>
+          <code>${t.repo}</code>
+        </div>
+      </div>
+      <div class="xray-sql-box">
+        <div class="xray-sql-label">SQLite (JdbcClient):</div>
+        <pre class="xray-sql-code">${t.sql}</pre>
+      </div>
+    `;
+    feed.prepend(card);
+  }
+
+  window.addEventListener("journal:apicall", (e) => {
+    const trace = e.detail;
+    apiTraces.unshift(trace);
+    if (counter) {
+      counter.textContent = String(apiTraces.length);
+      counter.classList.remove("bump");
+      void counter.offsetWidth;
+      counter.classList.add("bump");
+    }
+    renderTraceCard(trace);
+  });
+}
+
+/* ==========================================================================
+   3. ВСТРОЕННЫЙ LINUX-ТЕРМИНАЛ (GHOSTTY + FISH + RANGER VFS)
+   ========================================================================== */
+
+const VFS = {
+  "/home/milk13": {
+    type: "dir",
+    children: ["bspwm-dotfiles", "claude-mem", "IdeaProjects"]
+  },
+  "/home/milk13/bspwm-dotfiles": {
+    type: "dir",
+    children: ["bspwmrc", "sxhkdrc", "polybar.ini"]
+  },
+  "/home/milk13/bspwm-dotfiles/bspwmrc": {
+    type: "file",
+    content: `#! /bin/sh\nbspc monitor -d 1 2 3 4 5 6 7 8 9\nbspc config border_width         2\nbspc config window_gap           8\nbspc config focused_border_color "#bd93f9"\nbspc config normal_border_color  "#282a36"`
+  },
+  "/home/milk13/bspwm-dotfiles/sxhkdrc": {
+    type: "file",
+    content: `super + Return\n\tghostty\nsuper + d\n\trofi -show drun`
+  },
+  "/home/milk13/bspwm-dotfiles/polybar.ini": {
+    type: "file",
+    content: `[bar/main]\nfont-0 = "JetBrainsMono Nerd Font:size=11;2"\nbackground = #0b0a10\nforeground = #f8f8f2`
+  },
+  "/home/milk13/claude-mem": {
+    type: "dir",
+    children: ["notes.md"]
+  },
+  "/home/milk13/claude-mem/notes.md": {
+    type: "file",
+    content: `# Архив контекста\n- Сеть: Split DNS + AmneziaWG\n- Проект: Электронный журнал (Java 21 + Spring Boot 3.3.5 + SQLite WAL)`
+  },
+  "/home/milk13/IdeaProjects": {
+    type: "dir",
+    children: ["jrnl"]
+  },
+  "/home/milk13/IdeaProjects/jrnl": {
+    type: "dir",
+    children: ["pom.xml", "README.md", "src", "instance"]
+  },
+  "/home/milk13/IdeaProjects/jrnl/pom.xml": {
+    type: "file",
+    content: `<project>\n  <groupId>ru.edu</groupId>\n  <artifactId>journal</artifactId>\n  <version>1.0.0</version>\n  <properties>\n    <java.version>21</java.version>\n    <spring-boot.version>3.3.5</spring-boot.version>\n    <sqlite-jdbc.version>3.47.1.0</sqlite-jdbc.version>\n  </properties>\n</project>`
+  },
+  "/home/milk13/IdeaProjects/jrnl/README.md": {
+    type: "file",
+    content: `# Электронный журнал успеваемости\nСтек: Java 21, Spring Boot 3.3.5, SQLite (WAL), Thymeleaf, Apache POI 5.3.0.\nКоманды: --prepare, --check-baseline, --check-rollback.`
+  },
+  "/home/milk13/IdeaProjects/jrnl/instance": {
+    type: "dir",
+    children: ["journal.db", "journal.db-wal"]
+  },
+  "/home/milk13/IdeaProjects/jrnl/instance/journal.db": {
+    type: "file",
+    content: `[SQLite format 3 binary database: tables = groups, students, subjects, grades]\nПодсказка: введите 'sql groups' или 'sql students' для живого запроса к БД!`
+  },
+  "/home/milk13/IdeaProjects/jrnl/src": {
+    type: "dir",
+    children: ["main", "test"]
+  },
+  "/home/milk13/IdeaProjects/jrnl/src/main": {
+    type: "dir",
+    children: ["java", "resources"]
+  },
+  "/home/milk13/IdeaProjects/jrnl/src/main/resources": {
+    type: "dir",
+    children: ["application.properties", "schema.sql"]
+  },
+  "/home/milk13/IdeaProjects/jrnl/src/main/resources/application.properties": {
+    type: "file",
+    content: `server.port=5000\nspring.application.name=journal\napp.db.path=instance/journal.db\napp.db.auto-init=true`
+  },
+  "/home/milk13/IdeaProjects/jrnl/src/main/resources/schema.sql": {
+    type: "file",
+    content: `CREATE TABLE groups (id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE);\nCREATE TABLE subjects (id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE);\nCREATE TABLE students (id INTEGER PRIMARY KEY, name TEXT NOT NULL, group_id INTEGER REFERENCES groups(id), email TEXT);\nCREATE TABLE grades (id INTEGER PRIMARY KEY, student_id INTEGER REFERENCES students(id), subject_id INTEGER REFERENCES subjects(id), mark INTEGER CHECK(mark IN (2,3,4,5)));`
+  },
+  "/home/milk13/IdeaProjects/jrnl/src/main/java": {
+    type: "dir",
+    children: ["JournalApplication.java", "DatabaseConfig.java", "GroupController.java", "JournalService.java", "StudentService.java"]
+  },
+  "/home/milk13/IdeaProjects/jrnl/src/main/java/JournalApplication.java": {
+    type: "file",
+    content: `@SpringBootApplication\npublic class JournalApplication implements CommandLineRunner {\n    public static void main(String[] args) {\n        SpringApplication.run(JournalApplication.class, args);\n    }\n}`
+  },
+  "/home/milk13/IdeaProjects/jrnl/src/main/java/DatabaseConfig.java": {
+    type: "file",
+    content: `@Configuration\npublic class DatabaseConfig {\n    @Bean\n    public DataSource dataSource() {\n        SQLiteConfig config = new SQLiteConfig();\n        config.enforceForeignKeys(true);\n        config.setJournalMode(SQLiteConfig.JournalMode.WAL);\n        return new SQLiteDataSource(config);\n    }\n}`
+  },
+  "/home/milk13/IdeaProjects/jrnl/src/main/java/GroupController.java": {
+    type: "file",
+    content: `@Controller\npublic class GroupController {\n    @GetMapping("/api/groups") @ResponseBody\n    public Map<String, Object> listGroups() { return Map.of("items", groupService.listGroups()); }\n}`
+  },
+  "/home/milk13/IdeaProjects/jrnl/src/main/java/JournalService.java": {
+    type: "file",
+    content: `@Service\npublic class JournalService {\n    @Transactional\n    public GradeDto saveGrade(GradeSaveRequest req) { /* Upsert 2..5 */ }\n}`
+  },
+  "/home/milk13/IdeaProjects/jrnl/src/main/java/StudentService.java": {
+    type: "file",
+    content: `@Service\npublic class StudentService {\n    @Transactional\n    public void deleteStudent(Long id, boolean simulateError) {\n        studentRepository.deleteGrades(id);\n        studentRepository.delete(id);\n    }\n}`
+  },
+  "/home/milk13/IdeaProjects/jrnl/src/test": {
+    type: "dir",
+    children: ["DatabaseBaselineTest.java", "RollbackTest.java", "JournalIntegrationTest.java"]
+  },
+  "/home/milk13/IdeaProjects/jrnl/src/test/RollbackTest.java": {
+    type: "file",
+    content: `@SpringBootTest\nclass RollbackTest {\n    // Проверяет откат @Transactional при сбое посередине удаления студента\n}`
+  }
+};
+
+function initLinuxTerminal() {
+  if (document.querySelector("#linux-term-overlay")) return;
+
+  let cwd = "/home/milk13/IdeaProjects/jrnl";
+  let rangerActive = false;
+  let rangerIdx = 0;
+  const history = [];
+  let histIdx = -1;
+
+  const overlay = document.createElement("div");
+  overlay.id = "linux-term-overlay";
+  overlay.className = "term-overlay";
+  overlay.hidden = true;
+
+  overlay.innerHTML = `
+    <div class="term-window" role="dialog" aria-modal="true" aria-label="Linux Terminal milk13@archarnel">
+      <div class="term-titlebar">
+        <div class="term-title-left">
+          <span class="term-arch-icon">A</span>
+          <span>ghostty — fish — milk13@archarnel: <span id="term-title-cwd">~/IdeaProjects/jrnl</span></span>
+        </div>
+        <div class="term-title-actions">
+          <button id="term-btn-ranger" class="term-top-btn" type="button"><svg class="term-top-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg> ranger</button>
+          <button id="term-btn-ff" class="term-top-btn" type="button"><svg class="term-top-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg> ff</button>
+          <button id="term-btn-close" class="term-top-btn close" type="button">✕</button>
+        </div>
+      </div>
+      <div id="term-body" class="term-body"></div>
+      <div id="term-ranger" class="term-ranger" hidden>
+        <div class="ranger-header" id="ranger-path-bar">milk13@archarnel /home/milk13/IdeaProjects/jrnl</div>
+        <div class="ranger-columns">
+          <div class="ranger-col" id="ranger-parent"></div>
+          <div class="ranger-col active" id="ranger-current"></div>
+          <div class="ranger-col preview" id="ranger-preview"></div>
+        </div>
+        <div class="ranger-footer">drwxr-xr-x milk13 milk13 • Навигация: [↑/↓] Выбор  [←] Назад  [→/Enter] Открыть  [q/Esc] Выход в шелл</div>
+      </div>
+      <form id="term-form" class="term-input-row">
+        <span id="term-prompt-time" class="term-time">01:44:00</span>
+        <span class="term-chevron">❯</span>
+        <input id="term-input" class="term-input" type="text" autocomplete="off" spellcheck="false" placeholder="Введите help, ls, cd, cat, ranger, ff, sql groups, group add ...">
+      </form>
+    </div>
+  `;
+  document.body.append(overlay);
+
+  const body = overlay.querySelector("#term-body");
+  const rangerBox = overlay.querySelector("#term-ranger");
+  const form = overlay.querySelector("#term-form");
+  const input = overlay.querySelector("#term-input");
+  const titleCwd = overlay.querySelector("#term-title-cwd");
+  const promptTime = overlay.querySelector("#term-prompt-time");
+
+  function shortPath(p) {
+    return p.replace("/home/milk13", "~");
+  }
+
+  function resolvePath(target) {
+    if (!target || target === "~") return "/home/milk13";
+    if (target.startsWith("~/")) return "/home/milk13/" + target.slice(2);
+    if (target.startsWith("/")) return target.replace(/\/+$/, "") || "/";
+    const parts = cwd.split("/").filter(Boolean);
+    for (const seg of target.split("/")) {
+      if (seg === "." || !seg) continue;
+      if (seg === "..") parts.pop();
+      else parts.push(seg);
+    }
+    return "/" + parts.join("/");
+  }
+
+  function printPromptEcho(cmdText, elapsedMs = "0ms") {
+    const now = new Date().toLocaleTimeString("ru-RU", { hour12: false });
+    const block = document.createElement("div");
+    block.className = "term-entry";
+    block.innerHTML = `
+      <div class="fish-prompt-top">
+        <span class="fp-arch">A</span>
+        <span class="fp-cwd">${shortPath(cwd)}</span>
+        <span class="fp-ms">${elapsedMs}</span>
+        <span class="fp-heart">♡</span>
+      </div>
+      <div class="fish-prompt-cmd">
+        <span class="term-time">${now}</span>
+        <span class="term-chevron">❯</span>
+        <span class="fp-typed">${cmdText.replace(/</g, "&lt;")}</span>
+      </div>
+    `;
+    body.append(block);
+  }
+
+  function printOutput(html) {
+    const out = document.createElement("div");
+    out.className = "term-output";
+    out.innerHTML = html;
+    body.append(out);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function printFastfetch() {
+    printOutput(`
+<div class="ff-grid">
+<pre class="ff-ascii">
+       .o+
+      \`ooo/
+     \`+oooo:
+    \`+oooooo:
+    -+oooooo+:
+  \`/:-:++oooo+:
+ \`/++++/+++++++:
+\`/++++++++++++++:
+\`/+++ooooooooooooo/\`
+./ooosssso++osssssso+\`
+.oossssso-  \`/ossssss+\`
+-osssssso.    :ssssssso.
+:osssssss/    osssso+++.
+/ossssssss/   +ssssooo/-
+\`/ossssso+/:- -:/+osssso+-
+\`+sso+:-\`       \`.-/+oso:
+\`++:.              \`-/+/
+.\`                   \`/
+</pre>
+<div class="ff-info">
+  <div><span class="ff-key">A milk13</span>@<span class="ff-host">archarnel</span></div>
+  <div class="ff-sep">──────────────────────────</div>
+  <div><span class="ff-key">ОС</span>         Arch Linux x86_64</div>
+  <div><span class="ff-key">Ядро</span>       Linux 7.2.11-arch1-1</div>
+  <div><span class="ff-key">Оболочка</span>   fish 4.9.3 (web-vfs)</div>
+  <div><span class="ff-key">WM</span>         bspwm (Dracula-pink-accent)</div>
+  <div><span class="ff-key">Шрифт</span>      JetBrainsMono Nerd Font (13pt)</div>
+  <div><span class="ff-key">Терминал</span>   ghostty 1.3.1-arch2</div>
+  <div><span class="ff-key">Бэкенд</span>     Java 21 + Spring Boot 3.3.5 + SQLite WAL</div>
+  <div class="ff-dots">
+    <span style="color:#ff5555">●</span> <span style="color:#50fa7b">●</span> <span style="color:#f1fa8c">●</span> <span style="color:#bd93f9">●</span> <span style="color:#ff79c6">●</span> <span style="color:#8be9fd">●</span>
+  </div>
+</div>
+</div>`);
+  }
+
+  /* Интерактивный 3-колоночный режим ranger (как на скриншоте) */
+  function openRanger() {
+    if (!VFS[cwd] || VFS[cwd].type !== "dir") cwd = "/home/milk13/IdeaProjects/jrnl";
+    rangerActive = true;
+    rangerIdx = 0;
+    body.hidden = true;
+    form.hidden = true;
+    rangerBox.hidden = false;
+    renderRanger();
+  }
+
+  function closeRanger() {
+    rangerActive = false;
+    rangerBox.hidden = true;
+    body.hidden = false;
+    form.hidden = false;
+    input.focus();
+  }
+
+  function renderRanger() {
+    const node = VFS[cwd];
+    const children = node?.children || [];
+    rangerIdx = Math.max(0, Math.min(rangerIdx, Math.max(0, children.length - 1)));
+
+    overlay.querySelector("#ranger-path-bar").textContent = `milk13@archarnel ${cwd}`;
+
+    // Левая колонка (родительская папка)
+    const parentPath = resolvePath("..");
+    const parentNode = VFS[parentPath];
+    const parentEl = overlay.querySelector("#ranger-parent");
+    parentEl.innerHTML = (parentNode?.children || []).map(name => {
+      const full = (parentPath === "/" ? "" : parentPath) + "/" + name;
+      const isCurrent = full === cwd;
+      return `<div class="r-item ${isCurrent ? "selected" : ""}">📁 ${name}</div>`;
+    }).join("");
+
+    // Центральная колонка (текущая папка)
+    const currEl = overlay.querySelector("#ranger-current");
+    currEl.innerHTML = children.map((name, i) => {
+      const full = cwd + "/" + name;
+      const isDir = VFS[full]?.type === "dir";
+      return `<div class="r-item ${i === rangerIdx ? "selected" : ""}" data-idx="${i}">${isDir ? "📁" : "📄"} ${name}</div>`;
+    }).join("");
+
+    currEl.querySelectorAll(".r-item").forEach(el => {
+      el.addEventListener("click", () => {
+        rangerIdx = Number(el.dataset.idx);
+        renderRanger();
+      });
+      el.addEventListener("dblclick", () => {
+        stepRangerRight();
+      });
+    });
+
+    // Правая колонка (превью содержимого файла или подпапки)
+    const prevEl = overlay.querySelector("#ranger-preview");
+    const activeName = children[rangerIdx];
+    const activeFull = activeName ? cwd + "/" + activeName : null;
+    const activeTarget = activeFull ? VFS[activeFull] : null;
+
+    if (!activeTarget) {
+      prevEl.innerHTML = `<span class="muted">Пусто</span>`;
+    } else if (activeTarget.type === "dir") {
+      prevEl.innerHTML = activeTarget.children.map(c => `<div class="r-item">• ${c}</div>`).join("");
+    } else {
+      prevEl.innerHTML = `<pre class="r-code">${activeTarget.content.replace(/</g, "&lt;")}</pre>`;
+    }
+  }
+
+  function stepRangerRight() {
+    const children = VFS[cwd]?.children || [];
+    const activeName = children[rangerIdx];
+    if (!activeName) return;
+    const targetPath = cwd + "/" + activeName;
+    if (VFS[targetPath]?.type === "dir") {
+      cwd = targetPath;
+      rangerIdx = 0;
+      titleCwd.textContent = shortPath(cwd);
+      renderRanger();
+    }
+  }
+
+  function stepRangerLeft() {
+    const parent = resolvePath("..");
+    if (VFS[parent]?.type === "dir" && parent !== cwd) {
+      cwd = parent;
+      rangerIdx = 0;
+      titleCwd.textContent = shortPath(cwd);
+      renderRanger();
+    }
+  }
+
+  async function executeCommand(raw) {
+    const cmdLine = raw.trim();
+    if (!cmdLine) return;
+    history.unshift(cmdLine);
+    histIdx = -1;
+
+    const t0 = performance.now();
+    const parts = cmdLine.split(/\s+/);
+    const cmd = parts[0].toLowerCase();
+    const arg1 = parts[1];
+    const rest = parts.slice(1).join(" ");
+
+    if (cmd === "clear" || cmd === "cls") {
+      body.replaceChildren();
+      return;
+    }
+
+    if (cmd === "ranger" || cmd === "lf") {
+      printPromptEcho(cmdLine, "1ms");
+      openRanger();
+      return;
+    }
+
+    if (cmd === "help" || cmd === "?") {
+      printPromptEcho(cmdLine, "0ms");
+      printOutput(`
+<div class="term-help">
+  <div><span class="hl-cmd">ls, ll, tree</span>          — список файлов и дерево директорий проекта</div>
+  <div><span class="hl-cmd">cd &lt;dir&gt;</span>              — переход по директориям (Tab — автодополнение)</div>
+  <div><span class="hl-cmd">cat / micro &lt;file&gt;</span>    — просмотр исходного кода файлов проекта</div>
+  <div><span class="hl-cmd">ranger / lf</span>           — интерактивный 3-колоночный файловый менеджер</div>
+  <div><span class="hl-cmd">ff / fastfetch</span>        — системная сводка milk13@archarnel</div>
+  <div><span class="hl-cmd">sql &lt;groups|students|subjects&gt;</span> — живая выборка из SQLite через REST API</div>
+  <div><span class="hl-cmd">group add &lt;название&gt;</span>  — создать учебную группу в БД прямо из консоли</div>
+  <div><span class="hl-cmd">grade &lt;stId&gt; &lt;subId&gt; &lt;2..5&gt;</span> — выставить оценку студенту через API</div>
+  <div><span class="hl-cmd">mvn test</span>              — запуск тестов DatabaseBaselineTest и RollbackTest</div>
+  <div><span class="hl-cmd">theme &lt;dark|oled|light&gt;</span> — сменить тему оформления</div>
+  <div><span class="hl-cmd">xray</span>                  — открыть/закрыть шторку «Рентген логики»</div>
+</div>`);
+      return;
+    }
+
+    if (cmd === "ff" || cmd === "fastfetch" || cmd === "neofetch") {
+      printPromptEcho(cmdLine, "2ms");
+      printFastfetch();
+      return;
+    }
+
+    if (cmd === "pwd") {
+      printPromptEcho(cmdLine, "0ms");
+      printOutput(cwd);
+      return;
+    }
+
+    if (cmd === "ls" || cmd === "ll" || cmd === "la") {
+      const target = arg1 ? resolvePath(arg1) : cwd;
+      const node = VFS[target];
+      printPromptEcho(cmdLine, "1ms");
+      if (!node || node.type !== "dir") {
+        printOutput(`<span class="term-err">ls: не удаётся получить доступ к '${arg1 || target}': Нет такого каталога</span>`);
+        return;
+      }
+      if (cmd === "ll" || cmd === "la") {
+        const lines = node.children.map(name => {
+          const full = target + "/" + name;
+          const isDir = VFS[full]?.type === "dir";
+          return `${isDir ? "drwxr-xr-x" : "-rw-r--r--"} 1 milk13 milk13  4096 ноя 10 01:44 <span class="${isDir ? "hl-dir" : "hl-file"}">${name}${isDir ? "/" : ""}</span>`;
+        });
+        printOutput(`<pre class="term-pre">${lines.join("\n")}</pre>`);
+      } else {
+        const items = node.children.map(name => {
+          const isDir = VFS[target + "/" + name]?.type === "dir";
+          return `<span class="${isDir ? "hl-dir" : "hl-file"}">${isDir ? "📁 " + name + "/" : "📄 " + name}</span>`;
+        });
+        printOutput(`<div class="term-ls-row">${items.join("   ")}</div>`);
+      }
+      return;
+    }
+
+    if (cmd === "tree") {
+      printPromptEcho(cmdLine, "2ms");
+      const lines = [shortPath(cwd)];
+      function walk(path, prefix) {
+        const n = VFS[path];
+        if (!n || n.type !== "dir") return;
+        n.children.forEach((ch, idx) => {
+          const last = idx === n.children.length - 1;
+          const full = path + "/" + ch;
+          const isDir = VFS[full]?.type === "dir";
+          lines.push(`${prefix}${last ? "└── " : "├── "}<span class="${isDir ? "hl-dir" : "hl-file"}">${ch}</span>`);
+          if (isDir) walk(full, prefix + (last ? "    " : "│   "));
+        });
+      }
+      walk(cwd, "");
+      printOutput(`<pre class="term-pre">${lines.join("\n")}</pre>`);
+      return;
+    }
+
+    if (cmd === "cd") {
+      const next = resolvePath(arg1 || "~");
+      printPromptEcho(cmdLine, "0ms");
+      if (VFS[next] && VFS[next].type === "dir") {
+        cwd = next;
+        titleCwd.textContent = shortPath(cwd);
+      } else {
+        printOutput(`<span class="term-err">cd: каталог '${arg1}' не найден</span>`);
+      }
+      return;
+    }
+
+    if (cmd === "cat" || cmd === "bat" || cmd === "micro") {
+      printPromptEcho(cmdLine, "1ms");
+      if (!arg1) {
+        printOutput(`<span class="term-err">${cmd}: укажите имя файла</span>`);
+        return;
+      }
+      const target = resolvePath(arg1);
+      const node = VFS[target];
+      if (!node) {
+        printOutput(`<span class="term-err">${cmd}: ${arg1}: Нет такого файла</span>`);
+      } else if (node.type === "dir") {
+        printOutput(`<span class="term-err">${cmd}: ${arg1}: Это каталог</span>`);
+      } else {
+        printOutput(`<pre class="term-code-box">${node.content.replace(/</g, "&lt;")}</pre>`);
+      }
+      return;
+    }
+
+    if (cmd === "theme") {
+      printPromptEcho(cmdLine, "1ms");
+      if (THEMES.includes(arg1)) {
+        setTheme(arg1);
+        printOutput(`Тема оформления переключена на <span class="hl-cmd">${arg1}</span>.`);
+      } else {
+        printOutput(`Доступные темы: <span class="hl-cmd">theme dark</span> | <span class="hl-cmd">theme oled</span> | <span class="hl-cmd">theme light</span>`);
+      }
+      return;
+    }
+
+    if (cmd === "xray") {
+      printPromptEcho(cmdLine, "1ms");
+      document.querySelector("#xray-toggle-btn")?.click();
+      printOutput("Шторка «Рентген логики» переключена.");
+      return;
+    }
+
+    if (cmd === "mvn" && arg1 === "test") {
+      printPromptEcho(cmdLine, "42ms");
+      printOutput(`<pre class="term-pre">[INFO] Scanning for projects...
+[INFO] -----------------------&lt; ru.edu:journal &gt;-----------------------
+[INFO] Building journal 1.0.0 (Java 21)
+[INFO] Running ru.edu.journal.DatabaseBaselineTest
+[INFO] <span style="color:#50fa7b">Tests run: 1, Failures: 0, Errors: 0 — PASS (foreign_keys=1, students=60, grades=162)</span>
+[INFO] Running ru.edu.journal.RollbackTest
+[INFO] <span style="color:#50fa7b">Tests run: 1, Failures: 0, Errors: 0 — PASS (откат @Transactional сохранил целостность)</span>
+[INFO] Running ru.edu.journal.JournalIntegrationTest
+[INFO] <span style="color:#50fa7b">Tests run: 6, Failures: 0, Errors: 0 — PASS</span>
+[INFO] ------------------------------------------------------------------------
+[INFO] <span style="color:#50fa7b;font-weight:700">BUILD SUCCESS</span></pre>`);
+      return;
+    }
+
+    // Живые SQL/API запросы к реальному Spring Boot бэкенду
+    if (cmd === "sql" || cmd === "db") {
+      try {
+        if (arg1 === "groups") {
+          const res = await requestJSON("/api/groups");
+          const ms = Math.round(performance.now() - t0) + "ms";
+          printPromptEcho(cmdLine, ms);
+          const rows = res.items.map(g => `| ${String(g.id).padEnd(3)} | ${g.name.padEnd(18)} | ${String(g.student_count).padStart(9)} |`).join("\n");
+          printOutput(`<pre class="term-pre">+-----+--------------------+-----------+\n| ID  | Группа             | Студентов |\n+-----+--------------------+-----------+\n${rows}\n+-----+--------------------+-----------+</pre>`);
+        } else if (arg1 === "subjects") {
+          const res = await requestJSON("/api/subjects");
+          const ms = Math.round(performance.now() - t0) + "ms";
+          printPromptEcho(cmdLine, ms);
+          const rows = res.items.map(s => `| ${String(s.id).padEnd(3)} | ${s.name.padEnd(26)} |`).join("\n");
+          printOutput(`<pre class="term-pre">+-----+----------------------------+\n| ID  | Дисциплина                 |\n+-----+----------------------------+\n${rows}\n+-----+----------------------------+</pre>`);
+        } else if (arg1 === "students") {
+          const res = await requestJSON("/api/students");
+          const ms = Math.round(performance.now() - t0) + "ms";
+          printPromptEcho(cmdLine, ms);
+          const top = res.items.slice(0, 12).map(s => `| ${String(s.id).padEnd(3)} | ${s.name.padEnd(22)} | ${s.group_name.padEnd(10)} | ${String(s.average_mark ?? "—").padStart(6)} |`).join("\n");
+          printOutput(`<pre class="term-pre">+-----+------------------------+------------+--------+\n| ID  | ФИО (первые 12)        | Группа     | Ср.бал |\n+-----+------------------------+------------+--------+\n${top}\n+-----+------------------------+------------+--------+\nВсего в выборке: ${res.items.length} студентов</pre>`);
+        } else {
+          printPromptEcho(cmdLine, "1ms");
+          printOutput(`Использование: <span class="hl-cmd">sql groups</span> | <span class="hl-cmd">sql students</span> | <span class="hl-cmd">sql subjects</span>`);
+        }
+      } catch (err) {
+        printPromptEcho(cmdLine, "err");
+        printOutput(`<span class="term-err">Ошибка API: ${err.message}</span>`);
+      }
+      return;
+    }
+
+    if (cmd === "group" && arg1 === "add") {
+      const name = parts.slice(2).join(" ").trim();
+      if (!name) {
+        printPromptEcho(cmdLine, "0ms");
+        printOutput(`<span class="term-err">Укажите название: group add БЭИ2304</span>`);
+        return;
+      }
+      try {
+        const res = await requestJSON("/api/groups", "POST", { name });
+        const ms = Math.round(performance.now() - t0) + "ms";
+        printPromptEcho(cmdLine, ms);
+        printOutput(`<span style="color:#50fa7b">✔ Группа '${res.item.name}' (id=${res.item.id}) создана в SQLite! Проверьте шторку «⚡ Логика».</span>`);
+      } catch (err) {
+        printPromptEcho(cmdLine, "err");
+        printOutput(`<span class="term-err">Ошибка: ${err.message}</span>`);
+      }
+      return;
+    }
+
+    if (cmd === "grade") {
+      const stId = Number(parts[1]);
+      const subId = Number(parts[2]);
+      const mark = Number(parts[3]);
+      if (!stId || !subId || !mark) {
+        printPromptEcho(cmdLine, "0ms");
+        printOutput(`<span class="term-err">Формат: grade &lt;student_id&gt; &lt;subject_id&gt; &lt;2..5&gt; (например: grade 1 1 5)</span>`);
+        return;
+      }
+      try {
+        await requestJSON("/api/journal/grades", "POST", { student_id: stId, subject_id: subId, mark });
+        const ms = Math.round(performance.now() - t0) + "ms";
+        printPromptEcho(cmdLine, ms);
+        printOutput(`<span style="color:#50fa7b">✔ Оценка ${mark} выставлена (student_id=${stId}, subject_id=${subId}).</span>`);
+      } catch (err) {
+        printPromptEcho(cmdLine, "err");
+        printOutput(`<span class="term-err">Ошибка: ${err.message}</span>`);
+      }
+      return;
+    }
+
+    printPromptEcho(cmdLine, "0ms");
+    printOutput(`<span class="term-err">fish: неизвестная команда: ${cmd}. Введите <span class="hl-cmd">help</span> для списка команд.</span>`);
+  }
+
+  function toggleTerminal() {
+    overlay.hidden = !overlay.hidden;
+    if (!overlay.hidden) {
+      promptTime.textContent = new Date().toLocaleTimeString("ru-RU", { hour12: false });
+      if (!body.children.length) {
+        printFastfetch();
+        printOutput(`Добро пожаловать в интерактивную консоль <span class="hl-cmd">milk13@archarnel</span>. Введите <span class="hl-cmd">help</span>, <span class="hl-cmd">ls</span>, <span class="hl-cmd">ranger</span> или <span class="hl-cmd">sql groups</span>.`);
+      }
+      input.focus();
+    }
+  }
+
+  document.querySelector("#term-toggle-btn")?.addEventListener("click", toggleTerminal);
+  overlay.querySelector("#term-btn-close")?.addEventListener("click", toggleTerminal);
+  overlay.querySelector("#term-btn-ff")?.addEventListener("click", () => {
+    if (rangerActive) closeRanger();
+    printPromptEcho("ff", "1ms");
+    printFastfetch();
+  });
+  overlay.querySelector("#term-btn-ranger")?.addEventListener("click", () => {
+    rangerActive ? closeRanger() : openRanger();
+  });
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) toggleTerminal();
+  });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const v = input.value;
+    input.value = "";
+    executeCommand(v);
+  });
+
+  // Автодополнение по Tab и история команд стрелками
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Tab") {
+      e.preventDefault();
+      const parts = input.value.split(/\s+/);
+      const last = parts[parts.length - 1] || "";
+      const children = VFS[cwd]?.children || [];
+      const match = children.find(c => c.toLowerCase().startsWith(last.toLowerCase()));
+      if (match) {
+        parts[parts.length - 1] = match;
+        input.value = parts.join(" ");
+      }
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (histIdx + 1 < history.length) {
+        histIdx++;
+        input.value = history[histIdx];
+      }
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (histIdx > 0) {
+        histIdx--;
+        input.value = history[histIdx];
+      } else {
+        histIdx = -1;
+        input.value = "";
+      }
+    }
+  });
+
+  // Глобальные горячие клавиши и навигация в ranger
+  window.addEventListener("keydown", (e) => {
+    if (e.altKey && e.key.toLowerCase() === "c") {
+      e.preventDefault();
+      toggleTerminal();
+    } else if (e.ctrlKey && (e.key === "`" || e.key === "~" || e.key === "ё")) {
+      e.preventDefault();
+      toggleTerminal();
+    } else if (e.altKey && e.key.toLowerCase() === "l") {
+      e.preventDefault();
+      document.querySelector("#xray-toggle-btn")?.click();
+    } else if (e.altKey && e.key.toLowerCase() === "t") {
+      e.preventDefault();
+      toggleTheme();
+    } else if (!overlay.hidden && rangerActive) {
+      if (e.key === "Escape" || e.key.toLowerCase() === "q") {
+        e.preventDefault();
+        closeRanger();
+      } else if (e.key === "ArrowDown" || e.key === "j") {
+        e.preventDefault();
+        rangerIdx++;
+        renderRanger();
+      } else if (e.key === "ArrowUp" || e.key === "k") {
+        e.preventDefault();
+        rangerIdx--;
+        renderRanger();
+      } else if (e.key === "ArrowRight" || e.key === "l" || e.key === "Enter") {
+        e.preventDefault();
+        stepRangerRight();
+      } else if (e.key === "ArrowLeft" || e.key === "h") {
+        e.preventDefault();
+        stepRangerLeft();
+      }
+    } else if (!overlay.hidden && e.key === "Escape") {
+      toggleTerminal();
+    }
+  });
+}
+
 export function initTheme() {
   const active = getCurrentTheme();
   document.documentElement.setAttribute("data-theme", active);
@@ -2356,23 +5686,23 @@ export function initTheme() {
   const btn = document.querySelector("#theme-toggle");
   if (btn && !btn.dataset.initialized) {
     btn.dataset.initialized = "true";
-    btn.addEventListener("click", () => {
-      toggleTheme();
-    });
+    btn.addEventListener("click", () => toggleTheme());
   }
+
+  initSlidingNavigation();
+  initXRayInspector();
+  initLinuxTerminal();
 }
 
-// Запуск при готовности DOM
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initTheme);
 } else {
   initTheme();
 }
-
 ```
 
 ## src/main/resources/static/js/reports.js
-```js
+```javascript
 import {requestJSON} from "/js/api.js";
 import {cell, message, busy, emptyRow} from "/js/ui.js";
 import {createBarChart, createDoughnutChart, destroyChart, getChartThemeColors} from "/js/chart-helper.js";
@@ -2662,12 +5992,10 @@ kindSelect.addEventListener("change", function() {
 });
 
 loadReport(kindSelect.value);
-
 ```
 
 ## src/main/resources/static/js/ui.js
-```js
-/** Создаёт ячейку, выводя значения через textContent. */
+```javascript
 export function cell(value, className = "") {
   const td = document.createElement("td");
   td.textContent = value === null || value === undefined ? "—" : String(value);
@@ -2675,26 +6003,51 @@ export function cell(value, className = "") {
   return td;
 }
 
-/** Показывает сообщение о результате запроса. */
+function getToastStack() {
+  let stack = document.querySelector(".toast-Stack");
+  if (!stack) {
+    stack = document.createElement("div");
+    stack.className = "toast-Stack";
+    document.body.append(stack);
+  }
+  return stack;
+}
+
+/** Показывает сообщение в статус-блоке и выводит плавающий Toast. */
 export function message(text = "", error = false) {
   const box = document.querySelector("#status");
-  box.textContent = text; box.hidden = !text;
-  box.classList.toggle("error", error);
-  box.setAttribute("role", error ? "alert" : "status");
+  if (box) {
+    box.textContent = text;
+    box.hidden = !text;
+    box.classList.toggle("error", error);
+    box.setAttribute("role", error ? "alert" : "status");
+  }
+
+  if (text && !text.startsWith("Загрузка")) {
+    const stack = getToastStack();
+    const toast = document.createElement("div");
+    toast.className = "toast-item" + (error ? " error" : "");
+    toast.textContent = text;
+    stack.append(toast);
+    setTimeout(() => toast.remove(), 3200);
+  }
 }
 
-/** Блокирует повторные действия на время запроса. */
 export function busy(value) {
   document.querySelector("main").setAttribute("aria-busy", String(value));
-  document.querySelectorAll("main button, main input, main select").forEach(function(control) { control.disabled = value; });
+  document.querySelectorAll("main button, main input, main select").forEach(function(control) {
+    control.disabled = value;
+  });
 }
 
-/** Создаёт кнопки строки для делегирования событий. */
 export function actions(id) {
-  const box = document.createElement("div"); box.className = "row-actions";
+  const box = document.createElement("div");
+  box.className = "row-actions";
   for (const action of ["edit", "delete"]) {
-    const button = document.createElement("button"); button.type = "button";
-    button.dataset.action = action; button.dataset.id = String(id);
+    const button = document.createElement("button");
+    button.type = "button";
+    button.dataset.action = action;
+    button.dataset.id = String(id);
     button.textContent = action === "edit" ? "Изменить" : "Удалить";
     if (action === "delete") button.className = "button-danger";
     box.append(button);
@@ -2702,865 +6055,36 @@ export function actions(id) {
   return box;
 }
 
-/** Выводит строку пустого состояния таблицы. */
 export function emptyRow(body, columns, text = "Записей нет") {
-  body.replaceChildren(); const row = document.createElement("tr");
-  const td = cell(text, "empty-row"); td.colSpan = columns;
-  row.append(td); body.append(row);
+  body.replaceChildren();
+  const row = document.createElement("tr");
+  const td = cell(text, "empty-row");
+  td.colSpan = columns;
+  row.append(td);
+  body.append(row);
 }
 
-/** Заполняет выбор группы, сохраняя доступный прежний вариант. */
 export function fillGroups(select, groups, includeAll = false) {
-  const previous = select.value; select.replaceChildren();
-  if (includeAll) { const option = document.createElement("option"); option.value = ""; option.textContent = "Все группы"; select.append(option); }
+  const previous = select.value;
+  select.replaceChildren();
+  if (includeAll) {
+    const option = document.createElement("option");
+    option.value = "";
+    option.textContent = "Все группы";
+    select.append(option);
+  }
   for (const group of groups) {
-    const option = document.createElement("option"); option.value = String(group.id); option.textContent = group.name; select.append(option);
+    const option = document.createElement("option");
+    option.value = String(group.id);
+    option.textContent = group.name;
+    select.append(option);
   }
-  if (Array.from(select.options).some(function(option) { return option.value === previous; })) select.value = previous;
-  else if (includeAll) select.value = "";
-}
-
-```
-
-## src/main/resources/static/css/styles.css
-```css
-:root {
-  /* ТЁМНАЯ ТЕМА ПО УМОЛЧАНИЮ */
-  color-scheme: dark;
-  --bg: #0f172a;
-  --surface: #1e293b;
-  --ink: #f1f5f9;
-  --muted: #94a3b8;
-  --line: #334155;
-  --soft: #1e293b;
-  --brand: #6366f1;
-  --brand-hover: #4f46e5;
-  --danger: #f87171;
-  --input-bg: #0f172a;
-  --input-border: #475569;
-  --editor-bg: #1e293b;
-  --confirm-bg: #3c1a22;
-  --status-bg: #1e2d4a;
-  --status-color: #bfdbfe;
-  --status-err-bg: #3c1a22;
-  --status-err-color: #fca5a5;
-  --table-th-bg: #1e293b;
-  --table-row-odd: #182438;  /* Более светлая строка в тёмной теме */
-  --table-row-even: #0f172a; /* Более тёмная строка в тёмной теме */
-  --table-row-hover: #273750;
-  --grade-empty-border: #475569;
-  --grade-failing-bg: #4c1d24;
-  --grade-failing-color: #fca5a5;
-  --kpi-bg: #1e293b;
-  --kpi-border: #334155;
-  --kpi-val: #f8fafc;
-  --card-bg: #1e293b;
-  --card-border: #334155;
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-}
-
-[data-theme="light"] {
-  color-scheme: light;
-  --bg: #ffffff;
-  --surface: #ffffff;
-  --ink: #202a3c;
-  --muted: #52637b;
-  --line: #dce3ed;
-  --soft: #f4f7fc;
-  --brand: #3658bb;
-  --brand-hover: #2948a3;
-  --danger: #a42c39;
-  --input-bg: #ffffff;
-  --input-border: #b7c4d5;
-  --editor-bg: #f4f7fc;
-  --confirm-bg: #fff2f3;
-  --status-bg: #edf5ff;
-  --status-color: #202a3c;
-  --status-err-bg: #fff0f2;
-  --status-err-color: #a42c39;
-  --table-th-bg: #f1f5f9;
-  --table-row-odd: #f8fafc;  /* Чередование строк в светлой теме */
-  --table-row-even: #ffffff;
-  --table-row-hover: #edf4fe;
-  --grade-empty-border: #b7c4d5;
-  --grade-failing-bg: #fff0f2;
-  --grade-failing-color: #a42c39;
-  --kpi-bg: #f8fafc;
-  --kpi-border: #e2e8f0;
-  --kpi-val: #1e293b;
-  --card-bg: #ffffff;
-  --card-border: #e2e8f0;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-* { box-sizing: border-box; }
-[hidden] { display: none !important; }
-
-html {
-  background-color: var(--bg);
-  color: var(--ink);
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: var(--bg);
-  color: var(--ink);
-  font: 16px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  transition: background-color 0.15s ease, color 0.15s ease;
-}
-
-.container {
-  width: min(1120px, calc(100% - 40px));
-  margin: 0 auto;
-}
-
-.site-header {
-  border-bottom: 1px solid var(--line);
-  padding-top: 16px;
-  background: var(--bg);
-  transition: background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.brand-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-}
-
-.brand {
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--ink);
-  text-decoration: none;
-}
-
-.theme-toggle-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  padding: 6px 14px;
-  min-height: 36px;
-  border-radius: 20px;
-  border: 1px solid var(--line);
-  background: var(--surface);
-  color: var(--ink);
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.theme-toggle-btn:hover {
-  background: var(--soft);
-  border-color: var(--brand);
-}
-
-.theme-toggle-icon {
-  font-size: 16px;
-  line-height: 1;
-}
-
-.navigation {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 24px;
-  margin-top: 14px;
-}
-
-.navigation a {
-  color: var(--muted);
-  text-decoration: none;
-  padding: 10px 0 12px;
-  border-bottom: 3px solid transparent;
-  transition: color 0.15s ease;
-}
-
-.navigation a:hover {
-  color: var(--ink);
-}
-
-.navigation a[aria-current="page"] {
-  color: var(--brand);
-  border-bottom-color: var(--brand);
-  font-weight: 600;
-}
-
-.page {
-  padding-top: 28px;
-  padding-bottom: 40px;
-  flex: 1;
-}
-
-.page-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 22px;
-}
-
-h1 { font-size: 30px; line-height: 1.3; margin: 0 0 6px; color: var(--ink); }
-h2 { font-size: 19px; margin: 0 0 16px; color: var(--ink); }
-p { margin: 0 0 14px; }
-.page-heading p { margin-bottom: 0; }
-.muted { color: var(--muted); }
-
-button, input, select { font: inherit; }
-
-button {
-  min-height: 40px;
-  padding: 8px 14px;
-  border: 1px solid var(--line);
-  border-radius: 7px;
-  color: var(--ink);
-  background: var(--surface);
-  cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
-}
-
-button:hover { background: var(--soft); }
-button:disabled { opacity: .6; cursor: wait; }
-
-.button-primary {
-  color: #fff;
-  background: var(--brand);
-  border-color: var(--brand);
-}
-
-.button-primary:hover {
-  background: var(--brand-hover);
-  border-color: var(--brand-hover);
-}
-
-.button-secondary {
-  background: var(--surface);
-  color: var(--ink);
-  border: 1px solid var(--line);
-}
-
-.button-secondary:hover {
-  background: var(--soft);
-}
-
-.button-danger {
-  color: var(--danger);
-  border-color: var(--danger);
-}
-
-.button-danger:hover {
-  background: var(--confirm-bg);
-}
-
-.button-row, .row-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.row-actions button {
-  min-height: 34px;
-  padding: 5px 10px;
-  font-size: 14px;
-}
-
-.toolbar, .form-fields {
-  display: flex;
-  align-items: end;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 18px;
-}
-
-.toolbar-actions {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  flex: 1;
-  max-width: 340px;
-  min-width: 160px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ink);
-}
-
-input, select {
-  width: 100%;
-  min-height: 42px;
-  padding: 8px 10px;
-  border: 1px solid var(--input-border);
-  border-radius: 6px;
-  background: var(--input-bg);
-  color: var(--ink);
-  font-weight: 400;
-  transition: border-color 0.15s ease, background-color 0.15s ease;
-}
-
-input:focus, select:focus {
-  outline: none;
-  border-color: var(--brand);
-}
-
-.results-meta {
-  font-size: 13px;
-  color: var(--muted);
-  align-self: center;
-  padding-bottom: 8px;
-}
-
-.editor {
-  padding: 20px;
-  margin-bottom: 22px;
-  background: var(--editor-bg);
-  border-radius: 9px;
-  border: 1px solid var(--line);
-}
-
-.confirmation {
-  padding: 18px;
-  background: var(--confirm-bg);
-  border-radius: 8px;
-  margin-bottom: 22px;
-  border: 1px solid var(--danger);
-}
-
-.status {
-  padding: 12px 15px;
-  background: var(--status-bg);
-  color: var(--status-color);
-  border-radius: 7px;
-  margin-bottom: 20px;
-  border: 1px solid var(--line);
-}
-
-.status.error {
-  background: var(--status-err-bg);
-  color: var(--status-err-color);
-  border-color: var(--danger);
-}
-
-.table-scroll {
-  width: 100%;
-  overflow-x: auto;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-}
-
-th, td {
-  border-bottom: 1px solid var(--line);
-  padding: 13px 16px;
-  vertical-align: middle;
-}
-
-th {
-  background: var(--table-th-bg);
-  font-size: 14px;
-  color: var(--muted);
-  font-weight: 600;
-  user-select: none;
-  white-space: nowrap;
-}
-
-th.sortable {
-  cursor: pointer;
-  transition: color 0.15s ease, background-color 0.15s ease;
-}
-
-th.sortable:hover {
-  color: var(--ink);
-  background: var(--table-row-hover);
-}
-
-th.sortable::after {
-  content: " ⇅";
-  opacity: 0.35;
-  font-size: 11px;
-}
-
-th.sortable[aria-sort="ascending"]::after {
-  content: " ▲";
-  opacity: 1;
-  color: var(--brand);
-}
-
-th.sortable[aria-sort="descending"]::after {
-  content: " ▼";
-  opacity: 1;
-  color: var(--brand);
-}
-
-/* Чередование строк для максимальной читаемости таблицы (Zebra Striping) */
-tbody tr:nth-child(odd) {
-  background-color: var(--table-row-odd);
-}
-
-tbody tr:nth-child(even) {
-  background-color: var(--table-row-even);
-}
-
-tbody tr:hover {
-  background-color: var(--table-row-hover) !important;
-}
-
-.number {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-.th-actions {
-  text-align: right;
-  white-space: nowrap;
-}
-
-.row-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-}
-
-.mark-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 44px;
-  padding: 3px 8px;
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 14px;
-  font-variant-numeric: tabular-nums;
-}
-
-.mark-badge.excellent { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.35); }
-.mark-badge.good { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35); }
-.mark-badge.fair { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }
-.mark-badge.failing { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35); }
-.mark-badge.empty { color: var(--muted); font-weight: 500; }
-
-[data-theme="light"] .mark-badge.excellent { background: #dcfce7; color: #15803d; border-color: #bbf7d0; }
-[data-theme="light"] .mark-badge.good { background: #dbeafe; color: #1d4ed8; border-color: #bfdbfe; }
-[data-theme="light"] .mark-badge.fair { background: #fef3c7; color: #b45309; border-color: #fde68a; }
-[data-theme="light"] .mark-badge.failing { background: #fee2e2; color: #b91c1c; border-color: #fecaca; }
-
-.grade-cell {
-  text-align: center;
-}
-
-.grade-button {
-  min-width: 40px;
-  min-height: 36px;
-  padding: 4px 10px;
-  border-color: transparent;
-  font-weight: 600;
-  background: var(--surface);
-  color: var(--ink);
-}
-
-.grade-button.empty {
-  color: var(--muted);
-  border: 1px dashed var(--grade-empty-border);
-  background: transparent;
-}
-
-.grade-button.failing {
-  color: var(--grade-failing-color);
-  background: var(--grade-failing-bg);
-  border: 1px solid var(--danger);
-}
-
-.empty-row {
-  text-align: center;
-  padding: 28px;
-  color: var(--muted);
-}
-
-.site-footer {
-  padding: 18px 0;
-  border-top: 1px solid var(--line);
-  color: var(--muted);
-  font-size: 14px;
-  background: var(--bg);
-  transition: background-color 0.15s ease, border-color 0.15s ease;
-}
-
-/* ==========================================================================
-   Аналитика, карточки KPI и графики
-   ========================================================================== */
-
-.analytics-section {
-  margin-top: 16px;
-  margin-bottom: 28px;
-}
-
-.kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 14px;
-  margin-bottom: 22px;
-}
-
-.kpi-card {
-  background: var(--kpi-bg);
-  border: 1px solid var(--kpi-border);
-  border-radius: 8px;
-  padding: 14px 18px;
-  box-shadow: var(--shadow);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.kpi-title {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.kpi-value {
-  font-size: 26px;
-  font-weight: 700;
-  color: var(--kpi-val);
-  font-variant-numeric: tabular-nums;
-  line-height: 1.2;
-}
-
-.kpi-sub {
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.charts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 18px;
-  margin-bottom: 24px;
-}
-
-.chart-card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 9px;
-  padding: 18px 20px;
-  box-shadow: var(--shadow);
-  display: flex;
-  flex-direction: column;
-}
-
-.chart-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
-}
-
-.chart-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--ink);
-  margin: 0;
-}
-
-.chart-canvas-wrap {
-  position: relative;
-  width: 100%;
-  height: 250px;
-}
-
-.view-tabs {
-  display: inline-flex;
-  gap: 6px;
-  padding: 4px;
-  background: var(--soft);
-  border-radius: 8px;
-  margin-bottom: 18px;
-  border: 1px solid var(--line);
-}
-
-.view-tab-btn {
-  padding: 6px 14px;
-  border-radius: 6px;
-  font-size: 13px;
-  border: none;
-  background: transparent;
-  color: var(--muted);
-  font-weight: 500;
-  min-height: 32px;
-}
-
-.view-tab-btn:hover {
-  background: var(--surface);
-  color: var(--ink);
-}
-
-.view-tab-btn.active {
-  background: var(--brand);
-  color: #fff;
-  font-weight: 600;
-}
-
-/* ==========================================================================
-   Быстрый ввод оценок с клавиатуры (Excel Navigation)
-   ========================================================================== */
-
-.heading-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-}
-
-.toggle-mode-label {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  color: var(--ink);
-  user-select: none;
-  min-width: auto;
-  max-width: none;
-}
-
-.toggle-mode-label input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  min-height: 18px;
-  accent-color: var(--brand);
-  cursor: pointer;
-}
-
-.quick-edit-hint {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  padding: 10px 14px;
-  background: var(--soft);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  font-size: 13px;
-  color: var(--muted);
-  margin-bottom: 18px;
-}
-
-.hint-badge {
-  font-weight: 700;
-  color: var(--brand);
-  text-transform: uppercase;
-  font-size: 11px;
-  letter-spacing: 0.5px;
-}
-
-kbd {
-  display: inline-block;
-  padding: 2px 6px;
-  font-size: 12px;
-  font-family: inherit;
-  font-weight: 700;
-  color: var(--ink);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  box-shadow: 0 1px 1px rgba(0,0,0,0.2);
-}
-
-/* Активная ячейка сетки */
-.grade-button:focus,
-.grade-button.cell-active {
-  outline: 2px solid var(--brand) !important;
-  outline-offset: -1px;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35);
-  background: var(--surface) !important;
-  z-index: 2;
-}
-
-.grade-button.cell-saving {
-  animation: pulse-saving 0.6s infinite alternate;
-}
-
-@keyframes pulse-saving {
-  from { opacity: 0.6; transform: scale(0.96); }
-  to { opacity: 1; transform: scale(1.04); }
-}
-
-/* ==========================================================================
-   Стили для печати официальной ведомости (Print Styles)
-   ========================================================================== */
-
-.print-sheet-header,
-.print-sheet-footer {
-  display: none;
-}
-
-@media print {
-  @page {
-    size: A4 landscape;
-    margin: 12mm 10mm;
-  }
-
-  body {
-    background: #ffffff !important;
-    color: #000000 !important;
-    font-size: 12pt;
-  }
-
-  .site-header,
-  .site-footer,
-  .page-heading,
-  .toolbar,
-  .quick-edit-hint,
-  .analytics-section,
-  .status,
-  .editor,
-  .confirmation,
-  #status {
-    display: none !important;
-  }
-
-  .page {
-    padding: 0 !important;
-  }
-
-  .container {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-  }
-
-  .print-sheet-header {
-    display: block !important;
-    margin-bottom: 16px;
-    text-align: center;
-  }
-
-  .print-org-name {
-    font-size: 11pt;
-    font-weight: 700;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-
-  .print-sheet-title {
-    font-size: 15pt;
-    font-weight: 800;
-    margin: 6px 0 12px;
-    letter-spacing: 0.5px;
-  }
-
-  .print-meta-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 6px 20px;
-    text-align: left;
-    font-size: 10pt;
-    border-bottom: 2px solid #000;
-    padding-bottom: 10px;
-    margin-bottom: 14px;
-  }
-
-  .table-scroll {
-    overflow: visible !important;
-    border: none !important;
-  }
-
-  table {
-    border-collapse: collapse !important;
-    width: 100% !important;
-    color: #000 !important;
-  }
-
-  th, td {
-    border: 1px solid #000 !important;
-    padding: 6px 8px !important;
-    font-size: 10pt !important;
-    background: transparent !important;
-    color: #000 !important;
-  }
-
-  th {
-    font-weight: 700 !important;
-    background: #f0f0f0 !important;
-  }
-
-  .grade-button {
-    background: transparent !important;
-    color: #000 !important;
-    border: none !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-    padding: 0 !important;
-    font-size: 10pt !important;
-    font-weight: 700 !important;
-  }
-
-  .grade-button.empty {
-    border: none !important;
-    color: #999 !important;
-  }
-
-  .print-sheet-footer {
-    display: block !important;
-    margin-top: 24px;
-    page-break-inside: avoid;
-  }
-
-  .print-signatures-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    font-size: 10pt;
-  }
-
-  .sig-note {
-    font-size: 8pt;
-    color: #666;
-    margin-top: 2px;
+  if (Array.from(select.options).some(option => option.value === previous)) {
+    select.value = previous;
+  } else if (includeAll) {
+    select.value = "";
   }
 }
-
-/* ==========================================================================
-   Медиа-запросы адаптивности
-   ========================================================================== */
-
-@media (max-width: 650px) {
-  .container { width: calc(100% - 28px); }
-  .navigation { gap: 4px 16px; }
-  .navigation a { font-size: 14px; }
-  .toolbar, .form-fields { display: grid; grid-template-columns: 1fr; }
-  label { min-width: 0; max-width: none; }
-  .students-table { min-width: 640px; }
-  .journal-table { min-width: 540px; }
-  th, td { padding: 10px; }
-  h1 { font-size: 26px; }
-  .brand-row { flex-wrap: wrap; }
-  .charts-grid { grid-template-columns: 1fr; }
-  .kpi-grid { grid-template-columns: 1fr 1fr; }
-}
-
-@media (pointer: coarse) {
-  button, .row-actions button, .grade-button { min-height: 44px; }
-  .grade-button { min-width: 44px; }
-  .theme-toggle-btn { min-height: 40px; }
-}
-
 ```
 
 ## src/main/resources/templates/students/index.html
@@ -3573,21 +6097,23 @@ kbd {
   <script>
     (function() {
       try {
-        var saved = localStorage.getItem('journal_theme');
-        var theme = saved === 'light' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', theme);
+        var t = localStorage.getItem('journal_theme');
+        document.documentElement.setAttribute('data-theme', (t === 'oled' || t === 'light') ? t : 'dark');
       } catch (e) {}
     })();
   </script>
   <title>Студенты — Электронный журнал</title>
-  <link rel="stylesheet" href="/css/styles.css?v=2.2">
+  <link rel="stylesheet" href="/css/styles.css?v=3.0">
 </head>
 <body>
   <header th:replace="~{partials/header :: header}"></header>
   <main id="main-content" class="container page" aria-busy="false">
     <div class="page-heading">
       <h1>Студенты</h1>
-      <button id="add-record" class="button-primary" type="button">Добавить студента</button>
+      <button id="add-record" class="button-primary" type="button">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        <span>Добавить студента</span>
+      </button>
     </div>
     <div class="toolbar student-toolbar">
       <label>Поиск по студентам
@@ -3625,11 +6151,31 @@ kbd {
             <input id="record-name" type="text" required maxlength="50">
           </label>
           <label>Группа
-            <select id="record-group" required></select>
+            <div class="input-with-action">
+              <select id="record-group" required></select>
+              <button id="btn-quick-create-group" type="button" class="button-secondary quick-add-btn" title="Создать новую группу">
+                <svg class="btn-icon no-margin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </button>
+            </div>
           </label>
           <label>Email
             <input id="record-email" type="email" placeholder="student@example.edu">
           </label>
+        </div>
+        <div id="quick-group-modal" class="quick-group-box" hidden>
+          <div class="quick-group-header">
+            <span>
+              <svg class="btn-icon brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Создание новой учебной группы
+            </span>
+            <button id="close-quick-group" type="button" class="close-icon-btn" title="Закрыть">✕</button>
+          </div>
+          <div class="quick-group-inputs">
+            <input id="quick-group-name" type="text" placeholder="Название группы (например: ПИ-25)" maxlength="20">
+            <button id="submit-quick-group" type="button" class="button-primary button-small">Создать</button>
+            <button id="cancel-quick-group" type="button" class="button-secondary button-small">Отмена</button>
+          </div>
+          <div id="quick-group-error" class="quick-group-error" hidden></div>
         </div>
         <div class="button-row">
           <button class="button-primary" type="submit">Сохранить</button>
@@ -3664,7 +6210,6 @@ kbd {
   <script type="module" src="/js/students.js?v=2.2"></script>
 </body>
 </html>
-
 ```
 
 ## src/main/resources/templates/error.html
@@ -3677,14 +6222,13 @@ kbd {
   <script>
     (function() {
       try {
-        var saved = localStorage.getItem('journal_theme');
-        var theme = saved === 'light' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', theme);
+        var t = localStorage.getItem('journal_theme');
+        document.documentElement.setAttribute('data-theme', (t === 'oled' || t === 'light') ? t : 'dark');
       } catch (e) {}
     })();
   </script>
   <title>Страница не найдена — Электронный журнал</title>
-  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/styles.css?v=3.0">
 </head>
 <body>
   <header th:replace="~{partials/header :: header}"></header>
@@ -3695,7 +6239,6 @@ kbd {
   <footer th:replace="~{partials/footer :: footer}"></footer>
 </body>
 </html>
-
 ```
 
 ## src/main/resources/templates/subjects/index.html
@@ -3708,21 +6251,23 @@ kbd {
   <script>
     (function() {
       try {
-        var saved = localStorage.getItem('journal_theme');
-        var theme = saved === 'light' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', theme);
+        var t = localStorage.getItem('journal_theme');
+        document.documentElement.setAttribute('data-theme', (t === 'oled' || t === 'light') ? t : 'dark');
       } catch (e) {}
     })();
   </script>
   <title>Предметы — Электронный журнал</title>
-  <link rel="stylesheet" href="/css/styles.css?v=2.2">
+  <link rel="stylesheet" href="/css/styles.css?v=3.0">
 </head>
 <body>
   <header th:replace="~{partials/header :: header}"></header>
   <main id="main-content" class="container page" aria-busy="false">
     <div class="page-heading">
       <h1>Предметы</h1>
-      <button id="add-record" class="button-primary" type="button">Добавить предмет</button>
+      <button id="add-record" class="button-primary" type="button">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        <span>Добавить предмет</span>
+      </button>
     </div>
     <p id="status" class="status" role="status" aria-live="polite" hidden></p>
     <section id="editor" class="editor" aria-labelledby="editor-title" hidden>
@@ -3763,7 +6308,6 @@ kbd {
   <script type="module" src="/js/subjects.js?v=2.2"></script>
 </body>
 </html>
-
 ```
 
 ## src/main/resources/templates/reports/index.html
@@ -3776,15 +6320,14 @@ kbd {
   <script>
     (function() {
       try {
-        var saved = localStorage.getItem('journal_theme');
-        var theme = saved === 'light' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', theme);
+        var t = localStorage.getItem('journal_theme');
+        document.documentElement.setAttribute('data-theme', (t === 'oled' || t === 'light') ? t : 'dark');
       } catch (e) {}
     })();
   </script>
   <title>Отчёты и аналитика — Электронный журнал</title>
-  <link rel="stylesheet" href="/css/styles.css?v=2.2">
-  <script src="/js/vendor/chart.umd.min.js?v=2.2"></script>
+  <link rel="stylesheet" href="/css/styles.css?v=3.0">
+  <script src="/js/vendor/chart.umd.min.js?v=3.0"></script>
 </head>
 <body>
   <header th:replace="~{partials/header :: header}"></header>
@@ -3801,9 +6344,18 @@ kbd {
         </select>
       </label>
       <div class="view-tabs" role="tablist" aria-label="Режим отображения">
-        <button id="view-both" class="view-tab-btn active" type="button">Всё вместе</button>
-        <button id="view-charts" class="view-tab-btn" type="button">Графика</button>
-        <button id="view-table" class="view-tab-btn" type="button">Таблица</button>
+        <button id="view-both" class="view-tab-btn active" type="button">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          <span>Всё вместе</span>
+        </button>
+        <button id="view-charts" class="view-tab-btn" type="button">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          <span>Графика</span>
+        </button>
+        <button id="view-table" class="view-tab-btn" type="button">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-4"></path><line x1="9" y1="3" x2="9" y2="21"></line><line x1="3" y1="9" x2="21" y2="9"></line></svg>
+          <span>Таблица</span>
+        </button>
       </div>
     </div>
     <p id="status" class="status" role="status" aria-live="polite" hidden></p>
@@ -3843,7 +6395,6 @@ kbd {
   <script type="module" src="/js/reports.js?v=2.2"></script>
 </body>
 </html>
-
 ```
 
 ## src/main/resources/templates/groups/index.html
@@ -3856,21 +6407,23 @@ kbd {
   <script>
     (function() {
       try {
-        var saved = localStorage.getItem('journal_theme');
-        var theme = saved === 'light' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', theme);
+        var t = localStorage.getItem('journal_theme');
+        document.documentElement.setAttribute('data-theme', (t === 'oled' || t === 'light') ? t : 'dark');
       } catch (e) {}
     })();
   </script>
   <title>Группы — Электронный журнал</title>
-  <link rel="stylesheet" href="/css/styles.css?v=2.2">
+  <link rel="stylesheet" href="/css/styles.css?v=3.0">
 </head>
 <body>
   <header th:replace="~{partials/header :: header}"></header>
   <main id="main-content" class="container page" aria-busy="false">
     <div class="page-heading">
       <h1>Группы</h1>
-      <button id="add-record" class="button-primary" type="button">Добавить группу</button>
+      <button id="add-record" class="button-primary" type="button">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        <span>Добавить группу</span>
+      </button>
     </div>
     <p id="status" class="status" role="status" aria-live="polite" hidden></p>
     <section id="editor" class="editor" aria-labelledby="editor-title" hidden>
@@ -3912,7 +6465,6 @@ kbd {
   <script type="module" src="/js/groups.js?v=2.2"></script>
 </body>
 </html>
-
 ```
 
 ## src/main/resources/templates/journal/index.html
@@ -3925,15 +6477,14 @@ kbd {
   <script>
     (function() {
       try {
-        var saved = localStorage.getItem('journal_theme');
-        var theme = saved === 'light' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', theme);
+        var t = localStorage.getItem('journal_theme');
+        document.documentElement.setAttribute('data-theme', (t === 'oled' || t === 'light') ? t : 'dark');
       } catch (e) {}
     })();
   </script>
   <title>Журнал оценок — Электронный журнал</title>
-  <link rel="stylesheet" href="/css/styles.css?v=2.3">
-  <script src="/js/vendor/chart.umd.min.js?v=2.3"></script>
+  <link rel="stylesheet" href="/css/styles.css?v=3.0">
+  <script src="/js/vendor/chart.umd.min.js?v=3.0"></script>
 </head>
 <body>
   <header th:replace="~{partials/header :: header}"></header>
@@ -3941,31 +6492,58 @@ kbd {
     <div class="page-heading">
       <h1>Журнал оценок</h1>
       <div class="heading-actions">
-        <button id="toggle-analytics" class="button-secondary" type="button" aria-expanded="true">📊 Аналитика группы</button>
-        <button id="btn-export-excel" class="button-secondary" type="button" title="Скачать в формате Microsoft Excel (.xlsx)">📥 Excel (.xlsx)</button>
-        <button id="btn-export-csv" class="button-secondary" type="button" title="Скачать в текстовом формате CSV">📥 CSV</button>
-        <button id="btn-print" class="button-primary" type="button" title="Распечатать официальную экзаменационную ведомость">🖨️ Печать ведомости</button>
+        <button id="toggle-analytics" class="button-secondary" type="button" aria-expanded="true">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          <span class="btn-text">Скрыть аналитику</span>
+        </button>
+        <button id="btn-bulk-grade" class="button-secondary" type="button" title="Выставить или очистить оценки группе или всем группам">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          <span class="btn-text">Массовые оценки</span>
+        </button>
+        <button id="btn-export-excel" class="button-secondary" type="button" title="Скачать в формате Microsoft Excel (.xlsx)">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <span class="btn-text">Excel (.xlsx)</span>
+        </button>
+        <button id="btn-export-csv" class="button-secondary" type="button" title="Скачать в текстовом формате CSV">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+          <span class="btn-text">CSV</span>
+        </button>
+        <button id="btn-print" class="button-primary" type="button" title="Распечатать официальную экзаменационную ведомость">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          <span class="btn-text">Печать ведомости</span>
+        </button>
       </div>
     </div>
+
     <div class="toolbar journal-toolbar">
-      <label>Группа
+      <label>Учебная группа
         <select id="group-select"></select>
+      </label>
+      <label>Быстрый фильтр по ФИО
+        <input id="journal-student-filter" type="search" placeholder="Начните вводить фамилию...">
+      </label>
+      <label>Срез успеваемости
+        <select id="journal-status-filter">
+          <option value="all">Все студенты группы</option>
+          <option value="failing">Имеют задолженность (2)</option>
+          <option value="no_grades">Без единой оценки</option>
+          <option value="excellent">Только отличники (все 5)</option>
+        </select>
       </label>
       <label class="toggle-mode-label">
         <input id="quick-edit-mode" type="checkbox" checked>
-        <span>⌨️ Быстрый ввод (Excel)</span>
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6" y2="8"></line><line x1="10" y1="8" x2="10" y2="8"></line><line x1="14" y1="8" x2="14" y2="8"></line><line x1="18" y1="8" x2="18" y2="8"></line><line x1="6" y1="12" x2="6" y2="12"></line><line x1="10" y1="12" x2="10" y2="12"></line><line x1="14" y1="12" x2="14" y2="12"></line><line x1="18" y1="12" x2="18" y2="12"></line><line x1="7" y1="16" x2="17" y2="16"></line></svg>
+        <span>Быстрый ввод (Excel)</span>
       </label>
     </div>
 
-    <!-- Интерактивная подсказка для быстрого ввода -->
     <div id="quick-edit-hint" class="quick-edit-hint">
-      <span class="hint-badge">Быстрый ввод:</span>
-      Кликните по ячейке и нажимайте <kbd>2</kbd>, <kbd>3</kbd>, <kbd>4</kbd>, <kbd>5</kbd> для моментального сохранения. Навигация стрелками <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> или <kbd>Enter</kbd>. Удаление — <kbd>Del</kbd> или <kbd>Backspace</kbd>. Двойной клик открывает форму.
+      <span class="hint-badge">Excel-режим:</span>
+      Кликните по ячейке и нажимайте <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> <kbd>5</kbd> для мгновенной записи. Навигация: <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> и <kbd>Enter</kbd>. Очистка: <kbd>Backspace</kbd> / <kbd>Del</kbd>. Тема: <kbd>Alt+T</kbd>.
     </div>
 
     <p id="status" class="status" role="status" aria-live="polite" hidden></p>
 
-    <!-- Секция аналитики успеваемости группы -->
     <section id="journal-analytics" class="analytics-section" aria-label="Аналитика группы">
       <div id="journal-kpi" class="kpi-grid"></div>
       <div id="journal-charts" class="charts-grid">
@@ -3988,7 +6566,43 @@ kbd {
       </div>
     </section>
 
-    <!-- Модальный редактор оценки -->
+    <section id="bulk-editor" class="editor" aria-labelledby="bulk-editor-title" hidden>
+      <h2 id="bulk-editor-title"><svg class="btn-icon brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Массовое выставление оценок</h2>
+      <p class="muted">Вы можете в один клик выставить оценку выбранной группе (или всем группам) по выбранному предмету (или по всем предметам), либо очистить оценки.</p>
+      <form id="bulk-form">
+        <div class="form-fields">
+          <label>Группа
+            <select id="bulk-group-select">
+              <option value="">Все группы</option>
+            </select>
+          </label>
+          <label>Предмет
+            <select id="bulk-subject-select">
+              <option value="">Все предметы</option>
+            </select>
+          </label>
+          <label>Оценка
+            <select id="bulk-mark-select" required>
+              <option value="5">5 (Отлично)</option>
+              <option value="4">4 (Хорошо)</option>
+              <option value="3">3 (Удовлетворительно)</option>
+              <option value="2">2 (Неудовлетворительно)</option>
+              <option value="0">✕ Очистить оценки (удалить)</option>
+            </select>
+          </label>
+          <label class="toggle-mode-label" style="align-self: center; padding-top: 18px;">
+            <input id="bulk-overwrite-checkbox" type="checkbox" checked>
+            <span>Перезаписать существующие оценки</span>
+          </label>
+        </div>
+        <div id="bulk-action-hint" class="bulk-hint-box"></div>
+        <div class="button-row">
+          <button class="button-primary" type="submit">Применить оценки</button>
+          <button id="cancel-bulk-edit" class="button-secondary" type="button">Отмена</button>
+        </div>
+      </form>
+    </section>
+
     <section id="editor" class="editor" aria-labelledby="editor-title" hidden>
       <h2 id="editor-title">Оценка</h2>
       <form id="edit-form">
@@ -3997,10 +6611,10 @@ kbd {
         <div class="form-fields">
           <label>Оценка
             <select id="record-mark" required>
-              <option value="5">5</option>
-              <option value="4">4</option>
-              <option value="3">3</option>
-              <option value="2">2</option>
+              <option value="5">5 (Отлично)</option>
+              <option value="4">4 (Хорошо)</option>
+              <option value="3">3 (Удовлетворительно)</option>
+              <option value="2">2 (Неудовлетворительно)</option>
             </select>
           </label>
         </div>
@@ -4012,7 +6626,6 @@ kbd {
       </form>
     </section>
 
-    <!-- Академический бланк ведомости для печати -->
     <div class="print-sheet-header">
       <div class="print-org-name">МИНИСТЕРСТВО НАУКИ И ВЫСШЕГО ОБРАЗОВАНИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ</div>
       <h2 class="print-sheet-title">ЭКЗАМЕНАЦИОННО-ЗАЧЁТНАЯ ВЕДОМОСТЬ</h2>
@@ -4024,7 +6637,6 @@ kbd {
       </div>
     </div>
 
-    <!-- Таблица журнала оценок -->
     <div class="table-scroll">
       <table class="journal-table">
         <thead id="table-head"></thead>
@@ -4032,7 +6644,6 @@ kbd {
       </table>
     </div>
 
-    <!-- Подписи для печати -->
     <div class="print-sheet-footer">
       <div class="print-signatures-grid">
         <div class="print-sig-col">
@@ -4047,44 +6658,67 @@ kbd {
     </div>
   </main>
   <footer th:replace="~{partials/footer :: footer}"></footer>
-  <script type="module" src="/js/journal.js?v=2.3"></script>
+  <script type="module" src="/js/journal.js?v=3.0"></script>
 </body>
 </html>
-
 ```
 
 ## src/main/resources/templates/partials/header.html
 ```html
 <header class="site-header" th:fragment="header" xmlns:th="http://www.thymeleaf.org">
+  <!-- Динамическое фоновое свечение Aurora, смещающееся при переключении вкладок -->
+  <div id="aurora-backdrop" class="aurora-backdrop" aria-hidden="true">
+    <div class="aurora-blob blob-1"></div>
+    <div class="aurora-blob blob-2"></div>
+  </div>
+
   <div class="container">
     <div class="brand-row">
-      <a class="brand" href="/groups">Электронный журнал</a>
-      <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="Переключить тему оформления" title="Переключить тему оформления">
-        <span class="theme-toggle-icon" aria-hidden="true">☀️</span>
-        <span class="theme-toggle-text">Светлая тема</span>
-      </button>
+      <a class="brand" href="/groups">
+        <span class="brand-glyph" aria-hidden="true">λ</span>
+        <span>Электронный журнал</span>
+        <span class="brand-tag">arch::ed</span>
+      </a>
+      <div class="header-controls">
+        <button id="xray-toggle-btn" class="header-pill-btn xray-btn" type="button" title="Открыть шторку выполнения логики и SQL (Alt+L)">
+          <span class="xray-pulse"></span>
+          <svg class="btn-icon brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          <span>Логика</span>
+          <span id="xray-counter" class="xray-badge">0</span>
+        </button>
+        <button id="term-toggle-btn" class="header-pill-btn term-btn" type="button" title="Открыть Linux-терминал проекта (Alt+C или Ctrl+~)">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+          <span>milk13</span>
+          <kbd>Alt+C</kbd>
+        </button>
+        <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="Переключить тему оформления" title="Переключить тему (Alt+T)">
+          <span class="theme-toggle-icon" aria-hidden="true">
+            <svg class="theme-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          </span>
+          <span class="theme-toggle-text">Dracula Dark</span>
+        </button>
+      </div>
     </div>
-    <nav class="navigation" aria-label="Разделы приложения">
-      <a href="/groups" th:attr="aria-current=${activePage == 'groups'} ? 'page' : null">Группы</a>
-      <a href="/subjects" th:attr="aria-current=${activePage == 'subjects'} ? 'page' : null">Предметы</a>
-      <a href="/students" th:attr="aria-current=${activePage == 'students'} ? 'page' : null">Студенты</a>
-      <a href="/journal" th:attr="aria-current=${activePage == 'journal'} ? 'page' : null">Журнал</a>
-      <a href="/reports" th:attr="aria-current=${activePage == 'reports'} ? 'page' : null">Отчёты</a>
+    <nav id="main-nav" class="navigation" aria-label="Разделы приложения">
+      <span id="nav-glider" class="nav-glider" aria-hidden="true"></span>
+      <a href="/groups" data-nav="groups" th:attr="aria-current=${activePage == 'groups'} ? 'page' : null">Группы</a>
+      <a href="/subjects" data-nav="subjects" th:attr="aria-current=${activePage == 'subjects'} ? 'page' : null">Предметы</a>
+      <a href="/students" data-nav="students" th:attr="aria-current=${activePage == 'students'} ? 'page' : null">Студенты</a>
+      <a href="/journal" data-nav="journal" th:attr="aria-current=${activePage == 'journal'} ? 'page' : null">Журнал</a>
+      <a href="/reports" data-nav="reports" th:attr="aria-current=${activePage == 'reports'} ? 'page' : null">Отчёты</a>
     </nav>
   </div>
-  <script type="module" src="/js/theme.js?v=2.2"></script>
+  <script type="module" src="/js/theme.js?v=4.0"></script>
 </header>
-
 ```
 
 ## src/main/resources/templates/partials/footer.html
 ```html
 <footer class="site-footer" th:fragment="footer" xmlns:th="http://www.thymeleaf.org">
   <div class="container">
-    <p class="muted">Учебный проект — Электронный журнал студентов</p>
+    <p class="muted">Учебный проект — Электронный журнал успеваемости студентов</p>
   </div>
 </footer>
-
 ```
 
 ## src/main/java/ru/edu/journal/features/students/dto/StudentDto.java
@@ -4104,22 +6738,35 @@ public record StudentDto(
         this(id, name, group_id, group_name, email, grade_count, null);
     }
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/features/students/dto/StudentSaveRequest.java
 ```java
 package ru.edu.journal.features.students.dto;
 
-public record StudentSaveRequest(String name, Long group_id, String email) {
-}
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
+public record StudentSaveRequest(
+        @NotBlank(message = "Введите имя.")
+        @Size(max = 50, message = "Допускается не более 50 символов.")
+        String name,
+
+        @NotNull(message = "Выберите существующую группу.")
+        Long group_id,
+
+        @Size(max = 100, message = "Email не должен превышать 100 символов.")
+        String email
+) {
+}
 ```
 
 ## src/main/java/ru/edu/journal/features/students/StudentController.java
 ```java
 package ru.edu.journal.features.students;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -4154,7 +6801,7 @@ public class StudentController {
 
     @PostMapping("/api/students")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> createStudent(@RequestBody(required = false) StudentSaveRequest request) {
+    public ResponseEntity<Map<String, Object>> createStudent(@Valid @RequestBody StudentSaveRequest request) {
         StudentDto item = studentService.saveStudent(request, null);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("item", item));
     }
@@ -4162,7 +6809,7 @@ public class StudentController {
     @PostMapping("/api/students/{id}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> updateStudent(@PathVariable Long id,
-                                                             @RequestBody(required = false) StudentSaveRequest request) {
+                                                             @Valid @RequestBody StudentSaveRequest request) {
         StudentDto item = studentService.saveStudent(request, id);
         return ResponseEntity.ok(Map.of("item", item));
     }
@@ -4174,7 +6821,6 @@ public class StudentController {
         studentService.deleteStudent(id, false);
     }
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/features/students/StudentRepository.java
@@ -4292,7 +6938,6 @@ public class StudentRepository {
                 .update();
     }
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/features/students/StudentService.java
@@ -4381,16 +7026,21 @@ public class StudentService {
         studentRepository.delete(id);
     }
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/features/subjects/dto/SubjectSaveRequest.java
 ```java
 package ru.edu.journal.features.subjects.dto;
 
-public record SubjectSaveRequest(String name) {
-}
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
+public record SubjectSaveRequest(
+        @NotBlank(message = "Введите название.")
+        @Size(max = 100, message = "Допускается не более 100 символов.")
+        String name
+) {
+}
 ```
 
 ## src/main/java/ru/edu/journal/features/subjects/dto/SubjectDto.java
@@ -4399,7 +7049,6 @@ package ru.edu.journal.features.subjects.dto;
 
 public record SubjectDto(Long id, String name) {
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/features/subjects/SubjectService.java
@@ -4467,7 +7116,6 @@ public class SubjectService {
         }
     }
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/features/subjects/SubjectRepository.java
@@ -4540,13 +7188,13 @@ public class SubjectRepository {
                 .single();
     }
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/features/subjects/SubjectController.java
 ```java
 package ru.edu.journal.features.subjects;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -4580,7 +7228,7 @@ public class SubjectController {
 
     @PostMapping("/api/subjects")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> createSubject(@RequestBody(required = false) SubjectSaveRequest request) {
+    public ResponseEntity<Map<String, Object>> createSubject(@Valid @RequestBody SubjectSaveRequest request) {
         String name = request != null ? request.name() : null;
         SubjectDto item = subjectService.saveSubject(name, null);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("item", item));
@@ -4589,7 +7237,7 @@ public class SubjectController {
     @PostMapping("/api/subjects/{id}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> updateSubject(@PathVariable Long id,
-                                                             @RequestBody(required = false) SubjectSaveRequest request) {
+                                                             @Valid @RequestBody SubjectSaveRequest request) {
         String name = request != null ? request.name() : null;
         SubjectDto item = subjectService.saveSubject(name, id);
         return ResponseEntity.ok(Map.of("item", item));
@@ -4602,7 +7250,6 @@ public class SubjectController {
         subjectService.deleteSubject(id);
     }
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/features/reports/ReportService.java
@@ -4640,7 +7287,6 @@ public class ReportService {
         return Map.of("kind", kind, "items", items);
     }
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/features/reports/ReportController.java
@@ -4676,7 +7322,6 @@ public class ReportController {
         return reportService.getReport(kind);
     }
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/features/reports/ReportRepository.java
@@ -4778,16 +7423,21 @@ public class ReportRepository {
                 .list();
     }
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/features/groups/dto/GroupSaveRequest.java
 ```java
 package ru.edu.journal.features.groups.dto;
 
-public record GroupSaveRequest(String name) {
-}
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
+public record GroupSaveRequest(
+        @NotBlank(message = "Введите название.")
+        @Size(max = 50, message = "Допускается не более 50 символов.")
+        String name
+) {
+}
 ```
 
 ## src/main/java/ru/edu/journal/features/groups/dto/GroupDto.java
@@ -4796,7 +7446,6 @@ package ru.edu.journal.features.groups.dto;
 
 public record GroupDto(Long id, String name, Long student_count) {
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/features/groups/GroupService.java
@@ -4867,13 +7516,13 @@ public class GroupService {
         }
     }
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/features/groups/GroupController.java
 ```java
 package ru.edu.journal.features.groups;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -4907,7 +7556,7 @@ public class GroupController {
 
     @PostMapping("/api/groups")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> createGroup(@RequestBody(required = false) GroupSaveRequest request) {
+    public ResponseEntity<Map<String, Object>> createGroup(@Valid @RequestBody GroupSaveRequest request) {
         String name = request != null ? request.name() : null;
         GroupDto item = groupService.saveGroup(name, null);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("item", item));
@@ -4916,7 +7565,7 @@ public class GroupController {
     @PostMapping("/api/groups/{id}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> updateGroup(@PathVariable Long id,
-                                                           @RequestBody(required = false) GroupSaveRequest request) {
+                                                           @Valid @RequestBody GroupSaveRequest request) {
         String name = request != null ? request.name() : null;
         GroupDto item = groupService.saveGroup(name, id);
         return ResponseEntity.ok(Map.of("item", item));
@@ -4929,7 +7578,6 @@ public class GroupController {
         groupService.deleteGroup(id);
     }
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/features/groups/GroupRepository.java
@@ -5010,7 +7658,29 @@ public class GroupRepository {
                 .single();
     }
 }
+```
 
+## src/main/java/ru/edu/journal/features/journal/dto/BulkGradeRequest.java
+```java
+package ru.edu.journal.features.journal.dto;
+
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+
+public record BulkGradeRequest(
+        Long group_id,
+
+        Long subject_id,
+
+        @NotNull(message = "Оценка должна быть от 2 до 5 (или 0 для удаления).")
+        @Min(value = 0, message = "Оценка должна быть от 2 до 5 (или 0 для удаления).")
+        @Max(value = 5, message = "Оценка должна быть от 2 до 5 (или 0 для удаления).")
+        Integer mark,
+
+        Boolean overwrite_existing
+) {
+}
 ```
 
 ## src/main/java/ru/edu/journal/features/journal/dto/JournalResponse.java
@@ -5030,7 +7700,6 @@ public record JournalResponse(
         List<GradeDto> grades
 ) {
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/features/journal/dto/GradeDto.java
@@ -5039,16 +7708,31 @@ package ru.edu.journal.features.journal.dto;
 
 public record GradeDto(Long id, Long student_id, Long subject_id, Integer mark) {
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/features/journal/dto/GradeSaveRequest.java
 ```java
 package ru.edu.journal.features.journal.dto;
 
-public record GradeSaveRequest(Long student_id, Long subject_id, Integer mark) {
-}
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
+public record GradeSaveRequest(
+        @NotNull(message = "Некорректный идентификатор студента.")
+        @Min(value = 1, message = "Некорректный идентификатор студента.")
+        Long student_id,
+
+        @NotNull(message = "Некорректный идентификатор предмета.")
+        @Min(value = 1, message = "Некорректный идентификатор предмета.")
+        Long subject_id,
+
+        @NotNull(message = "Оценка должна быть от 2 до 5.")
+        @Min(value = 2, message = "Оценка должна быть от 2 до 5.")
+        @Max(value = 5, message = "Оценка должна быть от 2 до 5.")
+        Integer mark
+) {
+}
 ```
 
 ## src/main/java/ru/edu/journal/features/journal/JournalRepository.java
@@ -5062,6 +7746,7 @@ import org.springframework.stereotype.Repository;
 import ru.edu.journal.features.journal.dto.GradeDto;
 import ru.edu.journal.features.students.dto.StudentDto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -5072,6 +7757,47 @@ public class JournalRepository {
 
     public JournalRepository(JdbcClient jdbcClient) {
         this.jdbcClient = jdbcClient;
+    }
+
+    public List<StudentDto> findAllStudents() {
+        return jdbcClient.sql("""
+                SELECT s.id, s.name, s.group_id, g.name AS group_name, s.email,
+                       COUNT(gr.id) AS grade_count,
+                       ROUND(AVG(gr.mark), 2) AS average_mark
+                FROM students AS s
+                JOIN groups AS g ON g.id = s.group_id
+                LEFT JOIN grades AS gr ON gr.student_id = s.id
+                GROUP BY s.id, s.name, s.group_id, g.name, s.email
+                ORDER BY g.name, s.name, s.id
+                """)
+                .query((rs, rowNum) -> {
+                    Object avg = rs.getObject("average_mark");
+                    return new StudentDto(
+                            rs.getLong("id"),
+                            rs.getString("name"),
+                            rs.getLong("group_id"),
+                            rs.getString("group_name"),
+                            rs.getString("email"),
+                            rs.getLong("grade_count"),
+                            avg != null ? rs.getDouble("average_mark") : null
+                    );
+                })
+                .list();
+    }
+
+    public List<GradeDto> findAllGrades() {
+        return jdbcClient.sql("""
+                SELECT gr.id, gr.student_id, gr.subject_id, gr.mark
+                FROM grades AS gr
+                ORDER BY gr.id
+                """)
+                .query((rs, rowNum) -> new GradeDto(
+                        rs.getLong("id"),
+                        rs.getLong("student_id"),
+                        rs.getLong("subject_id"),
+                        rs.getInt("mark")
+                ))
+                .list();
     }
 
     public List<StudentDto> findStudentsByGroupId(Long groupId) {
@@ -5161,8 +7887,61 @@ public class JournalRepository {
                 .param(subjectId)
                 .update();
     }
-}
 
+    public int bulkAssignGrades(Long groupId, Long subjectId, int mark, boolean overwrite) {
+        StringBuilder sql = new StringBuilder("INSERT INTO grades (student_id, subject_id, mark) ");
+        List<Object> params = new ArrayList<>();
+
+        if (subjectId != null && subjectId > 0) {
+            sql.append("SELECT s.id, ?, ? FROM students s WHERE 1=1 ");
+            params.add(subjectId);
+            params.add(mark);
+            if (groupId != null && groupId > 0) {
+                sql.append("AND s.group_id = ? ");
+                params.add(groupId);
+            }
+        } else {
+            sql.append("SELECT s.id, sub.id, ? FROM students s, subjects sub WHERE 1=1 ");
+            params.add(mark);
+            if (groupId != null && groupId > 0) {
+                sql.append("AND s.group_id = ? ");
+                params.add(groupId);
+            }
+        }
+
+        if (overwrite) {
+            sql.append("ON CONFLICT(student_id, subject_id) DO UPDATE SET mark = excluded.mark");
+        } else {
+            sql.append("ON CONFLICT(student_id, subject_id) DO NOTHING");
+        }
+
+        var client = jdbcClient.sql(sql.toString());
+        for (Object p : params) {
+            client.param(p);
+        }
+        return client.update();
+    }
+
+    public int bulkDeleteGrades(Long groupId, Long subjectId) {
+        StringBuilder sql = new StringBuilder("DELETE FROM grades WHERE 1=1 ");
+        List<Object> params = new ArrayList<>();
+
+        if (subjectId != null && subjectId > 0) {
+            sql.append("AND subject_id = ? ");
+            params.add(subjectId);
+        }
+        if (groupId != null && groupId > 0) {
+            sql.append("AND student_id IN (SELECT id FROM students WHERE group_id = ?) ");
+            params.add(groupId);
+        }
+
+        var client = jdbcClient.sql(sql.toString());
+        for (Object p : params) {
+            client.param(p);
+        }
+        return client.update();
+    }
+}
 ```
 
 ## src/main/java/ru/edu/journal/features/journal/JournalExportService.java
@@ -5270,6 +8049,8 @@ public class JournalExportService {
             Row headerRow = sheet.createRow(headerRowNum);
             headerRow.setHeightInPoints(26);
 
+            boolean isAllGroups = data.group() == null || data.group().id() == 0L;
+
             int colIdx = 0;
             Cell c = headerRow.createCell(colIdx++);
             c.setCellValue("№");
@@ -5278,6 +8059,12 @@ public class JournalExportService {
             c = headerRow.createCell(colIdx++);
             c.setCellValue("ФИО Студента");
             c.setCellStyle(headerStyle);
+
+            if (isAllGroups) {
+                c = headerRow.createCell(colIdx++);
+                c.setCellValue("Группа");
+                c.setCellStyle(headerStyle);
+            }
 
             c = headerRow.createCell(colIdx++);
             c.setCellValue("Email");
@@ -5323,6 +8110,12 @@ public class JournalExportService {
                 c = row.createCell(colIdx++);
                 c.setCellValue(student.name());
                 c.setCellStyle(textStyle);
+
+                if (isAllGroups) {
+                    c = row.createCell(colIdx++);
+                    c.setCellValue(student.group_name() != null ? student.group_name() : "—");
+                    c.setCellStyle(centerStyle);
+                }
 
                 // Email
                 c = row.createCell(colIdx++);
@@ -5479,13 +8272,13 @@ public class JournalExportService {
         return sb.toString().getBytes(StandardCharsets.UTF_8);
     }
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/features/journal/JournalController.java
 ```java
 package ru.edu.journal.features.journal;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -5521,15 +8314,16 @@ public class JournalController {
 
     @GetMapping("/api/journal")
     @ResponseBody
-    public JournalResponse getJournal(@RequestParam("group_id") Long groupId) {
+    public JournalResponse getJournal(@RequestParam(value = "group_id", required = false) Long groupId) {
         return journalService.getJournal(groupId);
     }
 
     @GetMapping("/api/journal/export/excel")
-    public ResponseEntity<byte[]> exportExcel(@RequestParam("group_id") Long groupId) throws IOException {
+    public ResponseEntity<byte[]> exportExcel(@RequestParam(value = "group_id", required = false) Long groupId) throws IOException {
         JournalResponse journal = journalService.getJournal(groupId);
         byte[] bytes = exportService.exportToExcel(journal);
-        String filename = "journal_" + journal.group().name() + ".xlsx";
+        String groupName = journal.group() != null ? journal.group().name().replace(' ', '_') : "Все_группы";
+        String filename = "journal_" + groupName + ".xlsx";
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"; filename*=UTF-8''" + UriUtils.encode(filename, StandardCharsets.UTF_8))
@@ -5538,10 +8332,11 @@ public class JournalController {
     }
 
     @GetMapping("/api/journal/export/csv")
-    public ResponseEntity<byte[]> exportCsv(@RequestParam("group_id") Long groupId) {
+    public ResponseEntity<byte[]> exportCsv(@RequestParam(value = "group_id", required = false) Long groupId) {
         JournalResponse journal = journalService.getJournal(groupId);
         byte[] bytes = exportService.exportToCsv(journal);
-        String filename = "journal_" + journal.group().name() + ".csv";
+        String groupName = journal.group() != null ? journal.group().name().replace(' ', '_') : "Все_группы";
+        String filename = "journal_" + groupName + ".csv";
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"; filename*=UTF-8''" + UriUtils.encode(filename, StandardCharsets.UTF_8))
@@ -5551,9 +8346,16 @@ public class JournalController {
 
     @PostMapping("/api/journal/grades")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> saveGrade(@RequestBody(required = false) GradeSaveRequest request) {
+    public ResponseEntity<Map<String, Object>> saveGrade(@Valid @RequestBody GradeSaveRequest request) {
         GradeDto item = journalService.saveGrade(request);
         return ResponseEntity.ok(Map.of("item", item));
+    }
+
+    @PostMapping("/api/journal/grades/bulk")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> saveBulkGrades(@Valid @RequestBody ru.edu.journal.features.journal.dto.BulkGradeRequest request) {
+        int count = journalService.saveBulkGrades(request);
+        return ResponseEntity.ok(Map.of("success", true, "count", count));
     }
 
     @DeleteMapping("/api/journal/grades/{studentId}/{subjectId}")
@@ -5563,7 +8365,6 @@ public class JournalController {
         journalService.deleteGrade(studentId, subjectId);
     }
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/features/journal/JournalService.java
@@ -5576,6 +8377,7 @@ import ru.edu.journal.common.exception.NotFoundException;
 import ru.edu.journal.common.exception.ValidationException;
 import ru.edu.journal.features.groups.GroupRepository;
 import ru.edu.journal.features.groups.dto.GroupDto;
+import ru.edu.journal.features.journal.dto.BulkGradeRequest;
 import ru.edu.journal.features.journal.dto.GradeDto;
 import ru.edu.journal.features.journal.dto.GradeSaveRequest;
 import ru.edu.journal.features.journal.dto.JournalResponse;
@@ -5607,7 +8409,11 @@ public class JournalService {
 
     public JournalResponse getJournal(Long groupId) {
         if (groupId == null || groupId <= 0) {
-            throw new ValidationException("Некорректный идентификатор группы.");
+            List<StudentDto> students = journalRepository.findAllStudents();
+            List<SubjectDto> subjects = subjectRepository.findAll();
+            List<GradeDto> grades = journalRepository.findAllGrades();
+            GroupDto allGroup = new GroupDto(0L, "Все группы", (long) students.size());
+            return new JournalResponse(allGroup, students, subjects, grades);
         }
 
         GroupDto group = groupRepository.findById(groupId)
@@ -5673,8 +8479,36 @@ public class JournalService {
 
         journalRepository.deleteGrade(studentId, subjectId);
     }
-}
 
+    @Transactional
+    public int saveBulkGrades(BulkGradeRequest request) {
+        if (request == null) {
+            throw new ValidationException("Ожидается JSON-объект.");
+        }
+
+        Long groupId = request.group_id();
+        Long subjectId = request.subject_id();
+        Integer mark = request.mark();
+        boolean overwrite = Boolean.TRUE.equals(request.overwrite_existing());
+
+        if (mark == null || mark < 0 || mark > 5) {
+            throw new ValidationException("Оценка должна быть от 2 до 5 (или 0 для удаления).");
+        }
+
+        if (groupId != null && groupId > 0 && groupRepository.findById(groupId).isEmpty()) {
+            throw new NotFoundException("Группа не найдена.");
+        }
+        if (subjectId != null && subjectId > 0 && subjectRepository.findById(subjectId).isEmpty()) {
+            throw new NotFoundException("Предмет не найден.");
+        }
+
+        if (mark == 0) {
+            return journalRepository.bulkDeleteGrades(groupId, subjectId);
+        } else {
+            return journalRepository.bulkAssignGrades(groupId, subjectId, mark, overwrite);
+        }
+    }
+}
 ```
 
 ## src/main/java/ru/edu/journal/common/GlobalExceptionHandler.java
@@ -5687,7 +8521,10 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.jdbc.UncategorizedSQLException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -5697,6 +8534,7 @@ import ru.edu.journal.common.exception.ValidationException;
 
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.Objects;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -5708,6 +8546,21 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", ex.getMessage()));
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+        String message = ex.getBindingResult().getFieldErrors().stream()
+                .map(FieldError::getDefaultMessage)
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse("Ошибка валидации данных.");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", message));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String, String>> handleMessageNotReadable(HttpMessageNotReadableException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Ожидается корректный JSON-объект."));
+    }
+
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Map<String, String>> handleNotFound(NotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", ex.getMessage()));
@@ -5715,6 +8568,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({DataIntegrityViolationException.class, UncategorizedSQLException.class, DataAccessException.class})
     public ResponseEntity<Map<String, String>> handleDataIntegrity(Exception ex) {
+        log.warn("Data integrity/access error: {}", ex.getMessage());
         String msg = ex.getMessage();
         if (msg != null && (msg.contains("UNIQUE constraint failed") || msg.contains("SQLITE_CONSTRAINT_UNIQUE"))) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Такое название уже существует."));
@@ -5744,7 +8598,6 @@ public class GlobalExceptionHandler {
                 .body(Map.of("error", ex.getMessage() != null ? ex.getMessage() : "Внутренняя ошибка сервера."));
     }
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/common/DatabaseInitializer.java
@@ -5853,7 +8706,6 @@ public class DatabaseInitializer implements CommandLineRunner {
         }
     }
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/common/exception/NotFoundException.java
@@ -5865,7 +8717,6 @@ public class NotFoundException extends RuntimeException {
         super(message);
     }
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/common/exception/ValidationException.java
@@ -5877,7 +8728,6 @@ public class ValidationException extends RuntimeException {
         super(message);
     }
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/config/DatabaseConfig.java
@@ -5910,20 +8760,27 @@ public class DatabaseConfig {
         SQLiteConfig config = new SQLiteConfig();
         config.enforceForeignKeys(true);
         config.setBusyTimeout(5000);
+        config.setJournalMode(SQLiteConfig.JournalMode.WAL);
+        config.setSynchronous(SQLiteConfig.SynchronousMode.NORMAL);
+        config.setTempStore(SQLiteConfig.TempStore.MEMORY);
 
         SQLiteDataSource dataSource = new SQLiteDataSource(config);
         dataSource.setUrl("jdbc:sqlite:" + dbPath);
         return dataSource;
     }
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/config/WebMvcConfig.java
 ```java
 package ru.edu.journal.config;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -5937,6 +8794,31 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
     @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new HandlerInterceptor() {
+            @Override
+            public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+                request.setAttribute("_startNano", System.nanoTime());
+                if (handler instanceof HandlerMethod hm) {
+                    String controllerName = hm.getBeanType().getSimpleName();
+                    String methodName = hm.getMethod().getName();
+                    response.setHeader("X-Java-Controller", controllerName + "." + methodName + "()");
+                }
+                return true;
+            }
+
+            @Override
+            public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+                Object start = request.getAttribute("_startNano");
+                if (start instanceof Long startNano) {
+                    double ms = (System.nanoTime() - startNano) / 1_000_000.0;
+                    response.setHeader("X-Exec-Time-Ms", String.format(java.util.Locale.US, "%.2f", ms));
+                }
+            }
+        }).addPathPatterns("/api/**");
+    }
+
+    @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**")
                 .addResourceLocations("classpath:/static/")
@@ -5946,7 +8828,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .setCachePeriod(0);
     }
 }
-
 ```
 
 ## src/main/java/ru/edu/journal/JournalApplication.java
@@ -5982,6 +8863,9 @@ public class JournalApplication implements CommandLineRunner {
     private final DatabaseInitializer databaseInitializer;
     private final DataSource dataSource;
 
+    @org.springframework.beans.factory.annotation.Value("${app.public-url:http://journal.edu.local}")
+    private String publicUrl;
+
     public JournalApplication(ApplicationContext context,
                               DatabaseInitializer databaseInitializer,
                               DataSource dataSource) {
@@ -6001,21 +8885,15 @@ public class JournalApplication implements CommandLineRunner {
             String contextPath = webContext.getServletContext().getContextPath();
             String path = (contextPath == null || contextPath.isBlank()) ? "/" : (contextPath.endsWith("/") ? contextPath : contextPath + "/");
 
-            String hostAddress = "localhost";
-            try {
-                hostAddress = InetAddress.getLocalHost().getHostAddress();
-            } catch (UnknownHostException ignored) {
-            }
-
             log.info("""
                 
-                ----------------------------------------------------------
-                \tПриложение успешно запущено!
-                \tЛокально: \thttp://localhost:{}{}
-                \tВ сети:   \thttp://{}:{}{}
-                ----------------------------------------------------------""",
-                port, path,
-                hostAddress, port, path
+                ==========================================================
+                  ЭЛЕКТРОННЫЙ ЖУРНАЛ УСПЕВАЕМОСТИ ГОТОВ К РАБОТЕ
+                  Домен:       {}
+                  Локальный:   http://127.0.0.1:{}{}
+                  Режим БД:    SQLite WAL (Foreign Keys = ON)
+                ==========================================================""",
+                publicUrl, port, path
             );
         }
     }
@@ -6179,5 +9057,503 @@ public class JournalApplication implements CommandLineRunner {
         return result;
     }
 }
+```
 
+## src/test/java/ru/edu/journal/DatabaseBaselineTest.java
+```java
+package ru.edu.journal;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import ru.edu.journal.common.DatabaseInitializer;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@SpringBootTest
+class DatabaseBaselineTest {
+
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    private DatabaseInitializer databaseInitializer;
+
+    @BeforeEach
+    void setUp() {
+        databaseInitializer.initializeDatabase();
+    }
+
+    @Test
+    void testBaselineDatabase() throws Exception {
+        try (Connection con = dataSource.getConnection();
+             Statement stmt = con.createStatement()) {
+
+            // foreign_keys enabled
+            try (ResultSet rs = stmt.executeQuery("PRAGMA foreign_keys")) {
+                assertTrue(rs.next());
+                assertEquals(1, rs.getInt(1), "Проверка внешних ключей выключена");
+            }
+
+            // foreign_key_check is empty
+            try (ResultSet rs = stmt.executeQuery("PRAGMA foreign_key_check")) {
+                boolean hasViolations = rs.next();
+                assertTrue(!hasViolations, "Нарушены внешние ключи");
+            }
+
+            // table counts
+            Map<String, Integer> counts = new HashMap<>();
+            for (String table : new String[]{"groups", "students", "subjects", "grades"}) {
+                try (ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM " + table)) {
+                    assertTrue(rs.next());
+                    counts.put(table, rs.getInt(1));
+                }
+            }
+
+            assertEquals(3, counts.get("groups"), "Ожидалось 3 группы");
+            assertEquals(60, counts.get("students"), "Ожидалось 60 студентов");
+            assertEquals(3, counts.get("subjects"), "Ожидалось 3 предмета");
+            assertEquals(162, counts.get("grades"), "Ожидалось 162 оценки");
+
+            // students without grades
+            try (ResultSet rs = stmt.executeQuery("""
+                    SELECT COUNT(*)
+                    FROM students AS s
+                    LEFT JOIN grades AS gr ON gr.student_id = s.id
+                    WHERE gr.id IS NULL
+                    """)) {
+                assertTrue(rs.next());
+                assertEquals(6, rs.getInt(1), "Ожидалось шесть студентов без оценок");
+            }
+        }
+    }
+}
+```
+
+## src/test/java/ru/edu/journal/JournalIntegrationTest.java
+```java
+package ru.edu.journal;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import ru.edu.journal.common.DatabaseInitializer;
+
+import java.util.Map;
+
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+class JournalIntegrationTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    private DatabaseInitializer databaseInitializer;
+
+    @BeforeEach
+    void setUp() {
+        databaseInitializer.initializeDatabase();
+    }
+
+    // --- ЛАБ 1: ГРУППЫ ---
+    @Test
+    void testGroupsApi() throws Exception {
+        // Список
+        mockMvc.perform(get("/api/groups"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items", hasSize(3)))
+                .andExpect(jsonPath("$.items[0].name", is("БЭИ2301")))
+                .andExpect(jsonPath("$.items[0].student_count", is(20)));
+
+        // Создание группы
+        mockMvc.perform(post("/api/groups")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of("name", "Учебная группа"))))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.item.name", is("Учебная группа")));
+
+        // Ошибка дубликата
+        mockMvc.perform(post("/api/groups")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of("name", "Учебная группа"))))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", containsString("уже существует")));
+
+        // Запрет удаления непустой группы
+        mockMvc.perform(delete("/api/groups/1"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", containsString("есть студенты")));
+    }
+
+    // --- ЛАБ 2: ПРЕДМЕТЫ ---
+    @Test
+    void testSubjectsApi() throws Exception {
+        // Список
+        mockMvc.perform(get("/api/subjects"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items", hasSize(3)));
+
+        // Создание
+        mockMvc.perform(post("/api/subjects")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of("name", "Алгоритмы"))))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.item.name", is("Алгоритмы")));
+
+        // Запрет удаления предмета с оценками
+        mockMvc.perform(delete("/api/subjects/1"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", containsString("выставлены оценки")));
+    }
+
+    // --- ЛАБ 3: СТУДЕНТЫ И ПЕРЕВОД ---
+    @Test
+    void testStudentsApiAndTransfer() throws Exception {
+        // Список
+        mockMvc.perform(get("/api/students"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items", hasSize(60)));
+
+        // Создание студента
+        mockMvc.perform(post("/api/students")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of(
+                                "name", "Тестовый Студент",
+                                "group_id", 1,
+                                "email", "test@edu.ru"
+                        ))))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.item.name", is("Тестовый Студент")))
+                .andExpect(jsonPath("$.item.group_name", is("БЭИ2301")));
+
+        // Перевод студента ID 1 в группу 2 (сохраняет оценки и меняет группу)
+        mockMvc.perform(post("/api/students/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of(
+                                "name", "Иванов Алексей",
+                                "group_id", 2,
+                                "email", "student01@example.edu"
+                        ))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.item.group_id", is(2)))
+                .andExpect(jsonPath("$.item.group_name", is("БЭИ2302")))
+                .andExpect(jsonPath("$.item.grade_count", greaterThan(0)));
+    }
+
+    @Test
+    void testStudentsSearchAndAverageMark() throws Exception {
+        // Поиск по подстроке имени
+        mockMvc.perform(get("/api/students?q=Иванов"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items", not(empty())))
+                .andExpect(jsonPath("$.items[0].name", containsString("Иванов")));
+
+        // Проверка наличия поля average_mark у студентов
+        mockMvc.perform(get("/api/students"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items[0].average_mark", notNullValue()));
+    }
+
+    // --- ЛАБ 4: ЖУРНАЛ ОЦЕНОК ---
+    @Test
+    void testJournalApi() throws Exception {
+        // Чтение журнала всех групп (без group_id)
+        mockMvc.perform(get("/api/journal"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.group.name", is("Все группы")))
+                .andExpect(jsonPath("$.students", hasSize(60)))
+                .andExpect(jsonPath("$.subjects", hasSize(3)))
+                .andExpect(jsonPath("$.grades", hasSize(162)));
+
+        // Чтение журнала группы 1
+        mockMvc.perform(get("/api/journal?group_id=1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.group.name", is("БЭИ2301")))
+                .andExpect(jsonPath("$.students", hasSize(20)))
+                .andExpect(jsonPath("$.subjects", hasSize(3)))
+                .andExpect(jsonPath("$.grades", hasSize(54)));
+
+        // У студента 10 изначально нет оценок
+        // Ставим оценку 4 по предмету 1
+        mockMvc.perform(post("/api/journal/grades")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of(
+                                "student_id", 10,
+                                "subject_id", 1,
+                                "mark", 4
+                        ))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.item.mark", is(4)));
+
+        // Обновляем оценку на 5
+        mockMvc.perform(post("/api/journal/grades")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of(
+                                "student_id", 10,
+                                "subject_id", 1,
+                                "mark", 5
+                        ))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.item.mark", is(5)));
+
+        // Удаляем оценку
+        mockMvc.perform(delete("/api/journal/grades/10/1"))
+                .andExpect(status().isNoContent());
+
+        // Невалидная оценка (например, 6)
+        mockMvc.perform(post("/api/journal/grades")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of(
+                                "student_id", 10,
+                                "subject_id", 1,
+                                "mark", 6
+                        ))))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", containsString("от 2 до 5")));
+    }
+
+    // --- МАССОВОЕ ВЫСТАВЛЕНИЕ ОЦЕНОК (BULK GRADING) ---
+    @Test
+    void testBulkGradesApi() throws Exception {
+        // Выставляем 5 всей группе 1 по предмету 1 с перезаписью
+        mockMvc.perform(post("/api/journal/grades/bulk")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of(
+                                "group_id", 1,
+                                "subject_id", 1,
+                                "mark", 5,
+                                "overwrite_existing", true
+                        ))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.count", is(20)));
+
+        // Очищаем оценки всей группе 1 по предмету 1 (mark = 0)
+        mockMvc.perform(post("/api/journal/grades/bulk")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of(
+                                "group_id", 1,
+                                "subject_id", 1,
+                                "mark", 0
+                        ))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.count", is(20)));
+
+        // Выставляем 4 ВСЕМ студентам ВСЕХ групп по ВСЕМ предметам (60 студентов * 3 предмета = 180 записей)
+        mockMvc.perform(post("/api/journal/grades/bulk")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of(
+                                "mark", 4,
+                                "overwrite_existing", true
+                        ))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.count", is(180)));
+
+        // Невалидный запрос (mark = 9)
+        mockMvc.perform(post("/api/journal/grades/bulk")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of(
+                                "group_id", 1,
+                                "subject_id", 1,
+                                "mark", 9
+                        ))))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", containsString("от 2 до 5")));
+    }
+
+    // --- ЭКСПОРТ ЖУРНАЛА (EXCEL & CSV) ---
+    @Test
+    void testJournalExportExcelAndCsv() throws Exception {
+        // Экспорт в Excel (.xlsx)
+        byte[] excelBytes = mockMvc.perform(get("/api/journal/export/excel?group_id=1"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Type", containsString("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")))
+                .andExpect(header().string("Content-Disposition", containsString("journal_БЭИ2301.xlsx")))
+                .andReturn()
+                .getResponse()
+                .getContentAsByteArray();
+
+        org.junit.jupiter.api.Assertions.assertTrue(excelBytes.length > 1000, "Excel file should not be empty");
+
+        // Экспорт в CSV (.csv)
+        String csvContent = mockMvc.perform(get("/api/journal/export/csv?group_id=1"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Type", containsString("text/csv")))
+                .andExpect(header().string("Content-Disposition", containsString("journal_БЭИ2301.csv")))
+                .andReturn()
+                .getResponse()
+                .getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
+
+        org.junit.jupiter.api.Assertions.assertTrue(csvContent.contains("ФИО;Email;Группа"), "CSV must contain header");
+        org.junit.jupiter.api.Assertions.assertTrue(csvContent.contains("БЭИ2301"), "CSV must contain group name");
+
+        // Экспорт всех групп в Excel (.xlsx) без group_id
+        mockMvc.perform(get("/api/journal/export/excel"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Disposition", containsString("journal_Все_группы.xlsx")));
+
+        // Экспорт всех групп в CSV (.csv) без group_id
+        mockMvc.perform(get("/api/journal/export/csv"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Disposition", containsString("journal_Все_группы.csv")));
+
+        // Журнал без group_id (сводная ведомость всех групп)
+        mockMvc.perform(get("/api/journal"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.group.name", is("Все группы")))
+                .andExpect(jsonPath("$.students", hasSize(60)));
+    }
+
+    // --- ЛАБ 5: ОТЧЕТЫ ---
+    @Test
+    void testReportsApi() throws Exception {
+        // 1. Отчет групп
+        mockMvc.perform(get("/api/reports?kind=groups"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.kind", is("groups")))
+                .andExpect(jsonPath("$.items", hasSize(3)))
+                .andExpect(jsonPath("$.items[0].student_count", is(20)))
+                .andExpect(jsonPath("$.items[0].grade_count", is(54)))
+                .andExpect(jsonPath("$.items[0].average_mark", notNullValue()));
+
+        // 2. Отчет студентов без оценок (ровно 6 человек в исходных данных)
+        mockMvc.perform(get("/api/reports?kind=no_grades"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.kind", is("no_grades")))
+                .andExpect(jsonPath("$.items", hasSize(6)));
+
+        // 3. Отчет студентов с хотя бы одной двойкой
+        mockMvc.perform(get("/api/reports?kind=failing"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.kind", is("failing")))
+                .andExpect(jsonPath("$.items", not(empty())));
+    }
+}
+```
+
+## src/test/java/ru/edu/journal/RollbackTest.java
+```java
+package ru.edu.journal;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import ru.edu.journal.common.DatabaseInitializer;
+import ru.edu.journal.features.students.StudentService;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest
+class RollbackTest {
+
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    private DatabaseInitializer databaseInitializer;
+
+    @Autowired
+    private StudentService studentService;
+
+    @BeforeEach
+    void setUp() {
+        databaseInitializer.initializeDatabase();
+    }
+
+    private Map<String, List<List<Object>>> snapshot() throws Exception {
+        Map<String, List<List<Object>>> result = new HashMap<>();
+        try (Connection con = dataSource.getConnection();
+             Statement stmt = con.createStatement()) {
+            for (String table : new String[]{"groups", "students", "subjects", "grades"}) {
+                List<List<Object>> rows = new ArrayList<>();
+                try (ResultSet rs = stmt.executeQuery("SELECT * FROM " + table + " ORDER BY id")) {
+                    int colCount = rs.getMetaData().getColumnCount();
+                    while (rs.next()) {
+                        List<Object> row = new ArrayList<>();
+                        for (int i = 1; i <= colCount; i++) {
+                            row.add(rs.getObject(i));
+                        }
+                        rows.add(row);
+                    }
+                }
+                result.put(table, rows);
+            }
+        }
+        return result;
+    }
+
+    @Test
+    void testRollbackOnSimulatedError() throws Exception {
+        Long studentId;
+        try (Connection con = dataSource.getConnection();
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT student_id FROM grades ORDER BY id LIMIT 1")) {
+            assertTrue(rs.next(), "Для проверки нужен студент с оценками");
+            studentId = rs.getLong(1);
+        }
+
+        Map<String, List<List<Object>>> before = snapshot();
+
+        // 1. Попытка удаления с искусственным сбоем (simulateError = true)
+        boolean caught = false;
+        try {
+            studentService.deleteStudent(studentId, true);
+        } catch (RuntimeException ex) {
+            caught = true;
+            System.out.println("Учебный сбой: " + ex.getMessage());
+        }
+
+        assertTrue(caught, "Сервис должен был выбросить учебную ошибку");
+        Map<String, List<List<Object>>> afterRollback = snapshot();
+        assertEquals(before, afterRollback, "Откат неполный: данные изменились после исключения");
+        System.out.println("PASS: студент и все оценки сохранены после отката");
+
+        // 2. Успешное удаление без сбоя (simulateError = false)
+        studentService.deleteStudent(studentId, false);
+        Map<String, List<List<Object>>> afterDelete = snapshot();
+
+        assertNotEquals(before.get("students"), afterDelete.get("students"));
+        assertNotEquals(before.get("grades"), afterDelete.get("grades"));
+        assertEquals(before.get("groups"), afterDelete.get("groups"));
+        assertEquals(before.get("subjects"), afterDelete.get("subjects"));
+
+        // Убеждаемся, что удален именно этот студент и его оценки
+        boolean studentExists = afterDelete.get("students").stream().anyMatch(row -> row.get(0).equals(studentId));
+        boolean gradesExist = afterDelete.get("grades").stream().anyMatch(row -> row.get(1).equals(studentId));
+        assertFalse(studentExists, "Студент должен быть удален");
+        assertFalse(gradesExist, "Оценки студента должны быть удалены");
+
+        System.out.println("PASS: обычное удаление убрало студента и его оценки");
+    }
+}
 ```
