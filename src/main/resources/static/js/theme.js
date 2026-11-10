@@ -80,14 +80,14 @@ function initSlidingNavigation() {
   const prevKey = sessionStorage.getItem("journal_prev_nav_key");
   const prevRectRaw = sessionStorage.getItem("journal_prev_nav_rect");
 
-  // Сначала ставим предыдущие координаты градиента и плашки, чтобы браузер анимировал переход
-  if (prevKey && AURORA_STATES[prevKey]) {
-    applyAuroraForKey(prevKey);
-  }
+  // Ставим градиент активного раздела
+  applyAuroraForKey(currentKey);
+
   const targetRect = activeLink.getBoundingClientRect();
   const navRect = nav.getBoundingClientRect();
   const targetLeft = targetRect.left - navRect.left;
 
+  // Если был сохранён предыдущий прямоугольник, плавно перемещаем каретку от него к текущей вкладке
   if (prevRectRaw) {
     try {
       const prev = JSON.parse(prevRectRaw);
@@ -100,38 +100,36 @@ function initSlidingNavigation() {
 
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      glider.style.transition = "transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), width 0.45s cubic-bezier(0.22, 1, 0.36, 1)";
+      glider.style.transition = "transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), width 0.4s cubic-bezier(0.22, 1, 0.36, 1)";
       glider.style.width = `${targetRect.width}px`;
       glider.style.transform = `translateX(${targetLeft}px)`;
       glider.style.opacity = "1";
-      applyAuroraForKey(currentKey);
     });
   });
 
-  // При наведении мыши градиент и плашка мягко тянутся за курсором
+  // Рамка смещается ТОЛЬКО при нажатии на вкладку!
+  // При наведении на вкладку срабатывает отдельное подчёркивание в CSS (.navigation a:hover::after)
   nav.querySelectorAll("a").forEach(link => {
-    link.addEventListener("mouseenter", () => {
-      const r = link.getBoundingClientRect();
-      const nr = nav.getBoundingClientRect();
-      glider.style.width = `${r.width}px`;
-      glider.style.transform = `translateX(${r.left - nr.left}px)`;
-      if (link.dataset.nav) applyAuroraForKey(link.dataset.nav);
-    });
-
     link.addEventListener("click", () => {
       const r = link.getBoundingClientRect();
       const nr = nav.getBoundingClientRect();
-      sessionStorage.setItem("journal_prev_nav_rect", JSON.stringify({ left: r.left - nr.left, width: r.width }));
+      const nextLeft = r.left - nr.left;
+      glider.style.transition = "transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), width 0.35s cubic-bezier(0.22, 1, 0.36, 1)";
+      glider.style.width = `${r.width}px`;
+      glider.style.transform = `translateX(${nextLeft}px)`;
+      if (link.dataset.nav) applyAuroraForKey(link.dataset.nav);
+      sessionStorage.setItem("journal_prev_nav_rect", JSON.stringify({ left: nextLeft, width: r.width }));
       sessionStorage.setItem("journal_prev_nav_key", link.dataset.nav || "groups");
     });
   });
 
-  nav.addEventListener("mouseleave", () => {
+  // При изменении размера окна синхронизируем ширину и положение каретки с активной вкладкой
+  window.addEventListener("resize", () => {
     const r = activeLink.getBoundingClientRect();
     const nr = nav.getBoundingClientRect();
+    glider.style.transition = "none";
     glider.style.width = `${r.width}px`;
     glider.style.transform = `translateX(${r.left - nr.left}px)`;
-    applyAuroraForKey(currentKey);
   });
 
   // Смещение градиента при переключении внутренних табов (например, в Отчётах)
@@ -148,17 +146,34 @@ function initSlidingNavigation() {
    ========================================================================== */
 
 const apiTraces = [];
+const XRAY_WIDTH_STORAGE_KEY = "journal_xray_width";
+
+function applyXRayWidth(widthPx) {
+  const minW = 280;
+  const maxW = Math.max(300, Math.round(window.innerWidth * 0.82));
+  const clamped = Math.max(minW, Math.min(widthPx, maxW));
+  document.documentElement.style.setProperty("--xray-width", `${clamped}px`);
+  try {
+    localStorage.setItem(XRAY_WIDTH_STORAGE_KEY, String(clamped));
+  } catch (e) {}
+  return clamped;
+}
 
 function initXRayInspector() {
   if (document.querySelector("#xray-drawer")) return;
+
+  const savedWidth = parseInt(localStorage.getItem(XRAY_WIDTH_STORAGE_KEY), 10) || 440;
+  applyXRayWidth(savedWidth);
 
   const drawer = document.createElement("aside");
   drawer.id = "xray-drawer";
   drawer.className = "xray-drawer";
   drawer.setAttribute("aria-label", "Инспектор логики и SQL-запросов");
-  drawer.hidden = true;
+  drawer.setAttribute("aria-hidden", "true");
 
   drawer.innerHTML = `
+    <!-- Ручка изменения размера панели -->
+    <div class="xray-resizer" id="xray-resizer" title="Потяните для изменения ширины панели"></div>
     <div class="xray-header">
       <div>
         <div class="xray-title">⚡ Рентген внутренней логики</div>
@@ -166,7 +181,7 @@ function initXRayInspector() {
       </div>
       <div class="xray-header-actions">
         <button id="xray-clear" class="xray-mini-btn" type="button" title="Очистить лог">Очистить</button>
-        <button id="xray-close" class="xray-mini-btn" type="button" title="Закрыть (Alt+L)">✕</button>
+        <button id="xray-close" class="xray-mini-btn" type="button" title="Закрыть панель (Alt+L)">✕</button>
       </div>
     </div>
     <div id="xray-feed" class="xray-feed">
@@ -180,25 +195,79 @@ function initXRayInspector() {
   const clearBtn = drawer.querySelector("#xray-clear");
   const feed = drawer.querySelector("#xray-feed");
   const counter = document.querySelector("#xray-counter");
+  const resizer = drawer.querySelector("#xray-resizer");
 
-  // Сохраняем состояние шторки между перезагрузками страниц
-  if (sessionStorage.getItem("journal_xray_open") === "true") {
-    drawer.hidden = false;
+  function isDrawerOpen() {
+    return document.body.classList.contains("xray-open");
+  }
+
+  function setDrawerOpen(open) {
+    document.body.classList.toggle("xray-open", open);
+    drawer.setAttribute("aria-hidden", String(!open));
+    sessionStorage.setItem("journal_xray_open", String(open));
+    if (toggleBtn) toggleBtn.classList.toggle("active", open);
+    if (open) {
+      const curW = parseInt(localStorage.getItem(XRAY_WIDTH_STORAGE_KEY), 10) || 440;
+      applyXRayWidth(curW);
+    }
   }
 
   function toggleDrawer() {
-    drawer.hidden = !drawer.hidden;
-    sessionStorage.setItem("journal_xray_open", String(!drawer.hidden));
+    setDrawerOpen(!isDrawerOpen());
   }
 
   if (toggleBtn) toggleBtn.addEventListener("click", toggleDrawer);
-  if (closeBtn) closeBtn.addEventListener("click", toggleDrawer);
+  if (closeBtn) closeBtn.addEventListener("click", () => setDrawerOpen(false));
   if (clearBtn) {
     clearBtn.addEventListener("click", () => {
       apiTraces.length = 0;
       if (counter) counter.textContent = "0";
       feed.innerHTML = `<div class="xray-empty">Журнал вызовов очищен. Ожидание действий...</div>`;
     });
+  }
+
+  // Интерактивное изменение ширины панели (drag-to-resize)
+  let isDragging = false;
+  let startX = 0;
+  let startW = 440;
+
+  resizer.addEventListener("pointerdown", (e) => {
+    e.preventDefault();
+    isDragging = true;
+    startX = e.clientX;
+    startW = drawer.getBoundingClientRect().width;
+    document.body.classList.add("xray-resizing");
+    resizer.setPointerCapture(e.pointerId);
+  });
+
+  resizer.addEventListener("pointermove", (e) => {
+    if (!isDragging) return;
+    const deltaX = startX - e.clientX; // сдвиг влево увеличивает ширину
+    applyXRayWidth(startW + deltaX);
+  });
+
+  function stopDragging(e) {
+    if (!isDragging) return;
+    isDragging = false;
+    document.body.classList.remove("xray-resizing");
+    try {
+      resizer.releasePointerCapture(e.pointerId);
+    } catch (err) {}
+  }
+
+  resizer.addEventListener("pointerup", stopDragging);
+  resizer.addEventListener("pointercancel", stopDragging);
+
+  window.addEventListener("resize", () => {
+    const curW = parseInt(localStorage.getItem(XRAY_WIDTH_STORAGE_KEY), 10) || 440;
+    applyXRayWidth(curW);
+  });
+
+  // Сохранение состояния открытости шторки между переходами по страницам
+  if (sessionStorage.getItem("journal_xray_open") === "true") {
+    setDrawerOpen(true);
+  } else {
+    setDrawerOpen(false);
   }
 
   function renderTraceCard(t) {

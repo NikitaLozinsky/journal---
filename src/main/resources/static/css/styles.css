@@ -45,6 +45,9 @@
   --aurora-y2: 65%;
   --aurora-c1: rgba(189, 147, 249, 0.22);
   --aurora-c2: rgba(255, 121, 198, 0.14);
+
+  /* Ширина боковой панели «Рентген логики» (изменяется перетаскиванием) */
+  --xray-width: 440px;
 }
 
 [data-theme="oled"] {
@@ -148,6 +151,22 @@ body {
   flex-direction: column;
   position: relative;
   overflow-x: hidden;
+  transition: padding-right 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body.xray-open {
+  padding-right: var(--xray-width, 440px);
+}
+
+body.xray-resizing {
+  transition: none !important;
+  user-select: none !important;
+  cursor: ew-resize !important;
+}
+
+body.xray-resizing * {
+  user-select: none !important;
+  cursor: ew-resize !important;
 }
 
 /* ==========================================================================
@@ -346,7 +365,32 @@ body {
   transition: color 0.18s ease;
 }
 
-.navigation a:hover,
+/* Элегантное подчёркивание при наведении курсора на вкладку */
+.navigation a::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--brand), var(--brand-pink));
+  box-shadow: 0 0 10px var(--line-glow);
+  opacity: 0;
+  transform: scaleX(0.35);
+  transition: opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1), transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.navigation a:hover {
+  color: var(--ink);
+}
+
+.navigation a:hover:not([aria-current="page"])::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
 .navigation a[aria-current="page"] {
   color: var(--ink);
   font-weight: 600;
@@ -803,20 +847,82 @@ kbd {
   top: 0;
   right: 0;
   bottom: 0;
-  width: min(440px, 92vw);
+  width: var(--xray-width, 440px);
+  min-width: 280px;
+  max-width: 85vw;
   z-index: 80;
-  background: color-mix(in srgb, var(--surface-solid) 94%, transparent);
+  background: color-mix(in srgb, var(--surface-solid) 96%, transparent);
   backdrop-filter: blur(18px);
-  border-left: 1px solid var(--brand);
-  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.65);
+  -webkit-backdrop-filter: blur(18px);
+  border-left: 1px solid var(--line);
+  box-shadow: -10px 0 35px rgba(0, 0, 0, 0.55);
   display: flex;
   flex-direction: column;
-  animation: slide-left 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateX(100%);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  visibility: hidden;
+  pointer-events: none;
 }
 
-@keyframes slide-left {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
+body.xray-open .xray-drawer {
+  transform: translateX(0);
+  visibility: visible;
+  pointer-events: auto;
+}
+
+body.xray-resizing .xray-drawer {
+  transition: none !important;
+}
+
+/* Ресайзер панели «Рентген логики» (потяните левую грань) */
+.xray-resizer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -5px;
+  width: 10px;
+  cursor: ew-resize;
+  z-index: 90;
+  background: transparent;
+  user-select: none;
+}
+
+.xray-resizer::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 42px;
+  border-radius: 3px;
+  background: var(--line);
+  transition: all 0.15s ease;
+}
+
+.xray-resizer:hover::after,
+body.xray-resizing .xray-resizer::after {
+  background: var(--brand);
+  height: 64px;
+  box-shadow: 0 0 12px var(--brand);
+}
+
+.xray-resizer:hover,
+body.xray-resizing .xray-resizer {
+  background: rgba(189, 147, 249, 0.12);
+}
+
+@media (max-width: 768px) {
+  body.xray-open {
+    padding-right: 0 !important;
+  }
+  .xray-drawer {
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+  .xray-resizer {
+    display: none !important;
+  }
 }
 
 .xray-header {
