@@ -6,11 +6,8 @@
   <script>
     (function() {
       try {
-        var t = localStorage.getItem('journal_theme') === 'light' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', t);
-        if (t === 'dark' && localStorage.getItem('journal_oled') === 'true') {
-          document.documentElement.setAttribute('data-oled', 'true');
-        }
+        var t = localStorage.getItem('journal_theme');
+        document.documentElement.setAttribute('data-theme', (t === 'oled' || t === 'light') ? t : 'dark');
       } catch (e) {}
     })();
   </script>
@@ -24,11 +21,26 @@
     <div class="page-heading">
       <h1>Журнал оценок</h1>
       <div class="heading-actions">
-        <button id="toggle-analytics" class="button-secondary" type="button" aria-expanded="true">📊 Скрыть аналитику</button>
-        <button id="btn-bulk-grade" class="button-secondary" type="button" title="Выставить или очистить оценки группе или всем группам">⚡ Массовые оценки</button>
-        <button id="btn-export-excel" class="button-secondary" type="button" title="Скачать в формате Microsoft Excel (.xlsx)">📥 Excel (.xlsx)</button>
-        <button id="btn-export-csv" class="button-secondary" type="button" title="Скачать в текстовом формате CSV">📥 CSV</button>
-        <button id="btn-print" class="button-primary" type="button" title="Распечатать официальную экзаменационную ведомость">🖨️ Печать ведомости</button>
+        <button id="toggle-analytics" class="button-secondary" type="button" aria-expanded="true">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          <span class="btn-text">Скрыть аналитику</span>
+        </button>
+        <button id="btn-bulk-grade" class="button-secondary" type="button" title="Выставить или очистить оценки группе или всем группам">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          <span class="btn-text">Массовые оценки</span>
+        </button>
+        <button id="btn-export-excel" class="button-secondary" type="button" title="Скачать в формате Microsoft Excel (.xlsx)">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <span class="btn-text">Excel (.xlsx)</span>
+        </button>
+        <button id="btn-export-csv" class="button-secondary" type="button" title="Скачать в текстовом формате CSV">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+          <span class="btn-text">CSV</span>
+        </button>
+        <button id="btn-print" class="button-primary" type="button" title="Распечатать официальную экзаменационную ведомость">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          <span class="btn-text">Печать ведомости</span>
+        </button>
       </div>
     </div>
 
@@ -47,15 +59,25 @@
           <option value="excellent">Только отличники (все 5)</option>
         </select>
       </label>
-      <label class="toggle-mode-label">
-        <input id="quick-edit-mode" type="checkbox" checked>
-        <span>⌨️ Быстрый ввод (Excel)</span>
+      <label class="toggle-mode-label" title="Автоматически смещать фокус вниз при выставлении оценки">
+        <input id="auto-advance-down" type="checkbox">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+        <span>Смещать вниз при вводе</span>
       </label>
+      <div id="journal-progress-box" class="journal-progress-box" title="Процент заполнения оценочной ведомости">
+        <div class="progress-labels">
+          <span class="progress-title">Заполненность:</span>
+          <span id="progress-stats" class="progress-stats">0 / 0 (0%)</span>
+        </div>
+        <div class="progress-track">
+          <div id="progress-bar-fill" class="progress-bar-fill" style="width: 0%;"></div>
+        </div>
+      </div>
     </div>
 
     <div id="quick-edit-hint" class="quick-edit-hint">
-      <span class="hint-badge">Excel-режим:</span>
-      Кликните по ячейке и нажимайте <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> <kbd>5</kbd> для мгновенной записи. Навигация: <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> и <kbd>Enter</kbd>. Очистка: <kbd>Backspace</kbd> / <kbd>Del</kbd>. Тема: <kbd>Alt+T</kbd>.
+      <span class="hint-badge">Быстрый ввод:</span>
+      Кликните по ячейке и выберите оценку кликом по цифре <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> <kbd>5</kbd> или нажмите её на клавиатуре. Очистка: <kbd>⌫</kbd> или <kbd>Del</kbd>. Навигация: <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd>.
     </div>
 
     <p id="status" class="status" role="status" aria-live="polite" hidden></p>
@@ -83,7 +105,7 @@
     </section>
 
     <section id="bulk-editor" class="editor" aria-labelledby="bulk-editor-title" hidden>
-      <h2 id="bulk-editor-title">⚡ Массовое выставление оценок</h2>
+      <h2 id="bulk-editor-title"><svg class="btn-icon brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Массовое выставление оценок</h2>
       <p class="muted">Вы можете в один клик выставить оценку выбранной группе (или всем группам) по выбранному предмету (или по всем предметам), либо очистить оценки.</p>
       <form id="bulk-form">
         <div class="form-fields">
@@ -103,7 +125,7 @@
               <option value="4">4 (Хорошо)</option>
               <option value="3">3 (Удовлетворительно)</option>
               <option value="2">2 (Неудовлетворительно)</option>
-              <option value="0">🗑️ Очистить оценки</option>
+              <option value="0">✕ Очистить оценки (удалить)</option>
             </select>
           </label>
           <label class="toggle-mode-label" style="align-self: center; padding-top: 18px;">

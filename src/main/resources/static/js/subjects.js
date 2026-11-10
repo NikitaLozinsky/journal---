@@ -25,14 +25,15 @@ async function deleteRecord(recordId) {
 function render() {
   body.replaceChildren();
   if (!items.length) { emptyRow(body, 2); return; }
-  for (const item of items) {
+  items.forEach((item, index) => {
     const row = document.createElement("tr");
+    row.style.setProperty("--row-i", String(index));
     row.append(cell(item.name));
     const td = document.createElement("td");
     td.append(actions(item.id));
     row.append(td);
     body.append(row);
-  }
+  });
 }
 
 /** Обновляет данные, сохраняя старую таблицу при неудачном запросе. */

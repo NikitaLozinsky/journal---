@@ -7,7 +7,7 @@ const activeCharts = new Map();
 export function getChartThemeColors() {
   const theme = document.documentElement.getAttribute("data-theme") || "dark";
   const isDark = theme !== "light";
-  const isOled = isDark && document.documentElement.getAttribute("data-oled") === "true";
+  const isOled = theme === "oled";
   return {
     isDark,
     isOled,

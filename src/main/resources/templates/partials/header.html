@@ -1,32 +1,52 @@
 <header class="site-header" th:fragment="header" xmlns:th="http://www.thymeleaf.org">
+  <!-- Динамическое фоновое свечение Aurora, смещающееся при переключении вкладок -->
+  <div id="aurora-backdrop" class="aurora-backdrop" aria-hidden="true">
+    <div class="aurora-blob blob-1"></div>
+    <div class="aurora-blob blob-2"></div>
+  </div>
+
+  <!-- Интерактивное градиентное свечение верхней панели (Aurora Header Reaction) -->
+  <div class="header-glow-layer" id="header-glow-layer" aria-hidden="true"></div>
+
   <div class="container">
     <div class="brand-row">
-      <a class="brand" href="/groups">
-        <span class="brand-dot" aria-hidden="true"></span>
+      <a class="brand" href="/" title="На главную страницу">
+        <span class="brand-glyph" aria-hidden="true">λ</span>
         <span>Электронный журнал</span>
+        <span class="brand-tag">arch::ed</span>
       </a>
       <div class="header-controls">
-        <button id="cmd-palette-trigger" class="cmd-trigger-btn" type="button" title="Быстрый переход и команды (Ctrl+K)">
-          <span>⚡ Команды</span>
-          <kbd>Ctrl+K</kbd>
+        <button id="xray-toggle-btn" class="header-pill-btn xray-btn" type="button" title="Открыть шторку выполнения логики и SQL (Alt+L)">
+          <span class="xray-pulse"></span>
+          <svg class="btn-icon brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          <span>Логика</span>
+          <span id="xray-counter" class="xray-badge">0</span>
         </button>
-        <label id="oled-toggle-wrap" class="oled-toggle-label" title="Включить абсолютно чёрный фон для OLED-экранов (Alt+O)">
-          <input id="oled-toggle" type="checkbox">
-          <span>OLED</span>
-        </label>
+        <button id="term-toggle-btn" class="header-pill-btn term-btn" type="button" title="Открыть Linux-терминал проекта (Alt+C или Ctrl+~)">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+          <span>milk13</span>
+          <kbd>Alt+C</kbd>
+        </button>
+        <button id="cmd-palette-btn" class="header-pill-btn cmd-btn" type="button" title="Командная палитра (Ctrl+K или Alt+K)">
+          <kbd>⌘K</kbd>
+        </button>
         <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="Переключить тему оформления" title="Переключить тему (Alt+T)">
-          <span class="theme-toggle-icon" aria-hidden="true">🌙</span>
-          <span class="theme-toggle-text">Тёмная</span>
+          <span class="theme-toggle-icon" aria-hidden="true">
+            <svg class="theme-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          </span>
+          <span class="theme-toggle-text">Dracula Dark</span>
         </button>
       </div>
     </div>
-    <nav class="navigation" aria-label="Разделы приложения">
-      <a href="/groups" th:attr="aria-current=${activePage == 'groups'} ? 'page' : null">Группы</a>
-      <a href="/subjects" th:attr="aria-current=${activePage == 'subjects'} ? 'page' : null">Предметы</a>
-      <a href="/students" th:attr="aria-current=${activePage == 'students'} ? 'page' : null">Студенты</a>
-      <a href="/journal" th:attr="aria-current=${activePage == 'journal'} ? 'page' : null">Журнал</a>
-      <a href="/reports" th:attr="aria-current=${activePage == 'reports'} ? 'page' : null">Отчёты</a>
+    <nav id="main-nav" class="navigation" aria-label="Разделы приложения">
+      <span id="nav-glider" class="nav-glider" aria-hidden="true"></span>
+      <a href="/" data-nav="home" th:attr="aria-current=${activePage == 'home'} ? 'page' : null">Главная</a>
+      <a href="/groups" data-nav="groups" th:attr="aria-current=${activePage == 'groups'} ? 'page' : null">Группы</a>
+      <a href="/subjects" data-nav="subjects" th:attr="aria-current=${activePage == 'subjects'} ? 'page' : null">Предметы</a>
+      <a href="/students" data-nav="students" th:attr="aria-current=${activePage == 'students'} ? 'page' : null">Студенты</a>
+      <a href="/journal" data-nav="journal" th:attr="aria-current=${activePage == 'journal'} ? 'page' : null">Журнал</a>
+      <a href="/reports" data-nav="reports" th:attr="aria-current=${activePage == 'reports'} ? 'page' : null">Отчёты</a>
     </nav>
   </div>
-  <script type="module" src="/js/theme.js?v=3.0"></script>
+  <script type="module" src="/js/theme.js?v=4.0"></script>
 </header>

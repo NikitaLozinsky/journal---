@@ -38,28 +38,35 @@ const kpiContainer = document.querySelector("#journal-kpi");
 const btnExportExcel = document.querySelector("#btn-export-excel");
 const btnExportCsv = document.querySelector("#btn-export-csv");
 const btnPrint = document.querySelector("#btn-print");
-const quickEditCheckbox = document.querySelector("#quick-edit-mode");
-const quickEditHint = document.querySelector("#quick-edit-hint");
+const autoAdvanceCheckbox = document.querySelector("#auto-advance-down");
 
 const printGroupName = document.querySelector("#print-group-name");
 const printDate = document.querySelector("#print-date");
 
+const progressBox = document.querySelector("#journal-progress-box");
+const progressStats = document.querySelector("#progress-stats");
+const progressBarFill = document.querySelector("#progress-bar-fill");
+
 let journalData = null, groups = [];
 let gridMatrix = [];
 let activeRow = -1, activeCol = -1;
+
+const CHART_ICON_SVG = `<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>`;
 
 if (toggleAnalyticsBtn && analyticsSection) {
   toggleAnalyticsBtn.addEventListener("click", () => {
     const isHidden = analyticsSection.hidden;
     analyticsSection.hidden = !isHidden;
     toggleAnalyticsBtn.setAttribute("aria-expanded", String(isHidden));
-    toggleAnalyticsBtn.textContent = isHidden ? "📊 Скрыть аналитику" : "📊 Показать аналитику";
+    toggleAnalyticsBtn.innerHTML = `${CHART_ICON_SVG}<span class="btn-text">${isHidden ? "Скрыть аналитику" : "Показать аналитику"}</span>`;
   });
 }
 
-if (quickEditCheckbox && quickEditHint) {
-  quickEditCheckbox.addEventListener("change", () => {
-    quickEditHint.hidden = !quickEditCheckbox.checked;
+if (autoAdvanceCheckbox) {
+  const savedAutoAdvance = localStorage.getItem("journal_auto_advance_down");
+  autoAdvanceCheckbox.checked = savedAutoAdvance === "true";
+  autoAdvanceCheckbox.addEventListener("change", () => {
+    localStorage.setItem("journal_auto_advance_down", String(autoAdvanceCheckbox.checked));
   });
 }
 
@@ -107,10 +114,10 @@ function updateBulkHint() {
   }
 
   if (mark === 0) {
-    bulkActionHint.innerHTML = `⚠️ Будут <strong>удалены все оценки</strong>: ${groupName} ${subjectName}.`;
+    bulkActionHint.innerHTML = `<svg class="btn-icon danger-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> Будут <strong>удалены все оценки</strong>: ${groupName} ${subjectName}.`;
   } else {
     const overwriteText = overwrite ? "с перезаписью существующих" : "только в незаполненные ячейки (без перезаписи)";
-    bulkActionHint.innerHTML = `⚡ Будет выставлена оценка <strong>${mark}</strong>: ${groupName} ${subjectName} (${overwriteText}).`;
+    bulkActionHint.innerHTML = `<svg class="btn-icon brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Будет выставлена оценка <strong>${mark}</strong>: ${groupName} ${subjectName} (${overwriteText}).`;
   }
 }
 
@@ -365,6 +372,24 @@ function renderAnalytics() {
   });
 }
 
+/** Интерактивный индикатор заполненности ведомости */
+function updateProgressIndicator() {
+  if (!progressBox || !progressStats || !progressBarFill || !journalData) return;
+  const { students, subjects, grades } = journalData;
+  if (!students || !students.length || !subjects || !subjects.length) {
+    progressBox.hidden = true;
+    return;
+  }
+  progressBox.hidden = false;
+  const totalSlots = students.length * subjects.length;
+  const filledSlots = (grades || []).length;
+  const pct = totalSlots > 0 ? Math.min(100, Math.round((filledSlots / totalSlots) * 100)) : 0;
+
+  progressStats.textContent = `${filledSlots} / ${totalSlots} (${pct}%)`;
+  progressBarFill.style.width = `${pct}%`;
+  progressBarFill.classList.toggle("progress-complete", pct === 100);
+}
+
 /** Обновляет бейдж среднего балла в строке студента на лету */
 function updateStudentRowAverage(studentId) {
   const badge = tableBody.querySelector(`span[data-avg-for="${studentId}"]`);
@@ -382,6 +407,74 @@ function updateStudentRowAverage(studentId) {
   else if (avg >= 3.8) badge.classList.add("good");
   else if (avg >= 3.0) badge.classList.add("fair");
   else badge.classList.add("failing");
+
+  // Тактильная микро-анимация обновления балла
+  badge.classList.remove("badge-bump");
+  void badge.offsetWidth;
+  badge.classList.add("badge-bump");
+}
+
+let quickMarkPopover = null;
+
+function hideQuickMarkPopover() {
+  if (quickMarkPopover) {
+    quickMarkPopover.remove();
+    quickMarkPopover = null;
+  }
+}
+
+function showQuickMarkPopover(targetBtn, r, c) {
+  hideQuickMarkPopover();
+  if (!targetBtn || !document.body.contains(targetBtn)) return;
+
+  const popover = document.createElement("div");
+  popover.className = "quick-mark-popover";
+  popover.setAttribute("role", "toolbar");
+  popover.setAttribute("aria-label", "Быстрый выбор оценки");
+
+  const marks = [2, 3, 4, 5];
+  marks.forEach(m => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = `quick-mark-btn mark-${m}`;
+    b.textContent = String(m);
+    b.title = `Выставить оценку ${m}`;
+    b.addEventListener("pointerdown", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      quickSaveGrade(targetBtn, r, c, m);
+      if (autoAdvanceCheckbox && autoAdvanceCheckbox.checked) {
+        setActiveCell(r + 1, c);
+      } else {
+        setActiveCell(r, c);
+      }
+    });
+    popover.append(b);
+  });
+
+  const delBtn = document.createElement("button");
+  delBtn.type = "button";
+  delBtn.className = "quick-mark-btn mark-del";
+  delBtn.innerHTML = "&times;";
+  delBtn.title = "Очистить оценку";
+  delBtn.addEventListener("pointerdown", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    quickDeleteGrade(targetBtn);
+    if (autoAdvanceCheckbox && autoAdvanceCheckbox.checked) {
+      setActiveCell(r + 1, c);
+    } else {
+      setActiveCell(r, c);
+    }
+  });
+  popover.append(delBtn);
+
+  document.body.appendChild(popover);
+  quickMarkPopover = popover;
+
+  const rect = targetBtn.getBoundingClientRect();
+  popover.style.left = `${rect.left + rect.width / 2 + window.scrollX}px`;
+  popover.style.top = `${rect.top + window.scrollY}px`;
 }
 
 function setActiveCell(r, c) {
@@ -398,6 +491,11 @@ function setActiveCell(r, c) {
   if (targetBtn) {
     targetBtn.classList.add("cell-active");
     targetBtn.focus();
+    // Подсветка активной колонки в шапке
+    tableHead.querySelectorAll("th[data-col]").forEach(th => {
+      th.classList.toggle("th-col-active", th.dataset.col === String(activeCol));
+    });
+    showQuickMarkPopover(targetBtn, activeRow, activeCol);
   }
 }
 
@@ -411,6 +509,17 @@ async function quickSaveGrade(btn, r, c, mark) {
   btn.classList.remove("empty");
   btn.classList.toggle("failing", mark === 2);
   btn.classList.add("cell-saving");
+
+  // Тактильная анимация вспышки ячейки и строки
+  btn.classList.remove("cell-pop");
+  void btn.offsetWidth;
+  btn.classList.add("cell-pop");
+
+  const parentRow = btn.closest("tr");
+  if (parentRow) {
+    parentRow.classList.add("row-impact");
+    setTimeout(() => parentRow.classList.remove("row-impact"), 400);
+  }
 
   try {
     const res = await requestJSON(GRADES_API, "POST", {
@@ -429,6 +538,7 @@ async function quickSaveGrade(btn, r, c, mark) {
     }
 
     updateStudentRowAverage(studentId);
+    updateProgressIndicator();
     renderAnalytics();
   } catch (error) {
     message("Ошибка сохранения оценки: " + error.message, true);
@@ -449,6 +559,16 @@ async function quickDeleteGrade(btn) {
   btn.classList.remove("failing");
   btn.classList.add("cell-saving");
 
+  btn.classList.remove("cell-pop");
+  void btn.offsetWidth;
+  btn.classList.add("cell-pop");
+
+  const parentRow = btn.closest("tr");
+  if (parentRow) {
+    parentRow.classList.add("row-impact");
+    setTimeout(() => parentRow.classList.remove("row-impact"), 400);
+  }
+
   try {
     await requestJSON(GRADES_API + "/" + studentId + "/" + subjectId, "DELETE");
     if (journalData && journalData.grades) {
@@ -457,6 +577,7 @@ async function quickDeleteGrade(btn) {
       );
     }
     updateStudentRowAverage(studentId);
+    updateProgressIndicator();
     renderAnalytics();
   } catch (error) {
     message("Ошибка удаления оценки: " + error.message, true);
@@ -480,8 +601,10 @@ function render() {
   thStudent.textContent = "Студент";
   headRow.append(thStudent);
 
-  for (const subject of subjects) {
+  for (let cIdx = 0; cIdx < subjects.length; cIdx++) {
+    const subject = subjects[cIdx];
     const th = document.createElement("th");
+    th.dataset.col = String(cIdx);
     th.style.textAlign = "center";
 
     const wrap = document.createElement("div");
@@ -493,7 +616,7 @@ function render() {
     const bulkBtn = document.createElement("button");
     bulkBtn.type = "button";
     bulkBtn.className = "th-bulk-btn";
-    bulkBtn.textContent = "⚡";
+    bulkBtn.innerHTML = `<svg class="th-bulk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>`;
     bulkBtn.title = `Заполнить предмет «${subject.name}» для всей группы`;
     bulkBtn.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -567,7 +690,7 @@ function render() {
 
       const iconSpan = document.createElement("span");
       iconSpan.className = "group-divider-icon";
-      iconSpan.textContent = "📁";
+      iconSpan.innerHTML = `<svg class="btn-icon brand-icon no-margin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`;
 
       const nameSpan = document.createElement("span");
       nameSpan.className = "group-divider-name";
@@ -586,7 +709,7 @@ function render() {
       const groupActionBtn = document.createElement("button");
       groupActionBtn.type = "button";
       groupActionBtn.className = "button-secondary button-small";
-      groupActionBtn.textContent = "⚡ Оценить группу";
+      groupActionBtn.innerHTML = `<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg><span>Оценить группу</span>`;
       groupActionBtn.title = `Массовое оценивание для группы «${groupName}»`;
       groupActionBtn.addEventListener("click", () => {
         openBulkEditor(null, currentGroupId);
@@ -599,6 +722,8 @@ function render() {
     }
 
     const row = document.createElement("tr");
+    row.dataset.row = String(rIdx);
+    row.style.setProperty("--row-i", String(rIdx));
     const tdName = document.createElement("td");
     tdName.textContent = student.name;
     row.append(tdName);
@@ -647,7 +772,25 @@ function render() {
     tableBody.append(row);
     updateStudentRowAverage(student.id);
   });
+
+  updateProgressIndicator();
 }
+
+// Crosshair-подсветка активной колонки предмета при наведении
+tableBody.addEventListener("mouseover", function(event) {
+  const btn = event.target.closest("button.grade-button");
+  if (!btn) return;
+  const col = btn.dataset.col;
+  tableHead.querySelectorAll("th[data-col]").forEach(th => {
+    th.classList.toggle("th-col-active", th.dataset.col === col);
+  });
+});
+
+tableBody.addEventListener("mouseout", function(event) {
+  const btn = event.target.closest("button.grade-button");
+  if (!btn) return;
+  tableHead.querySelectorAll("th.th-col-active").forEach(th => th.classList.remove("th-col-active"));
+});
 
 function openGradeEditor(btn) {
   const hasGrade = btn.dataset.hasGrade === "true";
@@ -673,20 +816,20 @@ groupSelect.addEventListener("change", function() {
 tableBody.addEventListener("click", function(event) {
   const btn = event.target.closest("button.grade-button");
   if (!btn) return;
-  const isQuick = quickEditCheckbox ? quickEditCheckbox.checked : false;
-  if (isQuick) setActiveCell(Number(btn.dataset.row), Number(btn.dataset.col));
-  else openGradeEditor(btn);
+  event.stopPropagation();
+  setActiveCell(Number(btn.dataset.row), Number(btn.dataset.col));
 });
 
-tableBody.addEventListener("dblclick", function(event) {
-  const btn = event.target.closest("button.grade-button");
-  if (!btn) return;
-  openGradeEditor(btn);
+// Клик вне ячейки или поповера закрывает быстрый выбор
+document.addEventListener("pointerdown", function(event) {
+  if (event.target.closest(".grade-button, .quick-mark-popover")) return;
+  hideQuickMarkPopover();
 });
 
+window.addEventListener("scroll", hideQuickMarkPopover, { passive: true });
+
+// Обработка клавиатурной навигации по матрице (Стрелки + Vim HJKL + Цифры 2..5)
 tableBody.addEventListener("keydown", function(event) {
-  const isQuick = quickEditCheckbox ? quickEditCheckbox.checked : false;
-  if (!isQuick) return;
   const btn = event.target.closest("button.grade-button");
   if (!btn) return;
 
@@ -695,23 +838,64 @@ tableBody.addEventListener("keydown", function(event) {
 
   switch (event.key) {
     case "ArrowDown":
+    case "j":
+    case "J":
     case "Enter":
-      event.preventDefault(); setActiveCell(r + 1, c); break;
+      event.preventDefault();
+      setActiveCell(r + 1, c);
+      break;
     case "ArrowUp":
-      event.preventDefault(); setActiveCell(r - 1, c); break;
+    case "k":
+    case "K":
+      event.preventDefault();
+      setActiveCell(r - 1, c);
+      break;
     case "ArrowRight":
-      event.preventDefault(); setActiveCell(r, c + 1); break;
+    case "l":
+    case "L":
+      event.preventDefault();
+      setActiveCell(r, c + 1);
+      break;
     case "ArrowLeft":
-      event.preventDefault(); setActiveCell(r, c - 1); break;
-    case "2": case "3": case "4": case "5":
+    case "h":
+    case "H":
+      event.preventDefault();
+      setActiveCell(r, c - 1);
+      break;
+    case " ":
+    case "e":
+    case "E":
+      event.preventDefault();
+      hideQuickMarkPopover();
+      openGradeEditor(btn);
+      break;
+    case "2":
+    case "3":
+    case "4":
+    case "5":
       event.preventDefault();
       quickSaveGrade(btn, r, c, Number(event.key));
-      setActiveCell(r + 1, c);
+      if (autoAdvanceCheckbox && autoAdvanceCheckbox.checked) {
+        setActiveCell(r + 1, c);
+      } else {
+        setActiveCell(r, c);
+      }
       break;
     case "Delete":
     case "Backspace":
+    case "x":
+    case "X":
+    case "0":
       event.preventDefault();
       quickDeleteGrade(btn);
+      if (autoAdvanceCheckbox && autoAdvanceCheckbox.checked) {
+        setActiveCell(r + 1, c);
+      } else {
+        setActiveCell(r, c);
+      }
+      break;
+    case "Escape":
+      hideQuickMarkPopover();
       break;
   }
 });

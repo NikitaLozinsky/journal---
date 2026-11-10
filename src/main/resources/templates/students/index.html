@@ -6,11 +6,8 @@
   <script>
     (function() {
       try {
-        var t = localStorage.getItem('journal_theme') === 'light' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', t);
-        if (t === 'dark' && localStorage.getItem('journal_oled') === 'true') {
-          document.documentElement.setAttribute('data-oled', 'true');
-        }
+        var t = localStorage.getItem('journal_theme');
+        document.documentElement.setAttribute('data-theme', (t === 'oled' || t === 'light') ? t : 'dark');
       } catch (e) {}
     })();
   </script>
@@ -22,7 +19,10 @@
   <main id="main-content" class="container page" aria-busy="false">
     <div class="page-heading">
       <h1>Студенты</h1>
-      <button id="add-record" class="button-primary" type="button">Добавить студента</button>
+      <button id="add-record" class="button-primary" type="button">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        <span>Добавить студента</span>
+      </button>
     </div>
     <div class="toolbar student-toolbar">
       <label>Поиск по студентам
@@ -62,7 +62,9 @@
           <label>Группа
             <div class="input-with-action">
               <select id="record-group" required></select>
-              <button id="btn-quick-create-group" type="button" class="button-secondary quick-add-btn" title="Создать новую группу">➕</button>
+              <button id="btn-quick-create-group" type="button" class="button-secondary quick-add-btn" title="Создать новую группу">
+                <svg class="btn-icon no-margin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </button>
             </div>
           </label>
           <label>Email
@@ -71,7 +73,10 @@
         </div>
         <div id="quick-group-modal" class="quick-group-box" hidden>
           <div class="quick-group-header">
-            <span>➕ Создание новой учебной группы</span>
+            <span>
+              <svg class="btn-icon brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Создание новой учебной группы
+            </span>
             <button id="close-quick-group" type="button" class="close-icon-btn" title="Закрыть">✕</button>
           </div>
           <div class="quick-group-inputs">

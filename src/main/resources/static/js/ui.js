@@ -6,10 +6,10 @@ export function cell(value, className = "") {
 }
 
 function getToastStack() {
-  let stack = document.querySelector(".toast-Stack");
+  let stack = document.querySelector(".toast-stack");
   if (!stack) {
     stack = document.createElement("div");
-    stack.className = "toast-Stack";
+    stack.className = "toast-stack";
     document.body.append(stack);
   }
   return stack;
@@ -29,9 +29,33 @@ export function message(text = "", error = false) {
     const stack = getToastStack();
     const toast = document.createElement("div");
     toast.className = "toast-item" + (error ? " error" : "");
-    toast.textContent = text;
+
+    const iconSvg = error
+      ? `<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`
+      : `<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`;
+
+    toast.innerHTML = `
+      <div class="toast-content">
+        ${iconSvg}
+        <span class="toast-text">${text}</span>
+      </div>
+      <div class="toast-timer"></div>
+    `;
     stack.append(toast);
-    setTimeout(() => toast.remove(), 3200);
+    setTimeout(() => {
+      toast.classList.add("toast-leaving");
+      setTimeout(() => toast.remove(), 250);
+    }, 3200);
+  }
+
+  if (error) {
+    const activeForm = document.querySelector("#editor:not([hidden]), #confirmation:not([hidden]), #bulk-editor:not([hidden])");
+    if (activeForm) {
+      activeForm.classList.remove("shake-error");
+      void activeForm.offsetWidth;
+      activeForm.classList.add("shake-error");
+      setTimeout(() => activeForm.classList.remove("shake-error"), 400);
+    }
   }
 }
 

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('journal_theme');
+        document.documentElement.setAttribute('data-theme', (t === 'oled' || t === 'light') ? t : 'dark');
+      } catch (e) {}
+    })();
+  </script>
+  <title>Электронный журнал — journal.edu.local</title>
+  <link rel="stylesheet" href="/css/styles.css?v=4.2">
+</head>
+<body class="home-page-body">
+  <!-- Интерактивное физическое поле Антигравитации -->
+  <canvas id="antigravity-canvas" class="antigravity-canvas" aria-hidden="true"></canvas>
+
+  <header th:replace="~{partials/header :: header}"></header>
+
+  <main id="main-content" class="container home-container" aria-busy="false">
+    <div class="home-wrapper">
+      <div class="home-hero">
+        <div class="home-badge">
+          <span class="home-badge-dot"></span>
+          <span>arch::ed • electronic journal</span>
+        </div>
+
+        <h1 class="home-title">
+          Электронный журнал <span class="home-gradient-text">успеваемости</span>
+        </h1>
+
+        <p class="home-subtitle">
+          Оперативный учёт академической успеваемости, ведомостей и аналитических срезов.
+        </p>
+
+        <!-- Быстрые действия -->
+        <div class="home-actions-row">
+          <a href="/journal" class="button-primary home-main-btn">
+            <span>Открыть журнал</span>
+            <span class="home-btn-arrow">→</span>
+          </a>
+          <button id="home-open-palette" class="button-secondary home-action-btn" type="button" title="Открыть поиск и команды (Ctrl+K)">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span>Команды</span>
+            <kbd>⌘K</kbd>
+          </button>
+        </div>
+
+        <!-- Строка системного статуса -->
+        <div class="home-metrics-bar">
+          <div class="metric-item">
+            <span class="metric-label">Студентов:</span>
+            <span class="metric-val" id="stat-students">60</span>
+          </div>
+          <span class="metric-dot">•</span>
+          <div class="metric-item">
+            <span class="metric-label">Групп:</span>
+            <span class="metric-val" id="stat-groups">3</span>
+          </div>
+          <span class="metric-dot">•</span>
+          <div class="metric-item">
+            <span class="metric-label">Дисциплин:</span>
+            <span class="metric-val" id="stat-subjects">3</span>
+          </div>
+          <span class="metric-dot">•</span>
+          <div class="metric-item">
+            <span class="metric-label">Транзакции:</span>
+            <span class="metric-val val-green">PASS</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Навигационный хаб с достаточной шириной (без обрезки названий) -->
+      <div class="home-nav-hub">
+        <a href="/journal" class="home-nav-item">
+          <div class="home-nav-icon icon-purple">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          </div>
+          <div class="home-nav-text">
+            <span class="home-nav-title">Журнал оценок</span>
+            <span class="home-nav-sub">Ведомость и ввод</span>
+          </div>
+          <span class="home-nav-arrow">→</span>
+        </a>
+
+        <a href="/groups" class="home-nav-item">
+          <div class="home-nav-icon icon-pink">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          </div>
+          <div class="home-nav-text">
+            <span class="home-nav-title">Учебные группы</span>
+            <span class="home-nav-sub">Потоки и списки</span>
+          </div>
+          <span class="home-nav-arrow">→</span>
+        </a>
+
+        <a href="/students" class="home-nav-item">
+          <div class="home-nav-icon icon-cyan">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          </div>
+          <div class="home-nav-text">
+            <span class="home-nav-title">Студенты</span>
+            <span class="home-nav-sub">Зачисление</span>
+          </div>
+          <span class="home-nav-arrow">→</span>
+        </a>
+
+        <a href="/subjects" class="home-nav-item">
+          <div class="home-nav-icon icon-amber">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          </div>
+          <div class="home-nav-text">
+            <span class="home-nav-title">Дисциплины</span>
+            <span class="home-nav-sub">Предметы</span>
+          </div>
+          <span class="home-nav-arrow">→</span>
+        </a>
+
+        <a href="/reports" class="home-nav-item">
+          <div class="home-nav-icon icon-green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"></path><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path></svg>
+          </div>
+          <div class="home-nav-text">
+            <span class="home-nav-title">Отчёты</span>
+            <span class="home-nav-sub">Аналитика</span>
+          </div>
+          <span class="home-nav-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer th:replace="~{partials/footer :: footer}"></footer>
+
+  <script type="module" src="/js/antigravity.js?v=4.2"></script>
+</body>
+</html>

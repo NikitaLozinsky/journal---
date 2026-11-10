@@ -166,8 +166,9 @@ function render() {
     return;
   }
 
-  for (const item of sorted) {
+  sorted.forEach((item, index) => {
     const row = document.createElement("tr");
+    row.style.setProperty("--row-i", String(index));
     // Колонка 1: ФИО
     row.append(cell(item.name));
     // Колонка 2: Группа
@@ -185,7 +186,7 @@ function render() {
     row.append(tdActions);
 
     body.append(row);
-  }
+  });
 }
 
 /** Загружает список студентов и групп. */
@@ -220,7 +221,7 @@ function renderGroupInputOptions(selectedId = null) {
   }
   const optCreate = document.createElement("option");
   optCreate.value = "__create_new__";
-  optCreate.textContent = "➕ Создать новую группу...";
+  optCreate.textContent = "+ Создать новую группу...";
   groupInput.append(optCreate);
 
   if (selectedId) {
