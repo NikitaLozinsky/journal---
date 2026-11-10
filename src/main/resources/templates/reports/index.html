@@ -30,9 +30,18 @@
         </select>
       </label>
       <div class="view-tabs" role="tablist" aria-label="Режим отображения">
-        <button id="view-both" class="view-tab-btn active" type="button">Всё вместе</button>
-        <button id="view-charts" class="view-tab-btn" type="button">Графика</button>
-        <button id="view-table" class="view-tab-btn" type="button">Таблица</button>
+        <button id="view-both" class="view-tab-btn active" type="button">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          <span>Всё вместе</span>
+        </button>
+        <button id="view-charts" class="view-tab-btn" type="button">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          <span>Графика</span>
+        </button>
+        <button id="view-table" class="view-tab-btn" type="button">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-4"></path><line x1="9" y1="3" x2="9" y2="21"></line><line x1="3" y1="9" x2="21" y2="9"></line></svg>
+          <span>Таблица</span>
+        </button>
       </div>
     </div>
     <p id="status" class="status" role="status" aria-live="polite" hidden></p>

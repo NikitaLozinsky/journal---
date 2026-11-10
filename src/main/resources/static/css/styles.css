@@ -308,6 +308,21 @@ body.xray-resizing * {
   color: var(--brand);
 }
 
+.theme-toggle-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: var(--brand);
+}
+
+.theme-svg-icon {
+  width: 15px;
+  height: 15px;
+  display: block;
+}
+
 .xray-pulse {
   width: 8px;
   height: 8px;
@@ -429,9 +444,50 @@ h2 { font-size: 17px; font-weight: 600; margin: 0 0 14px; color: var(--ink); }
 p { margin: 0 0 14px; }
 .muted { color: var(--muted); }
 
+/* ==========================================================================
+   Векторные иконки интерфейса (Monochrome SVG Icons)
+   ========================================================================== */
+
+.btn-icon {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  vertical-align: -2px;
+}
+
+.btn-icon.brand-icon {
+  color: var(--brand);
+}
+
+.btn-icon.danger-icon {
+  color: var(--danger);
+}
+
+.btn-icon.no-margin {
+  margin: 0;
+}
+
+.th-bulk-icon {
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+
+.term-top-icon {
+  width: 13px;
+  height: 13px;
+  vertical-align: -2px;
+  margin-right: 4px;
+}
+
 button, input, select { font: inherit; }
 
 button, .button-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
   min-height: 38px;
   padding: 7px 14px;
   border: 1px solid var(--line);
@@ -457,6 +513,10 @@ button:active, .button-secondary:active {
 
 .button-primary,
 button.button-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
   color: var(--brand-ink) !important;
   background: linear-gradient(135deg, var(--brand), var(--brand-pink)) !important;
   border: 1px solid transparent !important;
@@ -730,6 +790,10 @@ tbody tr:hover { background-color: var(--table-row-hover) !important; }
 }
 
 .view-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   padding: 6px 14px;
   border-radius: 6px;
   font-size: 13px;
@@ -834,7 +898,12 @@ kbd {
 }
 
 .group-divider-icon {
-  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  color: var(--brand);
 }
 
 .group-divider-name {

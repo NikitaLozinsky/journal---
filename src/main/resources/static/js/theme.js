@@ -3,10 +3,16 @@ import { requestJSON } from "/js/api.js";
 const THEME_STORAGE_KEY = "journal_theme";
 const THEMES = ["dark", "oled", "light"];
 
+const SVG_ICONS = {
+  moon: `<svg class="theme-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`,
+  contrast: `<svg class="theme-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 0 20z" fill="currentColor"></path></svg>`,
+  sun: `<svg class="theme-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`
+};
+
 const THEME_META = {
-  dark:  { icon: "🌑", label: "Dracula Dark", nextLabel: "Включить режим OLED" },
-  oled:  { icon: "🖤", label: "OLED Pitch",   nextLabel: "Включить светлую тему" },
-  light: { icon: "☀️", label: "Alabaster",    nextLabel: "Включить тему Dracula" }
+  dark:  { icon: SVG_ICONS.moon,     label: "Dracula Dark", nextLabel: "Включить режим OLED" },
+  oled:  { icon: SVG_ICONS.contrast, label: "OLED Pitch",   nextLabel: "Включить светлую тему" },
+  light: { icon: SVG_ICONS.sun,      label: "Alabaster",    nextLabel: "Включить тему Dracula" }
 };
 
 /** Координаты смещения градиента для каждой вкладки страницы */
@@ -48,7 +54,7 @@ function updateThemeButton(theme) {
   const meta = THEME_META[theme] || THEME_META.dark;
   const icon = btn.querySelector(".theme-toggle-icon");
   const text = btn.querySelector(".theme-toggle-text");
-  if (icon) icon.textContent = meta.icon;
+  if (icon) icon.innerHTML = meta.icon;
   if (text) text.textContent = meta.label;
   btn.setAttribute("title", `${meta.nextLabel} (Alt+T)`);
 }
@@ -176,7 +182,7 @@ function initXRayInspector() {
     <div class="xray-resizer" id="xray-resizer" title="Потяните для изменения ширины панели"></div>
     <div class="xray-header">
       <div>
-        <div class="xray-title">⚡ Рентген внутренней логики</div>
+        <div class="xray-title"><svg class="btn-icon brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Рентген внутренней логики</div>
         <div class="xray-subtitle">Цепочка: HTTP Ручка → Spring Service → SQLite</div>
       </div>
       <div class="xray-header-actions">
@@ -457,8 +463,8 @@ function initLinuxTerminal() {
           <span>ghostty — fish — milk13@archarnel: <span id="term-title-cwd">~/IdeaProjects/jrnl</span></span>
         </div>
         <div class="term-title-actions">
-          <button id="term-btn-ranger" class="term-top-btn" type="button">📁 ranger</button>
-          <button id="term-btn-ff" class="term-top-btn" type="button">⚡ ff</button>
+          <button id="term-btn-ranger" class="term-top-btn" type="button"><svg class="term-top-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg> ranger</button>
+          <button id="term-btn-ff" class="term-top-btn" type="button"><svg class="term-top-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg> ff</button>
           <button id="term-btn-close" class="term-top-btn close" type="button">✕</button>
         </div>
       </div>

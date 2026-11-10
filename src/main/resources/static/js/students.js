@@ -220,7 +220,7 @@ function renderGroupInputOptions(selectedId = null) {
   }
   const optCreate = document.createElement("option");
   optCreate.value = "__create_new__";
-  optCreate.textContent = "➕ Создать новую группу...";
+  optCreate.textContent = "+ Создать новую группу...";
   groupInput.append(optCreate);
 
   if (selectedId) {

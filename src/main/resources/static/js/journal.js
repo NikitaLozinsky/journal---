@@ -48,12 +48,14 @@ let journalData = null, groups = [];
 let gridMatrix = [];
 let activeRow = -1, activeCol = -1;
 
+const CHART_ICON_SVG = `<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>`;
+
 if (toggleAnalyticsBtn && analyticsSection) {
   toggleAnalyticsBtn.addEventListener("click", () => {
     const isHidden = analyticsSection.hidden;
     analyticsSection.hidden = !isHidden;
     toggleAnalyticsBtn.setAttribute("aria-expanded", String(isHidden));
-    toggleAnalyticsBtn.textContent = isHidden ? "📊 Скрыть аналитику" : "📊 Показать аналитику";
+    toggleAnalyticsBtn.innerHTML = `${CHART_ICON_SVG}<span class="btn-text">${isHidden ? "Скрыть аналитику" : "Показать аналитику"}</span>`;
   });
 }
 
@@ -107,10 +109,10 @@ function updateBulkHint() {
   }
 
   if (mark === 0) {
-    bulkActionHint.innerHTML = `⚠️ Будут <strong>удалены все оценки</strong>: ${groupName} ${subjectName}.`;
+    bulkActionHint.innerHTML = `<svg class="btn-icon danger-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> Будут <strong>удалены все оценки</strong>: ${groupName} ${subjectName}.`;
   } else {
     const overwriteText = overwrite ? "с перезаписью существующих" : "только в незаполненные ячейки (без перезаписи)";
-    bulkActionHint.innerHTML = `⚡ Будет выставлена оценка <strong>${mark}</strong>: ${groupName} ${subjectName} (${overwriteText}).`;
+    bulkActionHint.innerHTML = `<svg class="btn-icon brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Будет выставлена оценка <strong>${mark}</strong>: ${groupName} ${subjectName} (${overwriteText}).`;
   }
 }
 
@@ -493,7 +495,7 @@ function render() {
     const bulkBtn = document.createElement("button");
     bulkBtn.type = "button";
     bulkBtn.className = "th-bulk-btn";
-    bulkBtn.textContent = "⚡";
+    bulkBtn.innerHTML = `<svg class="th-bulk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>`;
     bulkBtn.title = `Заполнить предмет «${subject.name}» для всей группы`;
     bulkBtn.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -567,7 +569,7 @@ function render() {
 
       const iconSpan = document.createElement("span");
       iconSpan.className = "group-divider-icon";
-      iconSpan.textContent = "📁";
+      iconSpan.innerHTML = `<svg class="btn-icon brand-icon no-margin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`;
 
       const nameSpan = document.createElement("span");
       nameSpan.className = "group-divider-name";
@@ -586,7 +588,7 @@ function render() {
       const groupActionBtn = document.createElement("button");
       groupActionBtn.type = "button";
       groupActionBtn.className = "button-secondary button-small";
-      groupActionBtn.textContent = "⚡ Оценить группу";
+      groupActionBtn.innerHTML = `<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg><span>Оценить группу</span>`;
       groupActionBtn.title = `Массовое оценивание для группы «${groupName}»`;
       groupActionBtn.addEventListener("click", () => {
         openBulkEditor(null, currentGroupId);
