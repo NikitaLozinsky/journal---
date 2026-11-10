@@ -59,11 +59,6 @@
           <option value="excellent">Только отличники (все 5)</option>
         </select>
       </label>
-      <label class="toggle-mode-label">
-        <input id="quick-edit-mode" type="checkbox" checked>
-        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6" y2="8"></line><line x1="10" y1="8" x2="10" y2="8"></line><line x1="14" y1="8" x2="14" y2="8"></line><line x1="18" y1="8" x2="18" y2="8"></line><line x1="6" y1="12" x2="6" y2="12"></line><line x1="10" y1="12" x2="10" y2="12"></line><line x1="14" y1="12" x2="14" y2="12"></line><line x1="18" y1="12" x2="18" y2="12"></line><line x1="7" y1="16" x2="17" y2="16"></line></svg>
-        <span>Быстрый ввод (Excel)</span>
-      </label>
       <label class="toggle-mode-label" title="Автоматически смещать фокус вниз при выставлении оценки">
         <input id="auto-advance-down" type="checkbox">
         <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
@@ -81,8 +76,8 @@
     </div>
 
     <div id="quick-edit-hint" class="quick-edit-hint">
-      <span class="hint-badge">Excel-режим:</span>
-      Кликните по ячейке и нажимайте <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> <kbd>5</kbd> для мгновенной записи. Навигация: <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> и <kbd>Enter</kbd>. Очистка: <kbd>Backspace</kbd> / <kbd>Del</kbd>. Тема: <kbd>Alt+T</kbd>.
+      <span class="hint-badge">Быстрый ввод:</span>
+      Кликните по ячейке и выберите оценку кликом по цифре <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> <kbd>5</kbd> или нажмите её на клавиатуре. Очистка: <kbd>⌫</kbd> или <kbd>Del</kbd>. Навигация: <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd>.
     </div>
 
     <p id="status" class="status" role="status" aria-live="polite" hidden></p>

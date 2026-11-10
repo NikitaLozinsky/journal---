@@ -38,8 +38,6 @@ const kpiContainer = document.querySelector("#journal-kpi");
 const btnExportExcel = document.querySelector("#btn-export-excel");
 const btnExportCsv = document.querySelector("#btn-export-csv");
 const btnPrint = document.querySelector("#btn-print");
-const quickEditCheckbox = document.querySelector("#quick-edit-mode");
-const quickEditHint = document.querySelector("#quick-edit-hint");
 const autoAdvanceCheckbox = document.querySelector("#auto-advance-down");
 
 const printGroupName = document.querySelector("#print-group-name");
@@ -61,12 +59,6 @@ if (toggleAnalyticsBtn && analyticsSection) {
     analyticsSection.hidden = !isHidden;
     toggleAnalyticsBtn.setAttribute("aria-expanded", String(isHidden));
     toggleAnalyticsBtn.innerHTML = `${CHART_ICON_SVG}<span class="btn-text">${isHidden ? "Скрыть аналитику" : "Показать аналитику"}</span>`;
-  });
-}
-
-if (quickEditCheckbox && quickEditHint) {
-  quickEditCheckbox.addEventListener("change", () => {
-    quickEditHint.hidden = !quickEditCheckbox.checked;
   });
 }
 
@@ -422,6 +414,69 @@ function updateStudentRowAverage(studentId) {
   badge.classList.add("badge-bump");
 }
 
+let quickMarkPopover = null;
+
+function hideQuickMarkPopover() {
+  if (quickMarkPopover) {
+    quickMarkPopover.remove();
+    quickMarkPopover = null;
+  }
+}
+
+function showQuickMarkPopover(targetBtn, r, c) {
+  hideQuickMarkPopover();
+  if (!targetBtn || !document.body.contains(targetBtn)) return;
+
+  const popover = document.createElement("div");
+  popover.className = "quick-mark-popover";
+  popover.setAttribute("role", "toolbar");
+  popover.setAttribute("aria-label", "Быстрый выбор оценки");
+
+  const marks = [2, 3, 4, 5];
+  marks.forEach(m => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = `quick-mark-btn mark-${m}`;
+    b.textContent = String(m);
+    b.title = `Выставить оценку ${m}`;
+    b.addEventListener("pointerdown", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      quickSaveGrade(targetBtn, r, c, m);
+      if (autoAdvanceCheckbox && autoAdvanceCheckbox.checked) {
+        setActiveCell(r + 1, c);
+      } else {
+        setActiveCell(r, c);
+      }
+    });
+    popover.append(b);
+  });
+
+  const delBtn = document.createElement("button");
+  delBtn.type = "button";
+  delBtn.className = "quick-mark-btn mark-del";
+  delBtn.innerHTML = "&times;";
+  delBtn.title = "Очистить оценку";
+  delBtn.addEventListener("pointerdown", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    quickDeleteGrade(targetBtn);
+    if (autoAdvanceCheckbox && autoAdvanceCheckbox.checked) {
+      setActiveCell(r + 1, c);
+    } else {
+      setActiveCell(r, c);
+    }
+  });
+  popover.append(delBtn);
+
+  document.body.appendChild(popover);
+  quickMarkPopover = popover;
+
+  const rect = targetBtn.getBoundingClientRect();
+  popover.style.left = `${rect.left + rect.width / 2 + window.scrollX}px`;
+  popover.style.top = `${rect.top + window.scrollY}px`;
+}
+
 function setActiveCell(r, c) {
   if (!gridMatrix.length) return;
   if (activeRow >= 0 && activeCol >= 0 && gridMatrix[activeRow] && gridMatrix[activeRow][activeCol]) {
@@ -440,6 +495,7 @@ function setActiveCell(r, c) {
     tableHead.querySelectorAll("th[data-col]").forEach(th => {
       th.classList.toggle("th-col-active", th.dataset.col === String(activeCol));
     });
+    showQuickMarkPopover(targetBtn, activeRow, activeCol);
   }
 }
 
@@ -760,22 +816,20 @@ groupSelect.addEventListener("change", function() {
 tableBody.addEventListener("click", function(event) {
   const btn = event.target.closest("button.grade-button");
   if (!btn) return;
-  const isQuick = quickEditCheckbox ? quickEditCheckbox.checked : false;
-  if (isQuick) setActiveCell(Number(btn.dataset.row), Number(btn.dataset.col));
-  else openGradeEditor(btn);
+  event.stopPropagation();
+  setActiveCell(Number(btn.dataset.row), Number(btn.dataset.col));
 });
 
-tableBody.addEventListener("dblclick", function(event) {
-  const btn = event.target.closest("button.grade-button");
-  if (!btn) return;
-  openGradeEditor(btn);
+// Клик вне ячейки или поповера закрывает быстрый выбор
+document.addEventListener("pointerdown", function(event) {
+  if (event.target.closest(".grade-button, .quick-mark-popover")) return;
+  hideQuickMarkPopover();
 });
+
+window.addEventListener("scroll", hideQuickMarkPopover, { passive: true });
 
 // Обработка клавиатурной навигации по матрице (Стрелки + Vim HJKL + Цифры 2..5)
 tableBody.addEventListener("keydown", function(event) {
-  const isQuick = quickEditCheckbox ? quickEditCheckbox.checked : true;
-  if (!isQuick) return;
-
   const btn = event.target.closest("button.grade-button");
   if (!btn) return;
 
@@ -812,6 +866,7 @@ tableBody.addEventListener("keydown", function(event) {
     case "e":
     case "E":
       event.preventDefault();
+      hideQuickMarkPopover();
       openGradeEditor(btn);
       break;
     case "2":
@@ -830,8 +885,17 @@ tableBody.addEventListener("keydown", function(event) {
     case "Backspace":
     case "x":
     case "X":
+    case "0":
       event.preventDefault();
       quickDeleteGrade(btn);
+      if (autoAdvanceCheckbox && autoAdvanceCheckbox.checked) {
+        setActiveCell(r + 1, c);
+      } else {
+        setActiveCell(r, c);
+      }
+      break;
+    case "Escape":
+      hideQuickMarkPopover();
       break;
   }
 });

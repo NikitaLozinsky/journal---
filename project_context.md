@@ -5729,11 +5729,18 @@ tbody tr {
 }
 
 /* ==========================================================================
-   ДОМАШНЯЯ СТРАНИЦА (МИНИМАЛИСТИЧНЫЙ ДИЗАЙН & ANTIGRAVITY HUB)
+   ДОМАШНЯЯ СТРАНИЦА (АККУРАТНЫЙ СБАЛАНСИРОВАННЫЙ ДИЗАЙН & ANTIGRAVITY HUB)
    ========================================================================== */
 .home-page-body {
   position: relative;
   overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-page-body .site-footer {
+  margin-top: auto;
 }
 
 .antigravity-canvas {
@@ -5748,47 +5755,61 @@ tbody tr {
 .home-container {
   position: relative;
   z-index: 2;
-  max-width: 960px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1120px;
+  width: 100%;
   margin: 0 auto;
-  padding: 54px 20px 84px 20px;
+  padding: 30px 24px 40px 24px;
+}
+
+.home-wrapper {
+  width: 100%;
+  max-width: 1060px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .home-hero {
   text-align: center;
-  max-width: 680px;
-  margin: 0 auto 42px auto;
+  max-width: 700px;
+  margin: 0 auto 38px auto;
 }
 
 .home-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 12px;
+  padding: 5px 14px;
   border-radius: 99px;
   background: var(--surface);
   border: 1px solid var(--line-glow);
   font-family: "JetBrains Mono", monospace;
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--muted);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  margin-bottom: 20px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  margin-bottom: 22px;
 }
 
 .home-badge-dot {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: #50fa7b;
   box-shadow: 0 0 8px #50fa7b;
 }
 
 .home-title {
-  font-size: 38px;
+  font-size: 40px;
   line-height: 1.16;
   font-weight: 800;
   letter-spacing: -0.025em;
-  margin: 0 0 14px 0;
+  margin: 0 0 16px 0;
   color: var(--ink);
 }
 
@@ -5800,28 +5821,28 @@ tbody tr {
 }
 
 .home-subtitle {
-  font-size: 15px;
+  font-size: 15.5px;
   line-height: 1.55;
   color: var(--muted);
-  max-width: 520px;
-  margin: 0 auto 26px auto;
+  max-width: 560px;
+  margin: 0 auto 28px auto;
 }
 
 .home-actions-row {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 24px;
+  margin-bottom: 26px;
 }
 
 .home-main-btn {
-  padding: 9px 20px;
-  font-size: 13.5px;
+  padding: 10px 22px;
+  font-size: 14px;
   font-weight: 600;
   border-radius: 8px;
-  box-shadow: 0 4px 18px var(--brand-soft);
+  box-shadow: 0 4px 20px var(--brand-soft);
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -5829,24 +5850,27 @@ tbody tr {
 
 .home-btn-arrow {
   font-family: "JetBrains Mono", monospace;
-  font-size: 14px;
+  font-size: 15px;
   transition: transform 0.2s ease;
 }
 
 .home-main-btn:hover .home-btn-arrow {
-  transform: translateX(3px);
+  transform: translateX(4px);
 }
 
 .home-action-btn {
-  padding: 8px 16px;
-  font-size: 13px;
+  padding: 9px 18px;
+  font-size: 13.5px;
   border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
 }
 
 .home-action-btn kbd {
   font-family: "JetBrains Mono", monospace;
   font-size: 11px;
-  padding: 1px 5px;
+  padding: 2px 6px;
   border-radius: 4px;
   background: var(--input-bg);
   border: 1px solid var(--line);
@@ -5858,20 +5882,20 @@ tbody tr {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  padding: 6px 18px;
+  gap: 14px;
+  padding: 7px 20px;
   border-radius: 99px;
   background: var(--surface);
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
 }
 
 .metric-item {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
+  font-size: 12.5px;
 }
 
 .metric-label {
@@ -5880,7 +5904,7 @@ tbody tr {
 
 .metric-val {
   font-family: "JetBrains Mono", monospace;
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--ink);
 }
@@ -5891,45 +5915,44 @@ tbody tr {
 
 .metric-dot {
   color: var(--line);
-  font-size: 10px;
+  font-size: 11px;
 }
 
-/* Минималистичный навигационный хаб */
+/* Навигационный хаб: гармоничная сетка без обрезки текста */
 .home-nav-hub {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 12px;
-  max-width: 960px;
-  margin: 0 auto;
+  grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+  gap: 14px;
+  width: 100%;
 }
 
 .home-nav-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  border-radius: 10px;
+  gap: 13px;
+  padding: 14px 18px;
+  border-radius: 12px;
   background: var(--surface);
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   text-decoration: none;
   color: var(--ink);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
 }
 
 .home-nav-item:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   border-color: var(--brand);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3), 0 0 14px var(--brand-soft);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35), 0 0 16px var(--brand-soft);
 }
 
 .home-nav-icon {
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
-  border-radius: 8px;
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 9px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -5939,8 +5962,8 @@ tbody tr {
 }
 
 .home-nav-icon svg {
-  width: 17px;
-  height: 17px;
+  width: 18px;
+  height: 18px;
 }
 
 .home-nav-item:hover .home-nav-icon {
@@ -5961,16 +5984,14 @@ tbody tr {
 }
 
 .home-nav-title {
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 600;
   color: var(--ink);
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .home-nav-sub {
-  font-size: 11px;
+  font-size: 11.5px;
   color: var(--muted);
   white-space: nowrap;
 }
@@ -5978,7 +5999,7 @@ tbody tr {
 .home-nav-arrow {
   margin-left: auto;
   font-family: "JetBrains Mono", monospace;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--muted);
   transition: transform 0.2s ease, color 0.2s ease;
 }
@@ -5986,6 +6007,82 @@ tbody tr {
 .home-nav-item:hover .home-nav-arrow {
   transform: translateX(3px);
   color: var(--brand);
+}
+
+/* ==========================================================================
+   QUICK MARK POPOVER (ВЫБОР ОЦЕНКИ КЛИКОМ НА ЦИФРУ)
+   ========================================================================== */
+.quick-mark-popover {
+  position: absolute;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  border-radius: 8px;
+  background: var(--surface-solid);
+  border: 1px solid var(--line-glow);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 16px var(--brand-soft);
+  backdrop-filter: blur(14px);
+  transform: translate(-50%, -100%) translateY(-6px);
+  pointer-events: auto;
+  animation: popoverFadeIn 0.16s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes popoverFadeIn {
+  from { opacity: 0; transform: translate(-50%, -100%) translateY(0) scale(0.92); }
+  to { opacity: 1; transform: translate(-50%, -100%) translateY(-6px) scale(1); }
+}
+
+.quick-mark-btn {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.14s ease;
+  padding: 0;
+}
+
+.quick-mark-btn:hover {
+  transform: scale(1.12);
+  border-color: var(--brand);
+  background: var(--brand);
+  color: #09080d;
+  box-shadow: 0 0 10px var(--brand-soft);
+}
+
+.quick-mark-btn.mark-2:hover {
+  border-color: #ff5555;
+  background: #ff5555;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255, 85, 85, 0.5);
+}
+
+.quick-mark-btn.mark-5:hover {
+  border-color: #50fa7b;
+  background: #50fa7b;
+  color: #09080d;
+  box-shadow: 0 0 10px rgba(80, 250, 123, 0.5);
+}
+
+.quick-mark-btn.mark-del {
+  color: var(--danger);
+  font-size: 14px;
+}
+
+.quick-mark-btn.mark-del:hover {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
 }
 ```
 
@@ -6905,8 +7002,6 @@ const kpiContainer = document.querySelector("#journal-kpi");
 const btnExportExcel = document.querySelector("#btn-export-excel");
 const btnExportCsv = document.querySelector("#btn-export-csv");
 const btnPrint = document.querySelector("#btn-print");
-const quickEditCheckbox = document.querySelector("#quick-edit-mode");
-const quickEditHint = document.querySelector("#quick-edit-hint");
 const autoAdvanceCheckbox = document.querySelector("#auto-advance-down");
 
 const printGroupName = document.querySelector("#print-group-name");
@@ -6928,12 +7023,6 @@ if (toggleAnalyticsBtn && analyticsSection) {
     analyticsSection.hidden = !isHidden;
     toggleAnalyticsBtn.setAttribute("aria-expanded", String(isHidden));
     toggleAnalyticsBtn.innerHTML = `${CHART_ICON_SVG}<span class="btn-text">${isHidden ? "Скрыть аналитику" : "Показать аналитику"}</span>`;
-  });
-}
-
-if (quickEditCheckbox && quickEditHint) {
-  quickEditCheckbox.addEventListener("change", () => {
-    quickEditHint.hidden = !quickEditCheckbox.checked;
   });
 }
 
@@ -7289,6 +7378,69 @@ function updateStudentRowAverage(studentId) {
   badge.classList.add("badge-bump");
 }
 
+let quickMarkPopover = null;
+
+function hideQuickMarkPopover() {
+  if (quickMarkPopover) {
+    quickMarkPopover.remove();
+    quickMarkPopover = null;
+  }
+}
+
+function showQuickMarkPopover(targetBtn, r, c) {
+  hideQuickMarkPopover();
+  if (!targetBtn || !document.body.contains(targetBtn)) return;
+
+  const popover = document.createElement("div");
+  popover.className = "quick-mark-popover";
+  popover.setAttribute("role", "toolbar");
+  popover.setAttribute("aria-label", "Быстрый выбор оценки");
+
+  const marks = [2, 3, 4, 5];
+  marks.forEach(m => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = `quick-mark-btn mark-${m}`;
+    b.textContent = String(m);
+    b.title = `Выставить оценку ${m}`;
+    b.addEventListener("pointerdown", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      quickSaveGrade(targetBtn, r, c, m);
+      if (autoAdvanceCheckbox && autoAdvanceCheckbox.checked) {
+        setActiveCell(r + 1, c);
+      } else {
+        setActiveCell(r, c);
+      }
+    });
+    popover.append(b);
+  });
+
+  const delBtn = document.createElement("button");
+  delBtn.type = "button";
+  delBtn.className = "quick-mark-btn mark-del";
+  delBtn.innerHTML = "&times;";
+  delBtn.title = "Очистить оценку";
+  delBtn.addEventListener("pointerdown", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    quickDeleteGrade(targetBtn);
+    if (autoAdvanceCheckbox && autoAdvanceCheckbox.checked) {
+      setActiveCell(r + 1, c);
+    } else {
+      setActiveCell(r, c);
+    }
+  });
+  popover.append(delBtn);
+
+  document.body.appendChild(popover);
+  quickMarkPopover = popover;
+
+  const rect = targetBtn.getBoundingClientRect();
+  popover.style.left = `${rect.left + rect.width / 2 + window.scrollX}px`;
+  popover.style.top = `${rect.top + window.scrollY}px`;
+}
+
 function setActiveCell(r, c) {
   if (!gridMatrix.length) return;
   if (activeRow >= 0 && activeCol >= 0 && gridMatrix[activeRow] && gridMatrix[activeRow][activeCol]) {
@@ -7307,6 +7459,7 @@ function setActiveCell(r, c) {
     tableHead.querySelectorAll("th[data-col]").forEach(th => {
       th.classList.toggle("th-col-active", th.dataset.col === String(activeCol));
     });
+    showQuickMarkPopover(targetBtn, activeRow, activeCol);
   }
 }
 
@@ -7627,22 +7780,20 @@ groupSelect.addEventListener("change", function() {
 tableBody.addEventListener("click", function(event) {
   const btn = event.target.closest("button.grade-button");
   if (!btn) return;
-  const isQuick = quickEditCheckbox ? quickEditCheckbox.checked : false;
-  if (isQuick) setActiveCell(Number(btn.dataset.row), Number(btn.dataset.col));
-  else openGradeEditor(btn);
+  event.stopPropagation();
+  setActiveCell(Number(btn.dataset.row), Number(btn.dataset.col));
 });
 
-tableBody.addEventListener("dblclick", function(event) {
-  const btn = event.target.closest("button.grade-button");
-  if (!btn) return;
-  openGradeEditor(btn);
+// Клик вне ячейки или поповера закрывает быстрый выбор
+document.addEventListener("pointerdown", function(event) {
+  if (event.target.closest(".grade-button, .quick-mark-popover")) return;
+  hideQuickMarkPopover();
 });
+
+window.addEventListener("scroll", hideQuickMarkPopover, { passive: true });
 
 // Обработка клавиатурной навигации по матрице (Стрелки + Vim HJKL + Цифры 2..5)
 tableBody.addEventListener("keydown", function(event) {
-  const isQuick = quickEditCheckbox ? quickEditCheckbox.checked : true;
-  if (!isQuick) return;
-
   const btn = event.target.closest("button.grade-button");
   if (!btn) return;
 
@@ -7679,6 +7830,7 @@ tableBody.addEventListener("keydown", function(event) {
     case "e":
     case "E":
       event.preventDefault();
+      hideQuickMarkPopover();
       openGradeEditor(btn);
       break;
     case "2":
@@ -7697,8 +7849,17 @@ tableBody.addEventListener("keydown", function(event) {
     case "Backspace":
     case "x":
     case "X":
+    case "0":
       event.preventDefault();
       quickDeleteGrade(btn);
+      if (autoAdvanceCheckbox && autoAdvanceCheckbox.checked) {
+        setActiveCell(r + 1, c);
+      } else {
+        setActiveCell(r, c);
+      }
+      break;
+    case "Escape":
+      hideQuickMarkPopover();
       break;
   }
 });
@@ -10537,7 +10698,7 @@ export function fillGroups(select, groups, includeAll = false) {
     })();
   </script>
   <title>Электронный журнал — journal.edu.local</title>
-  <link rel="stylesheet" href="/css/styles.css?v=4.1">
+  <link rel="stylesheet" href="/css/styles.css?v=4.2">
 </head>
 <body class="home-page-body">
   <!-- Интерактивное физическое поле Антигравитации -->
@@ -10546,120 +10707,121 @@ export function fillGroups(select, groups, includeAll = false) {
   <header th:replace="~{partials/header :: header}"></header>
 
   <main id="main-content" class="container home-container" aria-busy="false">
-    <div class="home-hero">
-      <div class="home-badge">
-        <span class="home-badge-dot"></span>
-        <span>arch::ed • journal</span>
+    <div class="home-wrapper">
+      <div class="home-hero">
+        <div class="home-badge">
+          <span class="home-badge-dot"></span>
+          <span>arch::ed • electronic journal</span>
+        </div>
+
+        <h1 class="home-title">
+          Электронный журнал <span class="home-gradient-text">успеваемости</span>
+        </h1>
+
+        <p class="home-subtitle">
+          Оперативный учёт академической успеваемости, ведомостей и аналитических срезов.
+        </p>
+
+        <!-- Быстрые действия -->
+        <div class="home-actions-row">
+          <a href="/journal" class="button-primary home-main-btn">
+            <span>Открыть журнал</span>
+            <span class="home-btn-arrow">→</span>
+          </a>
+          <button id="home-open-palette" class="button-secondary home-action-btn" type="button" title="Открыть поиск и команды (Ctrl+K)">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span>Команды</span>
+            <kbd>⌘K</kbd>
+          </button>
+        </div>
+
+        <!-- Строка системного статуса -->
+        <div class="home-metrics-bar">
+          <div class="metric-item">
+            <span class="metric-label">Студентов:</span>
+            <span class="metric-val" id="stat-students">60</span>
+          </div>
+          <span class="metric-dot">•</span>
+          <div class="metric-item">
+            <span class="metric-label">Групп:</span>
+            <span class="metric-val" id="stat-groups">3</span>
+          </div>
+          <span class="metric-dot">•</span>
+          <div class="metric-item">
+            <span class="metric-label">Дисциплин:</span>
+            <span class="metric-val" id="stat-subjects">3</span>
+          </div>
+          <span class="metric-dot">•</span>
+          <div class="metric-item">
+            <span class="metric-label">Транзакции:</span>
+            <span class="metric-val val-green">PASS</span>
+          </div>
+        </div>
       </div>
 
-      <h1 class="home-title">
-        Электронный <span class="home-gradient-text">журнал</span>
-      </h1>
-
-      <p class="home-subtitle">
-        Быстрый академический учёт успеваемости, ведомостей и задолженностей.
-      </p>
-
-      <!-- Компактные действия -->
-      <div class="home-actions-row">
-        <a href="/journal" class="button-primary home-main-btn">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-          <span>Перейти к журналу</span>
-          <span class="home-btn-arrow">→</span>
+      <!-- Навигационный хаб с достаточной шириной (без обрезки названий) -->
+      <div class="home-nav-hub">
+        <a href="/journal" class="home-nav-item">
+          <div class="home-nav-icon icon-purple">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          </div>
+          <div class="home-nav-text">
+            <span class="home-nav-title">Журнал оценок</span>
+            <span class="home-nav-sub">Ведомость и ввод</span>
+          </div>
+          <span class="home-nav-arrow">→</span>
         </a>
-        <button id="home-open-palette" class="button-secondary home-action-btn" type="button" title="Открыть поиск и команды (Ctrl+K)">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <span>Команды</span>
-          <kbd>⌘K</kbd>
-        </button>
+
+        <a href="/groups" class="home-nav-item">
+          <div class="home-nav-icon icon-pink">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          </div>
+          <div class="home-nav-text">
+            <span class="home-nav-title">Учебные группы</span>
+            <span class="home-nav-sub">Потоки и списки</span>
+          </div>
+          <span class="home-nav-arrow">→</span>
+        </a>
+
+        <a href="/students" class="home-nav-item">
+          <div class="home-nav-icon icon-cyan">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          </div>
+          <div class="home-nav-text">
+            <span class="home-nav-title">Студенты</span>
+            <span class="home-nav-sub">Зачисление</span>
+          </div>
+          <span class="home-nav-arrow">→</span>
+        </a>
+
+        <a href="/subjects" class="home-nav-item">
+          <div class="home-nav-icon icon-amber">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          </div>
+          <div class="home-nav-text">
+            <span class="home-nav-title">Дисциплины</span>
+            <span class="home-nav-sub">Предметы</span>
+          </div>
+          <span class="home-nav-arrow">→</span>
+        </a>
+
+        <a href="/reports" class="home-nav-item">
+          <div class="home-nav-icon icon-green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"></path><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path></svg>
+          </div>
+          <div class="home-nav-text">
+            <span class="home-nav-title">Отчёты</span>
+            <span class="home-nav-sub">Аналитика</span>
+          </div>
+          <span class="home-nav-arrow">→</span>
+        </a>
       </div>
-
-      <!-- Лаконичная строка системных метрик -->
-      <div class="home-metrics-bar">
-        <div class="metric-item">
-          <span class="metric-label">Студентов</span>
-          <span class="metric-val" id="stat-students">—</span>
-        </div>
-        <span class="metric-dot">•</span>
-        <div class="metric-item">
-          <span class="metric-label">Групп</span>
-          <span class="metric-val" id="stat-groups">—</span>
-        </div>
-        <span class="metric-dot">•</span>
-        <div class="metric-item">
-          <span class="metric-label">Дисциплин</span>
-          <span class="metric-val" id="stat-subjects">—</span>
-        </div>
-        <span class="metric-dot">•</span>
-        <div class="metric-item">
-          <span class="metric-label">Транзакции</span>
-          <span class="metric-val val-green">PASS</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Минималистичный навигационный хаб (без лишнего шума) -->
-    <div class="home-nav-hub">
-      <a href="/journal" class="home-nav-item">
-        <div class="home-nav-icon icon-purple">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-        </div>
-        <div class="home-nav-text">
-          <span class="home-nav-title">Журнал оценок</span>
-          <span class="home-nav-sub">Ведомости и ввод</span>
-        </div>
-        <span class="home-nav-arrow">→</span>
-      </a>
-
-      <a href="/groups" class="home-nav-item">
-        <div class="home-nav-icon icon-pink">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-        </div>
-        <div class="home-nav-text">
-          <span class="home-nav-title">Учебные группы</span>
-          <span class="home-nav-sub">Потоки и списки</span>
-        </div>
-        <span class="home-nav-arrow">→</span>
-      </a>
-
-      <a href="/students" class="home-nav-item">
-        <div class="home-nav-icon icon-cyan">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-        </div>
-        <div class="home-nav-text">
-          <span class="home-nav-title">Студенты</span>
-          <span class="home-nav-sub">Зачисление</span>
-        </div>
-        <span class="home-nav-arrow">→</span>
-      </a>
-
-      <a href="/subjects" class="home-nav-item">
-        <div class="home-nav-icon icon-amber">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-        </div>
-        <div class="home-nav-text">
-          <span class="home-nav-title">Дисциплины</span>
-          <span class="home-nav-sub">Предметы</span>
-        </div>
-        <span class="home-nav-arrow">→</span>
-      </a>
-
-      <a href="/reports" class="home-nav-item">
-        <div class="home-nav-icon icon-green">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"></path><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path></svg>
-        </div>
-        <div class="home-nav-text">
-          <span class="home-nav-title">Отчёты</span>
-          <span class="home-nav-sub">Аналитика</span>
-        </div>
-        <span class="home-nav-arrow">→</span>
-      </a>
     </div>
   </main>
 
   <footer th:replace="~{partials/footer :: footer}"></footer>
 
-  <script type="module" src="/js/antigravity.js?v=4.1"></script>
+  <script type="module" src="/js/antigravity.js?v=4.2"></script>
 </body>
 </html>
 ```
@@ -10728,11 +10890,6 @@ export function fillGroups(select, groups, includeAll = false) {
           <option value="excellent">Только отличники (все 5)</option>
         </select>
       </label>
-      <label class="toggle-mode-label">
-        <input id="quick-edit-mode" type="checkbox" checked>
-        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6" y2="8"></line><line x1="10" y1="8" x2="10" y2="8"></line><line x1="14" y1="8" x2="14" y2="8"></line><line x1="18" y1="8" x2="18" y2="8"></line><line x1="6" y1="12" x2="6" y2="12"></line><line x1="10" y1="12" x2="10" y2="12"></line><line x1="14" y1="12" x2="14" y2="12"></line><line x1="18" y1="12" x2="18" y2="12"></line><line x1="7" y1="16" x2="17" y2="16"></line></svg>
-        <span>Быстрый ввод (Excel)</span>
-      </label>
       <label class="toggle-mode-label" title="Автоматически смещать фокус вниз при выставлении оценки">
         <input id="auto-advance-down" type="checkbox">
         <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
@@ -10750,8 +10907,8 @@ export function fillGroups(select, groups, includeAll = false) {
     </div>
 
     <div id="quick-edit-hint" class="quick-edit-hint">
-      <span class="hint-badge">Excel-режим:</span>
-      Кликните по ячейке и нажимайте <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> <kbd>5</kbd> для мгновенной записи. Навигация: <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> и <kbd>Enter</kbd>. Очистка: <kbd>Backspace</kbd> / <kbd>Del</kbd>. Тема: <kbd>Alt+T</kbd>.
+      <span class="hint-badge">Быстрый ввод:</span>
+      Кликните по ячейке и выберите оценку кликом по цифре <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> <kbd>5</kbd> или нажмите её на клавиатуре. Очистка: <kbd>⌫</kbd> или <kbd>Del</kbd>. Навигация: <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd>.
     </div>
 
     <p id="status" class="status" role="status" aria-live="polite" hidden></p>
