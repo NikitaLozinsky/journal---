@@ -1,4 +1,4 @@
-// theme.js - Оконный менеджер bspwm, боковые иллюстрации-шпаргалки, темы и горячие клавиши
+// theme.js - Оболочка в стиле JetBrains IntelliJ IDEA (New UI) с отключаемыми Tool Windows
 import { initCliBar } from "/js/cli.js";
 
 const THEME_STORAGE_KEY = "journal_theme";
@@ -6,9 +6,9 @@ const HUD_STORAGE_KEY = "journal_hud_visible";
 const THEMES = ["dark", "oled", "light"];
 
 const THEME_META = {
-  dark:  { icon: "󰄛", label: "Dracula-Pink", nextLabel: "Включить OLED-режим" },
-  oled:  { icon: "󰌵", label: "OLED Black",   nextLabel: "Включить светлую тему" },
-  light: { icon: "󰖨", label: "Light Violet", nextLabel: "Включить тему Dracula" }
+  dark:  { icon: "🌙", label: "IDEA Dark",    nextLabel: "Включить режим OLED Pitch Black" },
+  oled:  { icon: "🖤", label: "OLED Black",   nextLabel: "Включить светлую тему Light Violet" },
+  light: { icon: "☀️", label: "IDEA Light",   nextLabel: "Включить тёмную тему IDEA Dark" }
 };
 
 export function getCurrentTheme() {
@@ -49,8 +49,7 @@ function updateThemeButton(theme) {
   btn.setAttribute("title", `${meta.nextLabel} (Alt+T)`);
 }
 
-/** Часы в Polybar */
-function startPolybarClock() {
+function startStatusClock() {
   const clockEl = document.querySelector("#polybar-clock");
   if (!clockEl) return;
   const update = () => {
@@ -61,206 +60,377 @@ function startPolybarClock() {
   setInterval(update, 10000);
 }
 
-/** Создаёт боковые тайловые панели с векторными мини-иллюстрациями */
-function mountBspwmLayout() {
+/** Монтирует рабочее пространство IntelliJ IDEA New UI (Islands) */
+function mountIdeaWorkspace() {
   const main = document.querySelector("main#main-content");
-  if (!main || document.querySelector(".bspwm-desktop")) return;
+  if (!main || document.querySelector(".idea-workbench")) return;
 
-  // Создаём тайловый контейнер рабочего стола
-  const desktop = document.createElement("div");
-  desktop.className = "bspwm-desktop";
+  const path = window.location.pathname.replace("/", "") || "groups";
+  const crumbMod = document.querySelector("#crumb-current-module");
+  if (crumbMod) crumbMod.textContent = path;
 
-  // Декоративная шапка терминального окна для центрального тайла
-  const pathName = window.location.pathname.replace("/", "") || "groups";
-  const winBar = document.createElement("div");
-  winBar.className = "bspwm-winbar";
-  winBar.innerHTML = `
-    <span class="winbar-title"><span class="pink-accent">milk13@journal</span>:<span class="lavender-accent">~/features/${pathName}</span>$</span>
-    <span class="winbar-flags">[tiled · master]</span>
+  const workbench = document.createElement("div");
+  workbench.className = "idea-workbench";
+
+  // 1. Левая узкая полоса иконок (Left Tool Window Strip)
+  const leftStrip = document.createElement("div");
+  leftStrip.className = "idea-strip strip-left";
+  leftStrip.innerHTML = `
+    <button type="button" class="strip-btn active" data-toggle-left title="Project & Навигация (Alt+1 или ?)">
+      <span class="strip-icon">📁</span>
+      <span class="strip-label">Project</span>
+    </button>
+    <button type="button" class="strip-btn" onclick="location.href='/journal'" title="Перейти в матрицу журнала (Клавиша 4)">
+      <span class="strip-icon">⊞</span>
+      <span class="strip-label">DataGrip</span>
+    </button>
+    <button type="button" class="strip-btn" onclick="location.href='/reports'" title="Аналитика и графики (Клавиша 5)">
+      <span class="strip-icon">📊</span>
+      <span class="strip-label">Charts</span>
+    </button>
   `;
-  main.prepend(winBar);
 
-  // ЛЕВЫЙ ТАЙЛ: Навигация и Воркспейсы (с SVG-иллюстрациями)
-  const leftDock = document.createElement("aside");
-  leftDock.className = "bspwm-hud-dock hud-left";
-  leftDock.setAttribute("aria-label", "Шпаргалка навигации");
-  leftDock.innerHTML = `
-    <div class="bspwm-winbar">
-      <span class="winbar-title">┌─ навигация_клавиатурой</span>
-      <button type="button" class="winbar-close" data-close-hud title="Скрыть панели (?)">×</button>
+  // 2. Правая узкая полоса иконок (Right Tool Window Strip)
+  const rightStrip = document.createElement("div");
+  rightStrip.className = "idea-strip strip-right";
+  rightStrip.innerHTML = `
+    <button type="button" class="strip-btn active" data-toggle-right title="Шпаргалка горячих клавиш с иллюстрациями (?)">
+      <span class="strip-icon">⌨️</span>
+      <span class="strip-label">Keymap</span>
+    </button>
+  `;
+
+  // 3. ЛЕВОЕ ОКНО ИНСТРУМЕНТОВ: Дерево проекта + Иллюстрации навигации
+  const leftToolWin = document.createElement("aside");
+  leftToolWin.className = "idea-toolwindow toolwindow-left";
+  leftToolWin.setAttribute("aria-label", "Дерево проекта и навигация");
+  leftToolWin.innerHTML = `
+    <div class="toolwindow-header">
+      <span class="toolwindow-title">Project · jrnl</span>
+      <button type="button" class="toolwindow-hide" data-toggle-left title="Свернуть панель (Alt+1 / ?)">—</button>
     </div>
-    <div class="hud-body">
-      <!-- Карточка 1: Воркспейсы -->
-      <div class="hud-card">
-        <div class="hud-card-title"><span class="tree-branch">├─</span> Воркспейсы (1..5)</div>
+    <div class="toolwindow-content">
+      <!-- Дерево проекта как на скриншоте IDEA -->
+      <div class="idea-tree">
+        <div class="tree-root">▾ 📁 <strong>jrnl</strong> <span class="tree-path">~/IdeaProjects/jrnl</span></div>
+        <div class="tree-folder">▾ 📁 src/main/features</div>
+        <a href="/groups" class="tree-item ${path === 'groups' ? 'active' : ''}">
+          <span class="icon-java">C</span> GroupsController <span class="inlay-hint">Alt+1</span>
+        </a>
+        <a href="/subjects" class="tree-item ${path === 'subjects' ? 'active' : ''}">
+          <span class="icon-java">C</span> SubjectsController <span class="inlay-hint">Alt+2</span>
+        </a>
+        <a href="/students" class="tree-item ${path === 'students' ? 'active' : ''}">
+          <span class="icon-java">C</span> StudentsController <span class="inlay-hint">Alt+3</span>
+        </a>
+        <a href="/journal" class="tree-item ${path === 'journal' ? 'active' : ''}">
+          <span class="icon-db">⊞</span> JournalMatrix.db <span class="inlay-hint">Alt+4</span>
+        </a>
+        <a href="/reports" class="tree-item ${path === 'reports' ? 'active' : ''}">
+          <span class="icon-sql">📊</span> ReportsAnalytics.sql <span class="inlay-hint">Alt+5</span>
+        </a>
+      </div>
+
+      <!-- Иллюстрированная подсказка 1: Перемещение по таблицам -->
+      <div class="idea-hint-card">
+        <div class="hint-card-header">
+          <span>Навигация по строкам и ячейкам</span>
+          <span class="inlay-hint">Vim / Стрелки</span>
+        </div>
         <div class="hud-illustration">
-          <svg viewBox="0 0 210 46" class="hud-svg" aria-hidden="true">
-            <rect x="4" y="8" width="34" height="28" rx="3" class="svg-key"/>
-            <text x="21" y="26" class="svg-key-text">1</text>
-            <rect x="44" y="8" width="34" height="28" rx="3" class="svg-key"/>
-            <text x="61" y="26" class="svg-key-text">2</text>
-            <rect x="84" y="8" width="34" height="28" rx="3" class="svg-key"/>
-            <text x="101" y="26" class="svg-key-text">3</text>
-            <rect x="124" y="8" width="34" height="28" rx="3" class="svg-key svg-key-active"/>
-            <text x="141" y="26" class="svg-key-text active">4</text>
-            <rect x="164" y="8" width="34" height="28" rx="3" class="svg-key"/>
-            <text x="181" y="26" class="svg-key-text">5</text>
-            <line x1="124" y1="41" x2="158" y2="41" class="svg-accent-line"/>
+          <svg viewBox="0 0 210 62" class="hud-svg" aria-hidden="true">
+            <rect x="12" y="18" width="40" height="32" rx="5" class="svg-key"/>
+            <text x="32" y="33" class="svg-key-text">←</text>
+            <text x="32" y="45" class="svg-key-sub">H</text>
+
+            <rect x="58" y="24" width="40" height="32" rx="5" class="svg-key svg-key-active"/>
+            <text x="78" y="39" class="svg-key-text active">↓</text>
+            <text x="78" y="51" class="svg-key-sub active">J</text>
+
+            <rect x="104" y="12" width="40" height="32" rx="5" class="svg-key svg-key-active"/>
+            <text x="124" y="27" class="svg-key-text active">↑</text>
+            <text x="124" y="39" class="svg-key-sub active">K</text>
+
+            <rect x="150" y="18" width="40" height="32" rx="5" class="svg-key"/>
+            <text x="170" y="33" class="svg-key-text">→</text>
+            <text x="170" y="45" class="svg-key-sub">L</text>
           </svg>
         </div>
-        <ul class="hud-tree-list">
-          <li><span class="tree-branch">│</span> <kbd>1</kbd>–<kbd>5</kbd> переход по вкладкам</li>
-          <li><span class="tree-branch">└─</span> <kbd>Alt+1..5</kbd> из любого поля</li>
+        <ul class="hint-list">
+          <li><span>Вверх / Вниз по таблице</span> <span><kbd>↑</kbd> <kbd>↓</kbd> или <kbd>J</kbd> <kbd>K</kbd></span></li>
+          <li><span>Влево / Вправо в журнале</span> <span><kbd>←</kbd> <kbd>→</kbd> или <kbd>H</kbd> <kbd>L</kbd></span></li>
+          <li><span>Быстрый переход по вкладкам</span> <span><kbd>1</kbd> – <kbd>5</kbd></span></li>
         </ul>
       </div>
 
-      <!-- Карточка 2: Перемещение HJKL и Стрелки -->
-      <div class="hud-card">
-        <div class="hud-card-title"><span class="tree-branch">├─</span> Движение (Vim / Стрелки)</div>
-        <div class="hud-illustration">
-          <svg viewBox="0 0 210 64" class="hud-svg" aria-hidden="true">
-            <!-- Клавиша H / Left -->
-            <rect x="12" y="20" width="40" height="32" rx="3" class="svg-key"/>
-            <text x="32" y="35" class="svg-key-text">H</text>
-            <text x="32" y="47" class="svg-key-sub">←</text>
-            <!-- Клавиша J / Down -->
-            <rect x="58" y="26" width="40" height="32" rx="3" class="svg-key svg-key-active"/>
-            <text x="78" y="41" class="svg-key-text active">J</text>
-            <text x="78" y="53" class="svg-key-sub active">↓</text>
-            <!-- Клавиша K / Up -->
-            <rect x="104" y="14" width="40" height="32" rx="3" class="svg-key svg-key-active"/>
-            <text x="124" y="29" class="svg-key-text active">K</text>
-            <text x="124" y="41" class="svg-key-sub active">↑</text>
-            <!-- Клавиша L / Right -->
-            <rect x="150" y="20" width="40" height="32" rx="3" class="svg-key"/>
-            <text x="170" y="35" class="svg-key-text">L</text>
-            <text x="170" y="47" class="svg-key-sub">→</text>
-          </svg>
+      <!-- Иллюстрированная подсказка 2: Поиск и фильтрация -->
+      <div class="idea-hint-card">
+        <div class="hint-card-header">
+          <span>Мгновенный поиск</span>
+          <span class="inlay-hint">Search</span>
         </div>
-        <ul class="hud-tree-list">
-          <li><span class="tree-branch">├─</span> <kbd>J</kbd> / <kbd>↓</kbd> на строку ниже</li>
-          <li><span class="tree-branch">├─</span> <kbd>K</kbd> / <kbd>↑</kbd> на строку выше</li>
-          <li><span class="tree-branch">└─</span> <kbd>H</kbd> <kbd>L</kbd> / <kbd>←</kbd> <kbd>→</kbd> по предметам</li>
-        </ul>
-      </div>
-
-      <!-- Карточка 3: Поиск и Фокус -->
-      <div class="hud-card">
-        <div class="hud-card-title"><span class="tree-branch">└─</span> Поиск и фильтры</div>
         <div class="hud-illustration">
           <svg viewBox="0 0 210 42" class="hud-svg" aria-hidden="true">
-            <rect x="6" y="6" width="136" height="30" rx="3" class="svg-input-box"/>
-            <text x="16" y="25" class="svg-prompt">/ фильтр...</text>
-            <rect x="150" y="6" width="52" height="30" rx="3" class="svg-key"/>
+            <rect x="6" y="6" width="136" height="30" rx="5" class="svg-input-box"/>
+            <text x="16" y="25" class="svg-prompt">🔍 / Поиск...</text>
+            <rect x="150" y="6" width="52" height="30" rx="5" class="svg-key"/>
             <text x="176" y="25" class="svg-key-text">ESC</text>
           </svg>
         </div>
-        <ul class="hud-tree-list">
-          <li><span class="tree-branch">├─</span> <kbd>/</kbd> фокус в поле поиска</li>
-          <li><span class="tree-branch">├─</span> <kbd>G</kbd> выбор учебной группы</li>
-          <li><span class="tree-branch">└─</span> <kbd>Esc</kbd> возврат в таблицу</li>
+        <ul class="hint-list">
+          <li><span>Фокус в поле поиска</span> <kbd>/</kbd></li>
+          <li><span>Выбрать учебную группу</span> <kbd>G</kbd></li>
+          <li><span>Сбросить фокус / закрыть окно</span> <kbd>Esc</kbd></li>
         </ul>
       </div>
     </div>
   `;
 
-  // ПРАВЫЙ ТАЙЛ: Быстрый ввод в журнале, CRUD-действия и Терминал Ex-mode
-  const rightDock = document.createElement("aside");
-  rightDock.className = "bspwm-hud-dock hud-right";
-  rightDock.setAttribute("aria-label", "Шпаргалка действий");
-  rightDock.innerHTML = `
-    <div class="bspwm-winbar">
-      <span class="winbar-title">┌─ операции_и_матрица</span>
-      <button type="button" class="winbar-close" data-close-hud title="Скрыть панели (?)">×</button>
+  // 4. ПРАВОЕ ОКНО ИНСТРУМЕНТОВ: Keymap & Быстрый ввод оценок
+  const rightToolWin = document.createElement("aside");
+  rightToolWin.className = "idea-toolwindow toolwindow-right";
+  rightToolWin.setAttribute("aria-label", "Шпаргалка быстрых действий");
+  rightToolWin.innerHTML = `
+    <div class="toolwindow-header">
+      <span class="toolwindow-title">Keymap · Быстрый ввод</span>
+      <button type="button" class="toolwindow-hide" data-toggle-right title="Свернуть панель (?)">—</button>
     </div>
-    <div class="hud-body">
-      <!-- Карточка 1: Конвейер оценок -->
-      <div class="hud-card">
-        <div class="hud-card-title"><span class="tree-branch">├─</span> Конвейер оценок (Excel)</div>
+    <div class="toolwindow-content">
+      <!-- Иллюстрация 1: Поточный ввод оценок в стиле DataGrip / Excel -->
+      <div class="idea-hint-card">
+        <div class="hint-card-header">
+          <span>Поточный ввод оценок</span>
+          <span class="inlay-hint">Excel Mode</span>
+        </div>
         <div class="hud-illustration">
           <svg viewBox="0 0 210 68" class="hud-svg" aria-hidden="true">
-            <!-- Ячейка 1: Ввод 5 -->
-            <rect x="14" y="6" width="76" height="24" rx="2" class="svg-cell-active"/>
-            <text x="52" y="22" class="svg-key-text active">Оценка: 5</text>
-            <!-- Стрелка автошага -->
+            <rect x="12" y="6" width="82" height="24" rx="4" class="svg-cell-active"/>
+            <text x="53" y="22" class="svg-key-text active">Нажатие: 5</text>
             <path d="M 102 18 L 128 18 L 128 46 L 100 46" fill="none" class="svg-arrow-path"/>
             <polygon points="100,42 92,46 100,50" class="svg-arrow-head"/>
-            <text x="165" y="36" class="svg-key-sub active">Автошаг ↓</text>
-            <!-- Ячейка 2: Следующий студент -->
-            <rect x="14" y="36" width="76" height="24" rx="2" class="svg-key"/>
-            <text x="52" y="52" class="svg-key-sub">След. строка</text>
+            <text x="166" y="36" class="svg-key-sub active">Автошаг ↓</text>
+            <rect x="12" y="36" width="82" height="24" rx="4" class="svg-key"/>
+            <text x="53" y="52" class="svg-key-sub">След. студент</text>
           </svg>
         </div>
-        <ul class="hud-tree-list">
-          <li><span class="tree-branch">├─</span> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> <kbd>5</kbd> поставить и шаг ↓</li>
-          <li><span class="tree-branch">├─</span> <kbd>Del</kbd> / <kbd>Bksp</kbd> / <kbd>X</kbd> стереть оценку</li>
-          <li><span class="tree-branch">└─</span> <kbd>Space</kbd> / <kbd>E</kbd> открыть окно оценки</li>
+        <ul class="hint-list">
+          <li><span>Выставить оценку и шагнуть ↓</span> <span><kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> <kbd>5</kbd></span></li>
+          <li><span>Очистить оценку в ячейке</span> <span><kbd>Del</kbd> / <kbd>Bksp</kbd></span></li>
+          <li><span>Открыть диалог оценки</span> <kbd>Space</kbd></li>
         </ul>
       </div>
 
-      <!-- Карточка 2: CRUD Операции со строками -->
-      <div class="hud-card">
-        <div class="hud-card-title"><span class="tree-branch">├─</span> Управление записями</div>
-        <div class="hud-illustration">
-          <svg viewBox="0 0 210 46" class="hud-svg" aria-hidden="true">
-            <rect x="8" y="8" width="58" height="30" rx="3" class="svg-key svg-key-green"/>
-            <text x="37" y="27" class="svg-key-text">+ [A]</text>
-            <rect x="76" y="8" width="58" height="30" rx="3" class="svg-key svg-key-active"/>
-            <text x="105" y="27" class="svg-key-text active">✎ [E]</text>
-            <rect x="144" y="8" width="58" height="30" rx="3" class="svg-key svg-key-danger"/>
-            <text x="173" y="27" class="svg-key-text">× [D]</text>
-          </svg>
+      <!-- Иллюстрация 2: Действия со строками (CRUD) -->
+      <div class="idea-hint-card">
+        <div class="hint-card-header">
+          <span>Действия с записями</span>
+          <span class="inlay-hint">Actions</span>
         </div>
-        <ul class="hud-tree-list">
-          <li><span class="tree-branch">├─</span> <kbd>A</kbd> добавить новую запись</li>
-          <li><span class="tree-branch">├─</span> <kbd>E</kbd> / <kbd>Enter</kbd> изменить строку</li>
-          <li><span class="tree-branch">└─</span> <kbd>D</kbd> / <kbd>Del</kbd> удалить строку</li>
-        </ul>
-      </div>
-
-      <!-- Карточка 3: Терминал Ex-mode (:) -->
-      <div class="hud-card">
-        <div class="hud-card-title"><span class="tree-branch">└─</span> Консоль Ex-Mode (:)</div>
         <div class="hud-illustration">
           <svg viewBox="0 0 210 44" class="hud-svg" aria-hidden="true">
-            <rect x="4" y="8" width="202" height="28" rx="2" class="svg-input-box"/>
-            <text x="12" y="26" class="svg-prompt">:grade Иванов Python 5</text>
-            <rect x="172" y="13" width="28" height="18" rx="2" class="svg-key svg-key-active"/>
-            <text x="186" y="25" class="svg-key-sub active">RET</text>
+            <rect x="8" y="7" width="58" height="30" rx="5" class="svg-key svg-key-green"/>
+            <text x="37" y="26" class="svg-key-text">+ [A]</text>
+            <rect x="76" y="7" width="58" height="30" rx="5" class="svg-key svg-key-active"/>
+            <text x="105" y="26" class="svg-key-text active">✎ [E]</text>
+            <rect x="144" y="7" width="58" height="30" rx="5" class="svg-key svg-key-danger"/>
+            <text x="173" y="26" class="svg-key-text">× [D]</text>
           </svg>
         </div>
-        <ul class="hud-tree-list">
-          <li><span class="tree-branch">├─</span> <kbd>:</kbd> открыть командную строку</li>
-          <li><span class="tree-branch">├─</span> <kbd>:g ФИО Предм 5</kbd> оценка</li>
-          <li><span class="tree-branch">├─</span> <kbd>:add БЭИ2401</kbd> создать</li>
-          <li><span class="tree-branch">└─</span> <kbd>Tab</kbd> автодополнение</li>
+        <ul class="hint-list">
+          <li><span>Создать новую запись</span> <kbd>A</kbd></li>
+          <li><span>Редактировать выбранную</span> <span><kbd>E</kbd> / <kbd>Enter</kbd></span></li>
+          <li><span>Удалить выбранную строку</span> <kbd>D</kbd></li>
+        </ul>
+      </div>
+
+      <!-- Иллюстрация 3: Встроенная консоль (:) -->
+      <div class="idea-hint-card">
+        <div class="hint-card-header">
+          <span>Консоль быстрых команд</span>
+          <span class="inlay-hint">Terminal</span>
+        </div>
+        <div class="hud-illustration">
+          <svg viewBox="0 0 210 42" class="hud-svg" aria-hidden="true">
+            <rect x="6" y="6" width="198" height="30" rx="5" class="svg-input-box"/>
+            <text x="14" y="25" class="svg-prompt">:grade Иванов Python 5</text>
+          </svg>
+        </div>
+        <ul class="hint-list">
+          <li><span>Открыть консоль внизу</span> <kbd>:</kbd></li>
+          <li><span>Command Palette (Везде)</span> <kbd>Ctrl+K</kbd></li>
+          <li><span>Сменить тему (Dark/OLED/Light)</span> <kbd>Alt+T</kbd></li>
+          <li><span>Скрыть/показать подсказки</span> <kbd>?</kbd></li>
         </ul>
       </div>
     </div>
   `;
 
-  main.parentNode.insertBefore(desktop, main);
-  desktop.append(leftDock, main, rightDock);
+  // Декоративная строка пути файла вверху центрального редактора (Editor Breadcrumb Bar)
+  const editorHeader = document.createElement("div");
+  editorHeader.className = "idea-editor-subbar";
+  editorHeader.innerHTML = `
+    <div class="subbar-path">
+      <span class="icon-java">☕</span>
+      <span>ru.edu.journal.features.<strong>${path}</strong></span>
+      <span class="inlay-hint">SQLite WAL · Foreign Keys ON</span>
+    </div>
+    <div class="subbar-actions">
+      <span class="inlay-hint">Нажмите <kbd>?</kbd> для скрытия боковых панелей</span>
+    </div>
+  `;
+  main.prepend(editorHeader);
 
-  // Восстановление состояния видимости HUD
+  main.parentNode.insertBefore(workbench, main);
+  workbench.append(leftStrip, leftToolWin, main, rightToolWin, rightStrip);
+
+  // Восстановление видимости боковых панелей
   const savedHud = localStorage.getItem(HUD_STORAGE_KEY);
-  const isHudVisible = savedHud !== "false";
-  setHudVisibility(isHudVisible);
+  setHudVisibility(savedHud !== "false");
 
   const hudToggleBtn = document.querySelector("#hud-toggle");
   if (hudToggleBtn) {
     hudToggleBtn.addEventListener("click", () => toggleHudVisibility());
   }
-  desktop.querySelectorAll("[data-close-hud]").forEach(btn => {
-    btn.addEventListener("click", () => setHudVisibility(false));
+
+  // Кнопки сворачивания левой и правой панели по отдельности или вместе
+  workbench.querySelectorAll("[data-toggle-left]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      workbench.classList.toggle("left-collapsed");
+      leftStrip.querySelector("[data-toggle-left]")?.classList.toggle("active", !workbench.classList.contains("left-collapsed"));
+    });
+  });
+
+  workbench.querySelectorAll("[data-toggle-right]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      workbench.classList.toggle("right-collapsed");
+      rightStrip.querySelector("[data-toggle-right]")?.classList.toggle("active", !workbench.classList.contains("right-collapsed"));
+    });
+  });
+
+  // Зелёная кнопка Run ▶ в шапке
+  const runBtn = document.querySelector("#idea-run-btn");
+  if (runBtn) {
+    runBtn.addEventListener("click", () => {
+      const exportExcel = document.querySelector("#btn-export-excel");
+      const applyFilter = document.querySelector("#apply-filter");
+      if (exportExcel) exportExcel.click();
+      else if (applyFilter) applyFilter.click();
+      else window.location.reload();
+    });
+  }
+
+  // Кнопка Debug 🐞 (открывает консоль Run Tool Window)
+  const debugBtn = document.querySelector("#idea-debug-btn");
+  if (debugBtn) {
+    debugBtn.addEventListener("click", () => {
+      toggleRunWindow();
+    });
+  }
+}
+
+export function setRunWindowVisibility(visible) {
+  const runWin = document.querySelector("#idea-run-toolwindow");
+  const toggleBtn = document.querySelector("#run-window-toggle");
+  if (!runWin) return;
+  runWin.hidden = !visible;
+  if (toggleBtn) toggleBtn.classList.toggle("active", visible);
+  try {
+    localStorage.setItem("idea_run_visible", String(visible));
+  } catch (e) {}
+}
+
+export function toggleRunWindow() {
+  const runWin = document.querySelector("#idea-run-toolwindow");
+  if (!runWin) return;
+  setRunWindowVisibility(runWin.hidden);
+}
+
+export function logToRunConsole(msg, level = "INFO") {
+  const container = document.querySelector("#run-dynamic-logs");
+  if (!container) return;
+  const now = new Date();
+  const timeStr = now.toISOString().replace("Z", "+03:00");
+  const line = document.createElement("div");
+  line.className = "run-log-line log-" + level.toLowerCase();
+  const safeMsg = String(msg).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  line.innerHTML = `
+    <span class="log-time">${timeStr}</span>
+    <span class="log-level">${level}</span>
+    <span class="log-pid">761156</span>
+    <span class="log-src">--- [journal] [ user] :</span>
+    <span class="log-msg">${safeMsg}</span>
+  `;
+  container.append(line);
+  const output = document.querySelector("#run-console-log");
+  if (output) output.scrollTop = output.scrollHeight;
+}
+
+function initRunToolWindow() {
+  const runWin = document.querySelector("#idea-run-toolwindow");
+  const toggleBtn = document.querySelector("#run-window-toggle");
+  const minBtn = document.querySelector("#run-tw-minimize");
+  const rerunBtn = document.querySelector("#run-btn-rerun");
+  const stopBtn = document.querySelector("#run-btn-stop");
+  const clearBtn = document.querySelector("#run-btn-clear");
+  const themeBtn = document.querySelector("#run-btn-theme");
+
+  if (!runWin) return;
+
+  if (toggleBtn) toggleBtn.addEventListener("click", () => toggleRunWindow());
+  if (minBtn) minBtn.addEventListener("click", () => setRunWindowVisibility(false));
+
+  if (rerunBtn) {
+    rerunBtn.addEventListener("click", () => {
+      logToRunConsole("Перезагрузка представления и синхронизация кэша...", "INFO");
+      window.location.reload();
+    });
+  }
+
+  if (stopBtn) {
+    stopBtn.addEventListener("click", () => {
+      logToRunConsole("Очистка фильтров поиска и сброс формы", "WARN");
+      const searchInput = document.querySelector("#search-input");
+      if (searchInput) {
+        searchInput.value = "";
+        searchInput.dispatchEvent(new Event("input"));
+      }
+      const groupSelect = document.querySelector("#group-select");
+      if (groupSelect && groupSelect.options.length) {
+        groupSelect.selectedIndex = 0;
+        groupSelect.dispatchEvent(new Event("change"));
+      }
+    });
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      const dyn = document.querySelector("#run-dynamic-logs");
+      if (dyn) dyn.replaceChildren();
+    });
+  }
+
+  if (themeBtn) {
+    themeBtn.addEventListener("click", () => toggleTheme());
+  }
+
+  // Хоткей Alt+4 (как в IDEA для вызова панели Run)
+  window.addEventListener("keydown", (e) => {
+    if (e.altKey && (e.key === "4" || e.code === "Digit4")) {
+      e.preventDefault();
+      toggleRunWindow();
+    }
   });
 }
 
 export function setHudVisibility(visible) {
-  const desktop = document.querySelector(".bspwm-desktop");
+  const workbench = document.querySelector(".idea-workbench");
   const hudBtn = document.querySelector("#hud-toggle");
-  if (!desktop) return;
-  desktop.classList.toggle("hud-collapsed", !visible);
+  if (!workbench) return;
+  workbench.classList.toggle("left-collapsed", !visible);
+  workbench.classList.toggle("right-collapsed", !visible);
+  workbench.querySelectorAll(".strip-btn[data-toggle-left], .strip-btn[data-toggle-right]").forEach(b => {
+    b.classList.toggle("active", visible);
+  });
   if (hudBtn) hudBtn.classList.toggle("active", visible);
   try {
     localStorage.setItem(HUD_STORAGE_KEY, String(visible));
@@ -268,14 +438,14 @@ export function setHudVisibility(visible) {
 }
 
 export function toggleHudVisibility() {
-  const desktop = document.querySelector(".bspwm-desktop");
-  if (!desktop) return;
-  const currentlyCollapsed = desktop.classList.contains("hud-collapsed");
-  setHudVisibility(currentlyCollapsed);
+  const workbench = document.querySelector(".idea-workbench");
+  if (!workbench) return;
+  const isAnyOpen = !workbench.classList.contains("left-collapsed") || !workbench.classList.contains("right-collapsed");
+  setHudVisibility(!isAnyOpen);
 }
 
-/** Глобальный контроллер клавиатуры в стиле Vim / Ranger / bspwm */
-function initBspwmKeyboardNavigation() {
+/** Клавиатурный контроллер в стиле JetBrains DataGrip / IdeaVim */
+function initIdeaKeyboardNavigation() {
   let selectedRowIdx = -1;
   const vimModeEl = document.querySelector("#vim-mode-indicator");
   const cursorPosEl = document.querySelector("#status-cursor-pos");
@@ -292,21 +462,16 @@ function initBspwmKeyboardNavigation() {
     return tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || el.isContentEditable;
   }
 
-  // Отслеживание фокуса для переключения индикатора NORMAL / INSERT / MATRIX
   document.addEventListener("focusin", (e) => {
     if (e.target.classList && e.target.classList.contains("grade-button")) {
-      updateStatusMode("MATRIX", "mode-matrix");
+      updateStatusMode("DATAGRIP", "mode-matrix");
       const r = Number(e.target.dataset.row || 0) + 1;
       const c = Number(e.target.dataset.col || 0) + 1;
-      if (cursorPosEl) cursorPosEl.textContent = `CELL ${r}:${c}`;
+      if (cursorPosEl) cursorPosEl.textContent = `Ln ${r}, Col ${c}`;
     } else if (isInputElement(e.target)) {
-      if (e.target.id === "cli-input") {
-        updateStatusMode("COMMAND", "mode-command");
-      } else {
-        updateStatusMode("INSERT", "mode-insert");
-      }
+      updateStatusMode("EDITING", "mode-insert");
     } else {
-      updateStatusMode("NORMAL", "mode-normal");
+      updateStatusMode("READY", "mode-normal");
     }
   });
 
@@ -314,16 +479,14 @@ function initBspwmKeyboardNavigation() {
     setTimeout(() => {
       if (!isInputElement(document.activeElement) &&
           !(document.activeElement && document.activeElement.classList.contains("grade-button"))) {
-        updateStatusMode("NORMAL", "mode-normal");
+        updateStatusMode("READY", "mode-normal");
       }
     }, 10);
   });
 
-  /** Выделение строки в обычных таблицах (Группы, Предметы, Студенты, Отчёты) */
   function highlightTableRow(delta) {
     const isJournalPage = window.location.pathname.startsWith("/journal");
     if (isJournalPage) {
-      // В журнале фокусируем первую ячейку матрицы, если ещё не в ней
       const firstCell = document.querySelector("button.grade-button.cell-active") ||
                         document.querySelector("button.grade-button");
       if (firstCell && document.activeElement !== firstCell) {
@@ -344,7 +507,7 @@ function initBspwmKeyboardNavigation() {
     if (activeRow) {
       activeRow.classList.add("ranger-selected");
       activeRow.scrollIntoView({ block: "nearest", behavior: "smooth" });
-      if (cursorPosEl) cursorPosEl.textContent = `ROW ${selectedRowIdx + 1}/${rows.length}`;
+      if (cursorPosEl) cursorPosEl.textContent = `Ln ${selectedRowIdx + 1}/${rows.length}, Col 1`;
     }
   }
 
@@ -352,7 +515,6 @@ function initBspwmKeyboardNavigation() {
     const backdrop = document.querySelector("#cmd-palette-backdrop");
     if (backdrop && !backdrop.hidden) return;
 
-    // 1. Глобальные хоткеи с модификаторами (работают даже из полей ввода)
     if (e.altKey && ["1", "2", "3", "4", "5"].includes(e.key)) {
       e.preventDefault();
       const routes = ["/groups", "/subjects", "/students", "/journal", "/reports"];
@@ -366,32 +528,23 @@ function initBspwmKeyboardNavigation() {
       return;
     }
 
-    // Escape универсально закрывает открытые формы/модалки или снимает фокус с инпута
     if (e.key === "Escape") {
       const cancelEdit = document.querySelector("#cancel-edit");
       const editor = document.querySelector("#editor");
       const cancelDelete = document.querySelector("#cancel-delete");
       const confirmation = document.querySelector("#confirmation");
 
-      if (editor && !editor.hidden && cancelEdit) {
-        cancelEdit.click();
-        return;
-      }
-      if (confirmation && !confirmation.hidden && cancelDelete) {
-        cancelDelete.click();
-        return;
-      }
+      if (editor && !editor.hidden && cancelEdit) { cancelEdit.click(); return; }
+      if (confirmation && !confirmation.hidden && cancelDelete) { cancelDelete.click(); return; }
       if (document.activeElement) {
         document.activeElement.blur();
-        updateStatusMode("NORMAL", "mode-normal");
+        updateStatusMode("READY", "mode-normal");
       }
       return;
     }
 
-    // Если пользователь печатает в input/select — не перехватываем одиночные буквы
     if (isInputElement(document.activeElement)) return;
 
-    // Если фокус уже внутри кнопки матрицы журнала — её обрабатывает journal.js, кроме ? и 1..5 с Alt
     const inMatrixCell = document.activeElement && document.activeElement.classList.contains("grade-button");
 
     if (e.key === "?" || (e.shiftKey && e.key === "/")) {
@@ -400,7 +553,6 @@ function initBspwmKeyboardNavigation() {
       return;
     }
 
-    // Переход по воркспейсам клавишами 1..5 (когда не в ячейке журнала, где 2..5 ставят оценки)
     if (!inMatrixCell && !e.ctrlKey && !e.metaKey && ["1", "2", "3", "4", "5"].includes(e.key)) {
       e.preventDefault();
       const routes = ["/groups", "/subjects", "/students", "/journal", "/reports"];
@@ -408,7 +560,6 @@ function initBspwmKeyboardNavigation() {
       return;
     }
 
-    // Поиск по нажатию /
     if (e.key === "/") {
       const searchEl = document.querySelector("#search-input") ||
                        document.querySelector("#journal-student-filter");
@@ -420,17 +571,12 @@ function initBspwmKeyboardNavigation() {
       return;
     }
 
-    // Выбор группы по клавише G
     if (e.key.toLowerCase() === "g" && !e.ctrlKey && !e.metaKey) {
       const groupSel = document.querySelector("#group-select") || document.querySelector("#filter-group");
-      if (groupSel) {
-        e.preventDefault();
-        groupSel.focus();
-      }
+      if (groupSel) { e.preventDefault(); groupSel.focus(); }
       return;
     }
 
-    // Навигация J / K или Стрелки вниз/вверх для таблиц
     if (!inMatrixCell && (e.key === "j" || e.key === "J" || e.key === "ArrowDown")) {
       e.preventDefault();
       highlightTableRow(1);
@@ -442,57 +588,45 @@ function initBspwmKeyboardNavigation() {
       return;
     }
 
-    // Клавиша A — Добавить запись
     if (!inMatrixCell && (e.key === "a" || e.key === "A") && !e.ctrlKey && !e.metaKey) {
       const addBtn = document.querySelector("#add-record");
-      if (addBtn) {
-        e.preventDefault();
-        addBtn.click();
-      }
+      if (addBtn) { e.preventDefault(); addBtn.click(); }
       return;
     }
 
-    // Клавиша E или Enter — Изменить выбранную строку таблицы
     if (!inMatrixCell && (e.key === "e" || e.key === "E" || e.key === "Enter")) {
       const selectedRow = document.querySelector("#table-body tr.ranger-selected");
       if (selectedRow) {
         const editBtn = selectedRow.querySelector('button[data-action="edit"]');
-        if (editBtn) {
-          e.preventDefault();
-          editBtn.click();
-        }
+        if (editBtn) { e.preventDefault(); editBtn.click(); }
       }
       return;
     }
 
-    // Клавиша D или Delete — Удалить выбранную строку таблицы
     if (!inMatrixCell && (e.key === "d" || e.key === "D" || e.key === "Delete")) {
       const selectedRow = document.querySelector("#table-body tr.ranger-selected");
       if (selectedRow) {
         const delBtn = selectedRow.querySelector('button[data-action="delete"]');
-        if (delBtn) {
-          e.preventDefault();
-          delBtn.click();
-        }
+        if (delBtn) { e.preventDefault(); delBtn.click(); }
       }
     }
   });
 }
 
-/** Командная палитра (Ctrl+K) в стиле Rofi / dmenu */
-function initCommandPalette() {
+/** Окно Search Everywhere (Ctrl+K) в стиле IntelliJ IDEA */
+function initSearchEverywhere() {
   if (document.querySelector("#cmd-palette-backdrop")) return;
 
   const commands = [
-    { title: "1: Перейти в Учебные группы", hint: "Workspace 1", action: () => location.href = "/groups" },
-    { title: "2: Перейти к Предметам", hint: "Workspace 2", action: () => location.href = "/subjects" },
-    { title: "3: Перейти к Студентам", hint: "Workspace 3", action: () => location.href = "/students" },
-    { title: "4: Открыть Журнал успеваемости", hint: "Workspace 4", action: () => location.href = "/journal" },
-    { title: "5: Открыть Отчёты и аналитику", hint: "Workspace 5", action: () => location.href = "/reports" },
-    { title: "HUD: Переключить боковые панели с иллюстрациями", hint: "Клавиша ?", action: () => toggleHudVisibility() },
-    { title: "Тема: Dracula Pink Accent (bspwm)", hint: "Dark", action: () => setTheme("dark") },
-    { title: "Тема: Pitch Black (Режим для OLED)", hint: "OLED", action: () => setTheme("oled") },
-    { title: "Тема: Alabaster Violet (Светлая)", hint: "Light", action: () => setTheme("light") }
+    { title: "☕ GroupsController.java — Учебные группы", hint: "Alt+1", action: () => location.href = "/groups" },
+    { title: "☕ SubjectsController.java — Дисциплины", hint: "Alt+2", action: () => location.href = "/subjects" },
+    { title: "☕ StudentsController.java — Контингент студентов", hint: "Alt+3", action: () => location.href = "/students" },
+    { title: "⊞ JournalMatrix.db — Матрица оценок (DataGrip)", hint: "Alt+4", action: () => location.href = "/journal" },
+    { title: "📊 ReportsAnalytics.sql — Отчёты и графики", hint: "Alt+5", action: () => location.href = "/reports" },
+    { title: "⌨️ Переключить боковые Tool Windows с подсказками", hint: "Клавиша ?", action: () => toggleHudVisibility() },
+    { title: "🌙 Тема: JetBrains Dark Lavender (Islands)", hint: "Dark", action: () => setTheme("dark") },
+    { title: "🖤 Тема: JetBrains OLED Pitch Black", hint: "OLED", action: () => setTheme("oled") },
+    { title: "☀️ Тема: JetBrains Light Violet", hint: "Light", action: () => setTheme("light") }
   ];
 
   const backdrop = document.createElement("div");
@@ -501,12 +635,12 @@ function initCommandPalette() {
   backdrop.hidden = true;
 
   backdrop.innerHTML = `
-    <div class="cmd-modal" role="dialog" aria-modal="true" aria-label="Rofi Launcher">
-      <div class="bspwm-winbar">
-        <span class="winbar-title">rofi -show drun</span>
-        <span class="winbar-flags">[ESC — закрыть]</span>
+    <div class="cmd-modal" role="dialog" aria-modal="true" aria-label="Search Everywhere">
+      <div class="idea-search-header">
+        <span>🔍 Search Everywhere</span>
+        <span class="inlay-hint">Classes · Files · Actions · [ESC — закрыть]</span>
       </div>
-      <input type="search" class="cmd-input" placeholder="drun: введите команду или номер воркспейса...">
+      <input type="search" class="cmd-input" placeholder="Введите название раздела, действия или темы...">
       <ul class="cmd-list"></ul>
     </div>
   `;
@@ -579,11 +713,12 @@ export function initTheme() {
     btn.addEventListener("click", () => toggleTheme());
   }
 
-  startPolybarClock();
-  mountBspwmLayout();
-  initBspwmKeyboardNavigation();
-  initCommandPalette();
+  startStatusClock();
+  mountIdeaWorkspace();
+  initIdeaKeyboardNavigation();
+  initSearchEverywhere();
   initCliBar();
+  initRunToolWindow();
 }
 
 if (document.readyState === "loading") {

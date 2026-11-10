@@ -1,28 +1,132 @@
-<footer class="site-footer statusline" th:fragment="footer" xmlns:th="http://www.thymeleaf.org">
-  <!-- Всплывающее меню автодополнения (wildmenu в стиле Neovim / fish) -->
+<footer class="site-footer idea-bottom-bar" th:fragment="footer" xmlns:th="http://www.thymeleaf.org">
+  <!-- Всплывающее меню автодополнения для терминала (:) -->
   <div id="cli-wildmenu" class="cli-wildmenu" hidden>
     <div class="wildmenu-header">
-      <span>󰋖 Автодополнение (Tab — подставить, ↑↓ — история, Enter — выполнить)</span>
-      <span id="wildmenu-context" class="pink-accent">Ex-mode</span>
+      <span>⚡ JetBrains Terminal Completion (Tab — подставить, ↑↓ — история, Enter — выполнить)</span>
+      <span id="wildmenu-context" class="lavender-accent">Run Console</span>
     </div>
     <ul id="cli-suggestions" class="wildmenu-list"></ul>
   </div>
 
+  <!-- Всплывающая / раскрывающаяся нижняя панель Run (как на скриншоте IDEA) -->
+  <div id="idea-run-toolwindow" class="idea-run-toolwindow" hidden>
+    <div class="run-tw-header">
+      <div class="run-tw-tabs">
+        <button type="button" class="run-tw-tab active">
+          <span class="run-tab-icon">▶</span>
+          <span class="run-tab-title">JournalApplication</span>
+        </button>
+      </div>
+      <div class="run-tw-actions">
+        <button type="button" class="tw-action-btn" id="run-tw-minimize" title="Свернуть панель Run (Alt+4 / Esc)">✕</button>
+      </div>
+    </div>
+
+    <div class="run-tw-body">
+      <!-- Левый тулбар панели Run -->
+      <div class="run-tw-sidebar">
+        <button type="button" class="run-side-btn" id="run-btn-rerun" title="Перезапустить / Обновить (⟳)">⟳</button>
+        <button type="button" class="run-side-btn run-side-stop" id="run-btn-stop" title="Сбросить / Очистить фильтры (⏹)">⏹</button>
+        <button type="button" class="run-side-btn" id="run-btn-clear" title="Очистить терминал (⊘)">⊘</button>
+        <button type="button" class="run-side-btn" id="run-btn-theme" title="Сменить тему оформления (Alt+T)">🎨</button>
+      </div>
+
+      <!-- Центральная область: Вывод логов Spring Boot и терминал -->
+      <div class="run-tw-main">
+        <div class="run-tw-subnav">
+          <span class="subnav-btn active">Console</span>
+          <a href="/journal" class="subnav-btn">DataGrip Matrix</a>
+          <a href="/reports" class="subnav-btn">Health & Metrics</a>
+        </div>
+
+        <div class="run-console-output" id="run-console-log">
+          <pre class="run-spring-banner">
+  .   ____          _          __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.3.5)</pre>
+          <div class="run-log-line log-info">
+            <span class="log-time" id="run-log-time">2026-11-10T02:29:15.222+03:00</span>
+            <span class="log-level">INFO</span>
+            <span class="log-pid">761156</span>
+            <span class="log-src">--- [journal] [ main] ru.edu.journal.JournalApplication :</span>
+            <span class="log-msg">Starting JournalApplication using Java 21 on Arch Linux...</span>
+          </div>
+          <div class="run-log-line log-info">
+            <span class="log-time" id="run-log-time2">2026-11-10T02:29:15.224+03:00</span>
+            <span class="log-level">INFO</span>
+            <span class="log-pid">761156</span>
+            <span class="log-src">--- [journal] [ main] r.e.journal.common.DatabaseInitializer :</span>
+            <span class="log-msg">Database initialized: SQLite WAL mode, PRAGMA foreign_keys=ON</span>
+          </div>
+          <div class="run-log-line log-info">
+            <span class="log-time" id="run-log-time3">2026-11-10T02:29:15.226+03:00</span>
+            <span class="log-level">INFO</span>
+            <span class="log-pid">761156</span>
+            <span class="log-src">--- [journal] [ main] o.s.b.w.embedded.tomcat.TomcatWebServer :</span>
+            <span class="log-msg">Tomcat started on port 5000 (http) with context path '/'</span>
+          </div>
+          <div id="run-dynamic-logs"></div>
+        </div>
+      </div>
+
+      <!-- Правая область: Мониторинг производительности (как на скриншоте IDEA) -->
+      <div class="run-tw-perf">
+        <div class="perf-header">Performance</div>
+        <div class="perf-metric">
+          <div class="perf-label">
+            <span>CPU</span>
+            <span class="perf-val">4%</span>
+          </div>
+          <div class="perf-bar"><div class="perf-fill perf-cpu" style="width: 15%"></div></div>
+        </div>
+        <div class="perf-metric">
+          <div class="perf-label">
+            <span>Heap Memory</span>
+            <span class="perf-val">128 MB / 512 MB</span>
+          </div>
+          <div class="perf-bar"><div class="perf-fill perf-mem" style="width: 25%"></div></div>
+        </div>
+        <div class="perf-db-status">
+          <span class="db-dot">●</span> <span>SQLite WAL: READY</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Нижняя строка состояния IntelliJ IDEA -->
   <div class="statusline-inner">
     <div class="statusline-left">
-      <span id="vim-mode-indicator" class="vim-mode mode-normal">NORMAL</span>
+      <!-- Кнопка Tool Window Run в стиле нижней полосы IDEA -->
+      <button id="run-window-toggle" type="button" class="idea-toolwindow-btn" title="Панель запуска Spring Boot и логов (Alt+4)">
+        <span class="tw-icon">▶</span>
+        <span class="tw-name">Run</span>
+      </button>
 
-      <!-- Стандартная подсказка (скрывается при нажатии :) -->
-      <span id="status-default-bar" class="status-segment">
-        <span class="tree-branch">├─</span>
-        <span id="status-active-hint">
-          Команда: <kbd>:</kbd> · Навигация: <kbd>J</kbd><kbd>K</kbd> · Воркспейсы: <kbd>1</kbd>–<kbd>5</kbd> · Поиск: <kbd>/</kbd> · HUD: <kbd>?</kbd>
+      <!-- Индикатор режима -->
+      <span id="vim-mode-indicator" class="vim-mode mode-normal">READY</span>
+
+      <!-- Хлебные крошки проекта как на скриншоте IDEA -->
+      <div id="status-default-bar" class="idea-breadcrumbs">
+        <span class="crumb-root">jrnl</span>
+        <span class="crumb-sep">›</span>
+        <span>src</span>
+        <span class="crumb-sep">›</span>
+        <span>main</span>
+        <span class="crumb-sep">›</span>
+        <span id="crumb-current-module" class="crumb-active">journal</span>
+        <span class="crumb-sep">│</span>
+        <span id="status-active-hint" class="crumb-hint">
+          Навигация: <kbd>↑</kbd><kbd>↓</kbd> / <kbd>J</kbd><kbd>K</kbd> · Вкладки: <kbd>1</kbd>–<kbd>5</kbd> · Поиск: <kbd>/</kbd> · Панели: <kbd>?</kbd>
         </span>
-      </span>
+      </div>
 
-      <!-- Терминальная строка ввода (активируется по клавише :) -->
+      <!-- Встроенный терминал (активируется по клавише : или клику на кнопку Terminal) -->
       <form id="cli-form" class="cli-form" autocomplete="off" hidden>
-        <span class="cli-colon">:</span>
+        <span class="cli-colon">jrnl &gt;</span>
         <div class="cli-input-wrap">
           <input id="cli-input" type="text" class="cli-input" spellcheck="false" placeholder="grade Иванов Python 5 | add БЭИ2401 | w excel | theme oled">
           <span id="cli-ghost" class="cli-ghost" aria-hidden="true"></span>
@@ -31,11 +135,13 @@
     </div>
 
     <div class="statusline-right">
-      <button id="cli-trigger-btn" type="button" class="cli-trigger-btn" title="Открыть командную строку (Клавиша :)">
-        <span>:_ консоль</span>
+      <button id="cli-trigger-btn" type="button" class="cli-trigger-btn" title="Открыть встроенный терминал команд (Клавиша :)">
+        <span>⌘ Terminal (:)</span>
       </button>
+      <span id="status-cursor-pos" class="status-segment status-pos">Ln 1, Col 1</span>
       <span class="status-segment muted">UTF-8</span>
-      <span id="status-cursor-pos" class="status-segment status-pos">ROW --</span>
+      <span class="status-segment muted">Java 21 · Spring Boot 3.3.5</span>
+      <span id="polybar-clock" class="status-segment">00:00</span>
     </div>
   </div>
 </footer>

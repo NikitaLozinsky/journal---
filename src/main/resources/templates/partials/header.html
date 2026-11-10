@@ -1,57 +1,81 @@
-<header class="site-header polybar" th:fragment="header" xmlns:th="http://www.thymeleaf.org">
-  <div class="polybar-inner">
-    <!-- Левый блок: Воркспейсы bspwm (1..5) -->
-    <div class="polybar-left">
-      <a class="arch-logo" href="/groups" title="На главную (Alt+1)">
-        <span class="arch-glyph">󰣇</span>
-        <span class="wm-tag">bspwm</span>
+<header class="site-header idea-toolbar" th:fragment="header" xmlns:th="http://www.thymeleaf.org">
+  <div class="idea-toolbar-inner">
+    <!-- Левая часть: Иконка проекта и Git-ветка как в IDEA New UI -->
+    <div class="idea-toolbar-left">
+      <a class="idea-project-badge" href="/groups" title="На главную (Alt+1)">
+        <span class="idea-project-icon">J</span>
+        <span class="idea-project-name">jrnl</span>
       </a>
-      <nav class="navigation workspaces" aria-label="Разделы приложения">
-        <a href="/groups" data-ws="1" th:attr="aria-current=${activePage == 'groups'} ? 'page' : null">
-          <span class="ws-num">1</span>Группы
-        </a>
-        <a href="/subjects" data-ws="2" th:attr="aria-current=${activePage == 'subjects'} ? 'page' : null">
-          <span class="ws-num">2</span>Предметы
-        </a>
-        <a href="/students" data-ws="3" th:attr="aria-current=${activePage == 'students'} ? 'page' : null">
-          <span class="ws-num">3</span>Студенты
-        </a>
-        <a href="/journal" data-ws="4" th:attr="aria-current=${activePage == 'journal'} ? 'page' : null">
-          <span class="ws-num">4</span>Журнал
-        </a>
-        <a href="/reports" data-ws="5" th:attr="aria-current=${activePage == 'reports'} ? 'page' : null">
-          <span class="ws-num">5</span>Отчёты
-        </a>
-      </nav>
+      <div class="idea-vcs-badge" title="Активная конфигурация интерфейса">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
+          <circle cx="4" cy="3.5" r="2"/><circle cx="4" cy="12.5" r="2"/><circle cx="12" cy="6.5" r="2"/>
+          <path d="M4 5.5v5M6 12.5h3a3 3 0 0 0 3-3v-1"/>
+        </svg>
+        <span>feature/jetbrains-lavender-ui</span>
+      </div>
     </div>
 
-    <!-- Центральный блок: Системный статус в стиле Polybar -->
-    <div class="polybar-center">
-      <span class="poly-metric" title="Движок базы данных">
-        <span class="poly-icon">⚡</span> SQLite:WAL
-      </span>
-      <span class="poly-sep">│</span>
-      <span class="poly-metric" title="Текущая ветка интерфейса">
-        <span class="poly-icon">󰣇</span> journal@edu.local
-      </span>
+    <!-- Центральная часть: Вкладки редактора (Editor Tabs) -->
+    <nav class="navigation idea-editor-tabs" aria-label="Разделы приложения">
+      <a href="/groups" data-ws="1" th:attr="aria-current=${activePage == 'groups'} ? 'page' : null">
+        <span class="tab-icon icon-java">C</span>
+        <span>Groups.java</span>
+        <span class="tab-hotkey">1</span>
+      </a>
+      <a href="/subjects" data-ws="2" th:attr="aria-current=${activePage == 'subjects'} ? 'page' : null">
+        <span class="tab-icon icon-java">C</span>
+        <span>Subjects.java</span>
+        <span class="tab-hotkey">2</span>
+      </a>
+      <a href="/students" data-ws="3" th:attr="aria-current=${activePage == 'students'} ? 'page' : null">
+        <span class="tab-icon icon-java">C</span>
+        <span>Students.java</span>
+        <span class="tab-hotkey">3</span>
+      </a>
+      <a href="/journal" data-ws="4" th:attr="aria-current=${activePage == 'journal'} ? 'page' : null">
+        <span class="tab-icon icon-db">⊞</span>
+        <span>JournalMatrix.db</span>
+        <span class="tab-hotkey">4</span>
+      </a>
+      <a href="/reports" data-ws="5" th:attr="aria-current=${activePage == 'reports'} ? 'page' : null">
+        <span class="tab-icon icon-sql">📊</span>
+        <span>Reports.sql</span>
+        <span class="tab-hotkey">5</span>
+      </a>
+    </nav>
+
+    <!-- Индикатор проверки проекта (как на скриншоте IDEA рядом с вкладками) -->
+    <div class="idea-inspect-badge" title="Анализ проекта: 0 ошибок, база данных SQLite WAL активна">
+      <span class="inspect-dot">●</span>
+      <span class="inspect-text">READY</span>
     </div>
 
-    <!-- Правый блок: Управление HUD, Палитра команд, Тема, Часы -->
-    <div class="polybar-right">
-      <button id="hud-toggle" class="poly-btn active" type="button" title="Показать/скрыть боковые подсказки с иллюстрациями (Клавиша ?)">
-        <span>󰋖 HUD</span>
-        <kbd>?</kbd>
-      </button>
-      <button id="cmd-palette-trigger" class="poly-btn" type="button" title="Командная палитра (Ctrl+K)">
-        <span>󰘳 Cmd</span>
+    <!-- Правая часть: Виджет запуска Run Configuration, Поиск и Тема -->
+    <div class="idea-toolbar-right">
+      <div class="idea-run-widget">
+        <span class="run-config-name">
+          <span class="spring-leaf">🍃</span> JournalApplication
+        </span>
+        <button id="idea-run-btn" class="run-action-btn run-play" type="button" title="Обновить данные / Быстрое действие (▶)">▶</button>
+        <button id="idea-debug-btn" class="run-action-btn" type="button" title="Открыть консоль Spring Boot / Run Tool Window (Alt+4)">🐞</button>
+        <button id="hud-toggle" class="run-action-btn active" type="button" title="Показать/скрыть боковые панели подсказок (Клавиша ?)">
+          <span>Подсказки</span>
+          <kbd>?</kbd>
+        </button>
+      </div>
+
+      <button id="cmd-palette-trigger" class="idea-icon-btn" type="button" title="Search Everywhere (Ctrl+K)">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7">
+          <circle cx="7" cy="7" r="4.8"/><path d="M10.6 10.6L14 14"/>
+        </svg>
         <kbd>^K</kbd>
       </button>
-      <button id="theme-toggle" class="poly-btn theme-toggle-btn" type="button" aria-label="Переключить тему оформления" title="Переключить тему (Alt+T)">
-        <span class="theme-toggle-icon" aria-hidden="true">󰄛</span>
-        <span class="theme-toggle-text">Dracula</span>
+
+      <button id="theme-toggle" class="idea-icon-btn theme-toggle-btn" type="button" aria-label="Переключить тему оформления" title="Переключить тему: Dark Lavender / OLED / Light (Alt+T)">
+        <span class="theme-toggle-icon" aria-hidden="true">🌙</span>
+        <span class="theme-toggle-text">Darcula</span>
       </button>
-      <span id="polybar-clock" class="poly-clock">00:00</span>
     </div>
   </div>
-  <script type="module" src="/js/theme.js?v=4.0"></script>
+  <script type="module" src="/js/theme.js?v=5.0"></script>
 </header>

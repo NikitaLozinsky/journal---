@@ -1,7 +1,7 @@
 // cli.js - Встроенная командная консоль в стиле Vim Ex-mode / fish shell
 import { requestJSON } from "/js/api.js";
 import { message } from "/js/ui.js";
-import { setTheme, setHudVisibility, toggleHudVisibility } from "/js/theme.js";
+import { setTheme, setHudVisibility, toggleHudVisibility, logToRunConsole } from "/js/theme.js";
 
 const HISTORY_KEY = "journal_cli_history";
 
@@ -155,6 +155,7 @@ async function executeCommand(rawLine) {
   if (!clean) return;
 
   saveHistory(clean);
+  logToRunConsole(`Команда: :${clean}`, "INFO");
   const tokens = tokenizeArgs(clean);
   const verb = tokens[0].toLowerCase();
   const args = tokens.slice(1);
