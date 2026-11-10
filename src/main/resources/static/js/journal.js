@@ -44,6 +44,10 @@ const quickEditHint = document.querySelector("#quick-edit-hint");
 const printGroupName = document.querySelector("#print-group-name");
 const printDate = document.querySelector("#print-date");
 
+const progressBox = document.querySelector("#journal-progress-box");
+const progressStats = document.querySelector("#progress-stats");
+const progressBarFill = document.querySelector("#progress-bar-fill");
+
 let journalData = null, groups = [];
 let gridMatrix = [];
 let activeRow = -1, activeCol = -1;
@@ -367,6 +371,24 @@ function renderAnalytics() {
   });
 }
 
+/** Интерактивный индикатор заполненности ведомости */
+function updateProgressIndicator() {
+  if (!progressBox || !progressStats || !progressBarFill || !journalData) return;
+  const { students, subjects, grades } = journalData;
+  if (!students || !students.length || !subjects || !subjects.length) {
+    progressBox.hidden = true;
+    return;
+  }
+  progressBox.hidden = false;
+  const totalSlots = students.length * subjects.length;
+  const filledSlots = (grades || []).length;
+  const pct = totalSlots > 0 ? Math.min(100, Math.round((filledSlots / totalSlots) * 100)) : 0;
+
+  progressStats.textContent = `${filledSlots} / ${totalSlots} (${pct}%)`;
+  progressBarFill.style.width = `${pct}%`;
+  progressBarFill.classList.toggle("progress-complete", pct === 100);
+}
+
 /** Обновляет бейдж среднего балла в строке студента на лету */
 function updateStudentRowAverage(studentId) {
   const badge = tableBody.querySelector(`span[data-avg-for="${studentId}"]`);
@@ -384,6 +406,11 @@ function updateStudentRowAverage(studentId) {
   else if (avg >= 3.8) badge.classList.add("good");
   else if (avg >= 3.0) badge.classList.add("fair");
   else badge.classList.add("failing");
+
+  // Тактильная микро-анимация обновления балла
+  badge.classList.remove("badge-bump");
+  void badge.offsetWidth;
+  badge.classList.add("badge-bump");
 }
 
 function setActiveCell(r, c) {
@@ -400,6 +427,10 @@ function setActiveCell(r, c) {
   if (targetBtn) {
     targetBtn.classList.add("cell-active");
     targetBtn.focus();
+    // Подсветка активной колонки в шапке
+    tableHead.querySelectorAll("th[data-col]").forEach(th => {
+      th.classList.toggle("th-col-active", th.dataset.col === String(activeCol));
+    });
   }
 }
 
@@ -413,6 +444,17 @@ async function quickSaveGrade(btn, r, c, mark) {
   btn.classList.remove("empty");
   btn.classList.toggle("failing", mark === 2);
   btn.classList.add("cell-saving");
+
+  // Тактильная анимация вспышки ячейки и строки
+  btn.classList.remove("cell-pop");
+  void btn.offsetWidth;
+  btn.classList.add("cell-pop");
+
+  const parentRow = btn.closest("tr");
+  if (parentRow) {
+    parentRow.classList.add("row-impact");
+    setTimeout(() => parentRow.classList.remove("row-impact"), 400);
+  }
 
   try {
     const res = await requestJSON(GRADES_API, "POST", {
@@ -431,6 +473,7 @@ async function quickSaveGrade(btn, r, c, mark) {
     }
 
     updateStudentRowAverage(studentId);
+    updateProgressIndicator();
     renderAnalytics();
   } catch (error) {
     message("Ошибка сохранения оценки: " + error.message, true);
@@ -451,6 +494,16 @@ async function quickDeleteGrade(btn) {
   btn.classList.remove("failing");
   btn.classList.add("cell-saving");
 
+  btn.classList.remove("cell-pop");
+  void btn.offsetWidth;
+  btn.classList.add("cell-pop");
+
+  const parentRow = btn.closest("tr");
+  if (parentRow) {
+    parentRow.classList.add("row-impact");
+    setTimeout(() => parentRow.classList.remove("row-impact"), 400);
+  }
+
   try {
     await requestJSON(GRADES_API + "/" + studentId + "/" + subjectId, "DELETE");
     if (journalData && journalData.grades) {
@@ -459,6 +512,7 @@ async function quickDeleteGrade(btn) {
       );
     }
     updateStudentRowAverage(studentId);
+    updateProgressIndicator();
     renderAnalytics();
   } catch (error) {
     message("Ошибка удаления оценки: " + error.message, true);
@@ -482,8 +536,10 @@ function render() {
   thStudent.textContent = "Студент";
   headRow.append(thStudent);
 
-  for (const subject of subjects) {
+  for (let cIdx = 0; cIdx < subjects.length; cIdx++) {
+    const subject = subjects[cIdx];
     const th = document.createElement("th");
+    th.dataset.col = String(cIdx);
     th.style.textAlign = "center";
 
     const wrap = document.createElement("div");
@@ -601,6 +657,8 @@ function render() {
     }
 
     const row = document.createElement("tr");
+    row.dataset.row = String(rIdx);
+    row.style.setProperty("--row-i", String(rIdx));
     const tdName = document.createElement("td");
     tdName.textContent = student.name;
     row.append(tdName);
@@ -649,7 +707,25 @@ function render() {
     tableBody.append(row);
     updateStudentRowAverage(student.id);
   });
+
+  updateProgressIndicator();
 }
+
+// Crosshair-подсветка активной колонки предмета при наведении
+tableBody.addEventListener("mouseover", function(event) {
+  const btn = event.target.closest("button.grade-button");
+  if (!btn) return;
+  const col = btn.dataset.col;
+  tableHead.querySelectorAll("th[data-col]").forEach(th => {
+    th.classList.toggle("th-col-active", th.dataset.col === col);
+  });
+});
+
+tableBody.addEventListener("mouseout", function(event) {
+  const btn = event.target.closest("button.grade-button");
+  if (!btn) return;
+  tableHead.querySelectorAll("th.th-col-active").forEach(th => th.classList.remove("th-col-active"));
+});
 
 function openGradeEditor(btn) {
   const hasGrade = btn.dataset.hasGrade === "true";

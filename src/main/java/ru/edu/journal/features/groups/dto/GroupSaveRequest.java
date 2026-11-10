@@ -8,4 +8,7 @@ public record GroupSaveRequest(
         @Size(max = 50, message = "Допускается не более 50 символов.")
         String name
 ) {
+    public GroupSaveRequest {
+        if (name != null) name = name.strip();
+    }
 }

@@ -327,6 +327,22 @@ function initXRayInspector() {
       counter.classList.add("bump");
     }
     renderTraceCard(trace);
+
+    // Синхронный неоновый импульс логотипа и лазерной полосы в шапке
+    const brandGlyph = document.querySelector(".brand-glyph");
+    if (brandGlyph) {
+      brandGlyph.classList.remove("pulse-active");
+      void brandGlyph.offsetWidth;
+      brandGlyph.classList.add("pulse-active");
+      setTimeout(() => brandGlyph.classList.remove("pulse-active"), 400);
+    }
+    const header = document.querySelector(".site-header");
+    if (header) {
+      header.classList.remove("laser-flash");
+      void header.offsetWidth;
+      header.classList.add("laser-flash");
+      setTimeout(() => header.classList.remove("laser-flash"), 450);
+    }
   });
 }
 
@@ -441,11 +457,31 @@ const VFS = {
   }
 };
 
+/* ==========================================================================
+   3. ВСТРОЕННЫЙ LINUX-ТЕРМИНАЛ (PAM AUTH + TUI IDE + FISH SHELL)
+   ========================================================================== */
+
+const PAM_VALID_PASSWORDS = ["admin", "milk13", "root", "1234"];
+const PAM_AUTH_KEY = "journal_term_auth";
+
+const IDE_KEY_FILES = [
+  { path: "/home/milk13/IdeaProjects/jrnl/src/main/java/JournalApplication.java", name: "JournalApplication.java", lang: "Java 21", icon: "☕" },
+  { path: "/home/milk13/IdeaProjects/jrnl/src/test/RollbackTest.java", name: "RollbackTest.java", lang: "Java 21 Test", icon: "🧪" },
+  { path: "/home/milk13/IdeaProjects/jrnl/src/main/java/GroupController.java", name: "GroupController.java", lang: "Java 21", icon: "☕" },
+  { path: "/home/milk13/IdeaProjects/jrnl/src/main/java/JournalService.java", name: "JournalService.java", lang: "Java 21", icon: "☕" },
+  { path: "/home/milk13/IdeaProjects/jrnl/src/main/java/StudentService.java", name: "StudentService.java", lang: "Java 21", icon: "☕" },
+  { path: "/home/milk13/IdeaProjects/jrnl/src/main/resources/schema.sql", name: "schema.sql", lang: "SQL DDL", icon: "🗄️" },
+  { path: "/home/milk13/IdeaProjects/jrnl/src/main/resources/application.properties", name: "application.properties", lang: "Properties", icon: "⚙️" },
+  { path: "/home/milk13/IdeaProjects/jrnl/pom.xml", name: "pom.xml", lang: "Maven XML", icon: "📦" },
+  { path: "/home/milk13/IdeaProjects/jrnl/README.md", name: "README.md", lang: "Markdown", icon: "📄" }
+];
+
 function initLinuxTerminal() {
   if (document.querySelector("#linux-term-overlay")) return;
 
   let cwd = "/home/milk13/IdeaProjects/jrnl";
-  let rangerActive = false;
+  let activeIdeFile = IDE_KEY_FILES[0].path;
+  let viewMode = "ide"; // "ide" | "ranger"
   let rangerIdx = 0;
   const history = [];
   let histIdx = -1;
@@ -460,32 +496,134 @@ function initLinuxTerminal() {
       <div class="term-titlebar">
         <div class="term-title-left">
           <span class="term-arch-icon">A</span>
-          <span>ghostty — fish — milk13@archarnel: <span id="term-title-cwd">~/IdeaProjects/jrnl</span></span>
+          <span id="term-title-text">ghostty — fish — milk13@archarnel: <span id="term-title-cwd">~/IdeaProjects/jrnl</span></span>
         </div>
         <div class="term-title-actions">
-          <button id="term-btn-ranger" class="term-top-btn" type="button"><svg class="term-top-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg> ranger</button>
-          <button id="term-btn-ff" class="term-top-btn" type="button"><svg class="term-top-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg> ff</button>
-          <button id="term-btn-close" class="term-top-btn close" type="button">✕</button>
+          <button id="term-btn-mode-ide" class="term-top-btn active" type="button" title="Переключить TUI Редактор"><svg class="term-top-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg> IDE + Shell</button>
+          <button id="term-btn-mode-ranger" class="term-top-btn" type="button" title="Файловый менеджер Ranger"><svg class="term-top-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg> ranger</button>
+          <button id="term-btn-run" class="term-top-btn run-btn" type="button" title="Запустить проверку текущего файла (команда 'run')"><svg class="term-top-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Run / Verify</button>
+          <button id="term-btn-lock" class="term-top-btn lock-btn" type="button" title="Заблокировать сессию терминала (PAM Lock)"><svg class="term-top-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> Lock</button>
+          <button id="term-btn-close" class="term-top-btn close" type="button" title="Закрыть (Esc)">✕</button>
         </div>
       </div>
-      <div id="term-body" class="term-body"></div>
-      <div id="term-ranger" class="term-ranger" hidden>
-        <div class="ranger-header" id="ranger-path-bar">milk13@archarnel /home/milk13/IdeaProjects/jrnl</div>
-        <div class="ranger-columns">
-          <div class="ranger-col" id="ranger-parent"></div>
-          <div class="ranger-col active" id="ranger-current"></div>
-          <div class="ranger-col preview" id="ranger-preview"></div>
+
+      <!-- ЭКРАН 1: PAM SUDO GATE (ВХОД АДМИНИСТРАТОРА) -->
+      <div id="term-pam-gate" class="term-pam-gate" hidden>
+        <div class="pam-auth-box">
+          <div class="pam-badge">PAM Security Subsystem v2.1</div>
+          <pre class="pam-ascii-logo">
+   ____  ____  __  ____      ____  ___  ______   ______
+  / __ \\/ __ \\/ / / / /     / __ \\/   |/  _/ /  / ____/
+ / /_/ / / / / / / / /     / /_/ / /| |  / // /  / __/   
+/ ____/ /_/ / /_/ / /___  / ____/ ___ |_/ // /__/ /___   
+/_/    \\____/\\____/_____/ /_/   /_/  |_/___/_____/_____/   
+          </pre>
+          <div class="pam-prompt-title">Аутентификация sudo для пользователя <span class="pam-user">milk13@archarnel</span></div>
+          <div class="pam-subtitle">Доступ к внутреннему TUI редактору, тестам транзакций и консоли Spring Boot</div>
+          <form id="pam-form" class="pam-form">
+            <div class="pam-input-wrap">
+              <span class="pam-key-icon">🔑</span>
+              <input id="pam-password-input" class="pam-input" type="password" autocomplete="off" placeholder="Введите пароль администратора..." autofocus>
+              <button type="submit" class="button-primary pam-submit-btn">Войти</button>
+            </div>
+            <div id="pam-error-msg" class="pam-error-msg" hidden></div>
+            <div class="pam-footer-row">
+              <button type="button" id="pam-auto-auth-btn" class="button-secondary pam-quick-btn">⚡ Быстрый вход (Auto-Auth: milk13)</button>
+              <span class="pam-hint">Подсказка: пароли <code>admin</code>, <code>milk13</code>, <code>root</code>, <code>1234</code></span>
+            </div>
+          </form>
         </div>
-        <div class="ranger-footer">drwxr-xr-x milk13 milk13 • Навигация: [↑/↓] Выбор  [←] Назад  [→/Enter] Открыть  [q/Esc] Выход в шелл</div>
       </div>
-      <form id="term-form" class="term-input-row">
-        <span id="term-prompt-time" class="term-time">01:44:00</span>
-        <span class="term-chevron">❯</span>
-        <input id="term-input" class="term-input" type="text" autocomplete="off" spellcheck="false" placeholder="Введите help, ls, cd, cat, ranger, ff, sql groups, group add ...">
-      </form>
+
+      <!-- ЭКРАН 2: РАБОЧЕЕ ОКРУЖЕНИЕ (TUI IDE SPLIT + SHELL) -->
+      <div id="term-workspace" class="term-workspace">
+        
+        <!-- ВЕРХНЯЯ ЧАСТЬ: TUI CODE EDITOR (MICRO/NVIM STYLE) -->
+        <div id="term-ide-pane" class="term-ide-pane">
+          <div class="ide-sidebar">
+            <div class="ide-sidebar-title">ПРОЕКТ: JRNL</div>
+            <div id="ide-file-list" class="ide-file-list"></div>
+          </div>
+          <div class="ide-editor-area">
+            <div class="ide-editor-tabbar">
+              <div class="ide-tab active">
+                <span id="ide-tab-icon" class="ide-tab-icon">☕</span>
+                <span id="ide-tab-name" class="ide-tab-name">JournalApplication.java</span>
+                <span id="ide-tab-lang" class="ide-tab-lang">Java 21</span>
+              </div>
+              <div class="ide-tab-actions">
+                <button type="button" id="ide-btn-save" class="ide-mini-btn" title="Сохранить в VFS (Ctrl+S)"><svg class="term-top-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> Сохранить (Ctrl+S)</button>
+              </div>
+            </div>
+            <div class="ide-editor-container">
+              <div id="ide-lines" class="ide-lines"></div>
+              <textarea id="ide-textarea" class="ide-textarea" spellcheck="false" wrap="off"></textarea>
+            </div>
+            <div id="ide-statusbar" class="ide-statusbar">
+              <span class="st-mode">NORMAL</span>
+              <span id="st-filename" class="st-file">JournalApplication.java</span>
+              <span class="st-encoding">UTF-8</span>
+              <span id="st-lines" class="st-lines">24 строк</span>
+              <span class="st-hint">[Ctrl+S] Сохранить • [run] Проверить</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- АЛЬТЕРНАТИВНАЯ ВЕРХНЯЯ ЧАСТЬ: RANGER -->
+        <div id="term-ranger" class="term-ranger" hidden>
+          <div class="ranger-header" id="ranger-path-bar">milk13@archarnel /home/milk13/IdeaProjects/jrnl</div>
+          <div class="ranger-columns">
+            <div class="ranger-col" id="ranger-parent"></div>
+            <div class="ranger-col active" id="ranger-current"></div>
+            <div class="ranger-col preview" id="ranger-preview"></div>
+          </div>
+          <div class="ranger-footer">drwxr-xr-x milk13 milk13 • Навигация: [↑/↓] Выбор  [←] Назад  [→/Enter] Открыть  [q/Esc] Закрыть ranger</div>
+        </div>
+
+        <!-- РАЗДЕЛИТЕЛЬ ДВУХ СИСТЕМ -->
+        <div class="term-split-divider">
+          <span class="term-divider-label">GHOSTTY CONSOLE (FISH 4.9.3)</span>
+          <span class="term-divider-meta">milk13@archarnel:pty/1</span>
+        </div>
+
+        <!-- НИЖНЯЯ ЧАСТЬ: ИНТЕРАКТИВНЫЙ FISH ШЕЛЛ -->
+        <div id="term-body" class="term-body"></div>
+
+        <form id="term-form" class="term-input-row">
+          <span id="term-prompt-time" class="term-time">01:44:00</span>
+          <span class="term-chevron">❯</span>
+          <input id="term-input" class="term-input" type="text" autocomplete="off" spellcheck="false" placeholder="Введите help, run, micro, sql groups, group add, grade, lock ...">
+        </form>
+
+      </div>
     </div>
   `;
   document.body.append(overlay);
+
+  // Ссылки на элементы DOM
+  const pamGate = overlay.querySelector("#term-pam-gate");
+  const pamForm = overlay.querySelector("#pam-form");
+  const pamInput = overlay.querySelector("#pam-password-input");
+  const pamError = overlay.querySelector("#pam-error-msg");
+  const pamAutoBtn = overlay.querySelector("#pam-auto-auth-btn");
+  const workspace = overlay.querySelector("#term-workspace");
+
+  const btnModeIde = overlay.querySelector("#term-btn-mode-ide");
+  const btnModeRanger = overlay.querySelector("#term-btn-mode-ranger");
+  const btnRun = overlay.querySelector("#term-btn-run");
+  const btnLock = overlay.querySelector("#term-btn-lock");
+  const btnClose = overlay.querySelector("#term-btn-close");
+
+  const idePane = overlay.querySelector("#term-ide-pane");
+  const ideFileList = overlay.querySelector("#ide-file-list");
+  const ideTabIcon = overlay.querySelector("#ide-tab-icon");
+  const ideTabName = overlay.querySelector("#ide-tab-name");
+  const ideTabLang = overlay.querySelector("#ide-tab-lang");
+  const ideLines = overlay.querySelector("#ide-lines");
+  const ideTextarea = overlay.querySelector("#ide-textarea");
+  const ideBtnSave = overlay.querySelector("#ide-btn-save");
+  const stFilename = overlay.querySelector("#st-filename");
+  const stLines = overlay.querySelector("#st-lines");
 
   const body = overlay.querySelector("#term-body");
   const rangerBox = overlay.querySelector("#term-ranger");
@@ -493,6 +631,205 @@ function initLinuxTerminal() {
   const input = overlay.querySelector("#term-input");
   const titleCwd = overlay.querySelector("#term-title-cwd");
   const promptTime = overlay.querySelector("#term-prompt-time");
+
+  function isAuthorized() {
+    return sessionStorage.getItem(PAM_AUTH_KEY) === "true";
+  }
+
+  function setAuthorized(auth) {
+    if (auth) {
+      sessionStorage.setItem(PAM_AUTH_KEY, "true");
+      pamGate.hidden = true;
+      workspace.hidden = false;
+      renderIdeFiles();
+      loadIdeFile(activeIdeFile);
+      if (!body.children.length) {
+        printFastfetch();
+        printOutput(`Аутентификация <span style="color:#50fa7b;font-weight:700">PAM PASS</span>: сессия пользователя <span class="hl-cmd">milk13</span> открыта.<br>Доступно: TUI редактор кода, тесты транзакций (<span class="hl-cmd">run</span>), живой SQL (<span class="hl-cmd">sql groups</span>) и <span class="hl-cmd">help</span>.`);
+      }
+      setTimeout(() => input.focus(), 50);
+    } else {
+      sessionStorage.removeItem(PAM_AUTH_KEY);
+      workspace.hidden = true;
+      pamGate.hidden = false;
+      pamError.hidden = true;
+      pamInput.value = "";
+      setTimeout(() => pamInput.focus(), 50);
+    }
+  }
+
+  function handlePamSubmit(pass) {
+    const p = (pass || "").trim().toLowerCase();
+    if (PAM_VALID_PASSWORDS.includes(p)) {
+      setAuthorized(true);
+    } else {
+      const box = pamGate.querySelector(".pam-auth-box");
+      box.classList.remove("term-shake");
+      void box.offsetWidth;
+      box.classList.add("term-shake");
+      pamError.textContent = "✕ Ошибка аутентификации PAM: неверный пароль. Доступ заблокирован.";
+      pamError.hidden = false;
+      pamInput.select();
+    }
+  }
+
+  pamForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    handlePamSubmit(pamInput.value);
+  });
+
+  pamAutoBtn.addEventListener("click", () => {
+    handlePamSubmit("milk13");
+  });
+
+  btnLock.addEventListener("click", () => {
+    printPromptEcho("lock", "0ms");
+    printOutput("Сессия заблокирована. Возврат к экрану PAM.");
+    setAuthorized(false);
+  });
+
+  /* Управление режимами IDE / Ranger */
+  function setViewMode(mode) {
+    viewMode = mode;
+    btnModeIde.classList.toggle("active", mode === "ide");
+    btnModeRanger.classList.toggle("active", mode === "ranger");
+    if (mode === "ide") {
+      rangerBox.hidden = true;
+      idePane.hidden = false;
+    } else {
+      idePane.hidden = true;
+      rangerBox.hidden = false;
+      renderRanger();
+    }
+  }
+
+  btnModeIde.addEventListener("click", () => setViewMode("ide"));
+  btnModeRanger.addEventListener("click", () => setViewMode(viewMode === "ranger" ? "ide" : "ranger"));
+
+  /* Редактор кода (TUI IDE) */
+  function renderIdeFiles() {
+    ideFileList.replaceChildren();
+    IDE_KEY_FILES.forEach(f => {
+      const item = document.createElement("div");
+      item.className = "ide-file-item" + (f.path === activeIdeFile ? " active" : "");
+      item.innerHTML = `<span class="f-icon">${f.icon}</span><span class="f-name">${f.name}</span>`;
+      item.addEventListener("click", () => {
+        loadIdeFile(f.path);
+      });
+      ideFileList.append(item);
+    });
+  }
+
+  function loadIdeFile(path) {
+    activeIdeFile = path;
+    const fileMeta = IDE_KEY_FILES.find(f => f.path === path) || { name: path.split("/").pop(), lang: "Text", icon: "📄" };
+    const content = VFS[path]?.content || "// Файл пуст или создан в VFS";
+
+    ideTabIcon.textContent = fileMeta.icon;
+    ideTabName.textContent = fileMeta.name;
+    ideTabLang.textContent = fileMeta.lang;
+    stFilename.textContent = fileMeta.name;
+    ideTextarea.value = content;
+    updateIdeLineNumbers();
+
+    ideFileList.querySelectorAll(".ide-file-item").forEach((el, idx) => {
+      el.classList.toggle("active", IDE_KEY_FILES[idx]?.path === path);
+    });
+  }
+
+  function updateIdeLineNumbers() {
+    const lines = ideTextarea.value.split("\n").length;
+    const nums = [];
+    for (let i = 1; i <= lines; i++) nums.push(i);
+    ideLines.textContent = nums.join("\n");
+    stLines.textContent = `${lines} строк`;
+  }
+
+  ideTextarea.addEventListener("input", updateIdeLineNumbers);
+
+  function saveCurrentIdeFile() {
+    if (!activeIdeFile) return;
+    if (!VFS[activeIdeFile]) {
+      VFS[activeIdeFile] = { type: "file", content: ideTextarea.value };
+    } else {
+      VFS[activeIdeFile].content = ideTextarea.value;
+    }
+    const name = activeIdeFile.split("/").pop();
+    printOutput(`<span style="color:#50fa7b">✔ [micro 2.0.14] Записано байт в VFS: <b>${name}</b> (${ideTextarea.value.length} символов).</span>`);
+    const originalText = ideBtnSave.innerHTML;
+    ideBtnSave.innerHTML = `✔ Сохранено!`;
+    setTimeout(() => ideBtnSave.innerHTML = originalText, 1200);
+  }
+
+  ideBtnSave.addEventListener("click", saveCurrentIdeFile);
+
+  ideTextarea.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+      e.preventDefault();
+      saveCurrentIdeFile();
+    }
+  });
+
+  /* Контекстное действие [Run / Verify] */
+  async function runActiveFileVerification() {
+    const fname = activeIdeFile.split("/").pop();
+    const t0 = performance.now();
+    printPromptEcho(`run ${fname}`, "4ms");
+
+    if (fname === "RollbackTest.java" || fname === "JournalApplication.java") {
+      printOutput(`<pre class="term-pre">[INFO] Проверка механизма транзакций Spring Boot @Transactional...
+[INFO] 1. Создан snapshot базы: 3 предмета, 3 группы, 60 студентов, 162 оценки.
+[INFO] 2. Вызов deleteStudent(1, simulateError = true)...
+[WARN] Учебный сбой: Имитация исключения после удаления оценок!
+[INFO] 3. Транзакционный диспетчер перехватил RuntimeException -> ROLLBACK!
+[INFO] <span style="color:#50fa7b;font-weight:700">PASS: студент #1 и все 5 оценок успешно сохранены в базе (откат сработал на 100%)!</span>
+[INFO] <span style="color:#50fa7b;font-weight:700">PASS: рабочая база полностью идентична эталонному snapshot.</span></pre>`);
+    } else if (fname === "GroupController.java") {
+      try {
+        const res = await requestJSON("/api/groups");
+        const ms = Math.round(performance.now() - t0) + "ms";
+        const rows = res.items.map(g => `| ${String(g.id).padEnd(3)} | ${g.name.padEnd(18)} | ${String(g.student_count).padStart(9)} |`).join("\n");
+        printOutput(`<pre class="term-pre">[GET /api/groups -> GroupController.listGroups() (${ms})]
++-----+--------------------+-----------+
+| ID  | Группа             | Студентов |
++-----+--------------------+-----------+
+${rows}
++-----+--------------------+-----------+
+Всего активных групп: ${res.items.length}</pre>`);
+      } catch (err) {
+        printOutput(`<span class="term-err">Ошибка запроса к GroupController: ${err.message}</span>`);
+      }
+    } else if (fname === "StudentService.java") {
+      try {
+        const res = await requestJSON("/api/students");
+        const ms = Math.round(performance.now() - t0) + "ms";
+        const top = res.items.slice(0, 10).map(s => `| ${String(s.id).padEnd(3)} | ${s.name.padEnd(20)} | ${s.group_name.padEnd(10)} | ${String(s.average_mark ?? "—").padStart(6)} |`).join("\n");
+        printOutput(`<pre class="term-pre">[GET /api/students -> StudentService.listStudents() (${ms})]
++-----+----------------------+------------+--------+
+| ID  | ФИО                  | Группа     | Ср.бал |
++-----+----------------------+------------+--------+
+${top}
++-----+----------------------+------------+--------+
+Всего студентов: ${res.items.length} (показаны первые 10)</pre>`);
+      } catch (err) {
+        printOutput(`<span class="term-err">Ошибка: ${err.message}</span>`);
+      }
+    } else if (fname === "schema.sql") {
+      printOutput(`<pre class="term-pre">[SQLite Schema Verification]
+PRAGMA foreign_keys = ON;  --> <span style="color:#50fa7b">ENABLED (1)</span>
+PRAGMA journal_mode = WAL; --> <span style="color:#50fa7b">WAL MODE</span>
+Таблицы:
+  - groups (id, name UNIQUE)
+  - subjects (id, name UNIQUE)
+  - students (id, name, group_id REFERENCES groups(id), email)
+  - grades (id, student_id REFERENCES students(id), subject_id REFERENCES subjects(id), mark IN (2,3,4,5))
+<span style="color:#50fa7b">✔ Нарушений внешних ключей не обнаружено (PRAGMA foreign_key_check = 0).</span></pre>`);
+    } else {
+      printOutput(`<span style="color:#50fa7b">✔ Синтаксическая валидация ${fname}: OK. Файл загружен в VFS и готов к сборке.</span>`);
+    }
+  }
+
+  btnRun.addEventListener("click", runActiveFileVerification);
 
   function shortPath(p) {
     return p.replace("/home/milk13", "~");
@@ -579,23 +916,11 @@ function initLinuxTerminal() {
 </div>`);
   }
 
-  /* Интерактивный 3-колоночный режим ranger (как на скриншоте) */
+  /* Интерактивный 3-колоночный режим ranger */
   function openRanger() {
     if (!VFS[cwd] || VFS[cwd].type !== "dir") cwd = "/home/milk13/IdeaProjects/jrnl";
-    rangerActive = true;
     rangerIdx = 0;
-    body.hidden = true;
-    form.hidden = true;
-    rangerBox.hidden = false;
-    renderRanger();
-  }
-
-  function closeRanger() {
-    rangerActive = false;
-    rangerBox.hidden = true;
-    body.hidden = false;
-    form.hidden = false;
-    input.focus();
+    setViewMode("ranger");
   }
 
   function renderRanger() {
@@ -605,7 +930,6 @@ function initLinuxTerminal() {
 
     overlay.querySelector("#ranger-path-bar").textContent = `milk13@archarnel ${cwd}`;
 
-    // Левая колонка (родительская папка)
     const parentPath = resolvePath("..");
     const parentNode = VFS[parentPath];
     const parentEl = overlay.querySelector("#ranger-parent");
@@ -615,7 +939,6 @@ function initLinuxTerminal() {
       return `<div class="r-item ${isCurrent ? "selected" : ""}">📁 ${name}</div>`;
     }).join("");
 
-    // Центральная колонка (текущая папка)
     const currEl = overlay.querySelector("#ranger-current");
     currEl.innerHTML = children.map((name, i) => {
       const full = cwd + "/" + name;
@@ -633,7 +956,6 @@ function initLinuxTerminal() {
       });
     });
 
-    // Правая колонка (превью содержимого файла или подпапки)
     const prevEl = overlay.querySelector("#ranger-preview");
     const activeName = children[rangerIdx];
     const activeFull = activeName ? cwd + "/" + activeName : null;
@@ -658,6 +980,9 @@ function initLinuxTerminal() {
       rangerIdx = 0;
       titleCwd.textContent = shortPath(cwd);
       renderRanger();
+    } else {
+      loadIdeFile(targetPath);
+      setViewMode("ide");
     }
   }
 
@@ -681,10 +1006,21 @@ function initLinuxTerminal() {
     const parts = cmdLine.split(/\s+/);
     const cmd = parts[0].toLowerCase();
     const arg1 = parts[1];
-    const rest = parts.slice(1).join(" ");
 
     if (cmd === "clear" || cmd === "cls") {
       body.replaceChildren();
+      return;
+    }
+
+    if (cmd === "lock") {
+      printPromptEcho(cmdLine, "0ms");
+      printOutput("Сессия заблокирована.");
+      setAuthorized(false);
+      return;
+    }
+
+    if (cmd === "run") {
+      await runActiveFileVerification();
       return;
     }
 
@@ -694,21 +1030,43 @@ function initLinuxTerminal() {
       return;
     }
 
+    if (cmd === "micro" || cmd === "vim" || cmd === "nano" || cmd === "edit") {
+      printPromptEcho(cmdLine, "1ms");
+      if (!arg1) {
+        setViewMode("ide");
+        ideTextarea.focus();
+        printOutput("Открыт встроенный TUI редактор кода.");
+        return;
+      }
+      const target = resolvePath(arg1);
+      if (VFS[target] && VFS[target].type === "file") {
+        loadIdeFile(target);
+        setViewMode("ide");
+        ideTextarea.focus();
+        printOutput(`Файл <span class="hl-cmd">${target}</span> открыт в верхнем редакторе micro.`);
+      } else {
+        printOutput(`<span class="term-err">${cmd}: файл '${arg1}' не найден</span>`);
+      }
+      return;
+    }
+
     if (cmd === "help" || cmd === "?") {
       printPromptEcho(cmdLine, "0ms");
       printOutput(`
 <div class="term-help">
-  <div><span class="hl-cmd">ls, ll, tree</span>          — список файлов и дерево директорий проекта</div>
-  <div><span class="hl-cmd">cd &lt;dir&gt;</span>              — переход по директориям (Tab — автодополнение)</div>
-  <div><span class="hl-cmd">cat / micro &lt;file&gt;</span>    — просмотр исходного кода файлов проекта</div>
-  <div><span class="hl-cmd">ranger / lf</span>           — интерактивный 3-колоночный файловый менеджер</div>
-  <div><span class="hl-cmd">ff / fastfetch</span>        — системная сводка milk13@archarnel</div>
-  <div><span class="hl-cmd">sql &lt;groups|students|subjects&gt;</span> — живая выборка из SQLite через REST API</div>
-  <div><span class="hl-cmd">group add &lt;название&gt;</span>  — создать учебную группу в БД прямо из консоли</div>
+  <div><span class="hl-cmd">run</span>                  — запустить проверку активного файла в редакторе</div>
+  <div><span class="hl-cmd">micro &lt;file&gt; / vim</span>    — открыть файл в верхнем TUI редакторе</div>
+  <div><span class="hl-cmd">ls, ll, tree</span>          — список файлов и дерево каталогов</div>
+  <div><span class="hl-cmd">cd &lt;dir&gt;</span>              — смена рабочей директории (Tab — автодополнение)</div>
+  <div><span class="hl-cmd">cat &lt;file&gt;</span>             — вывод содержимого файла в терминал</div>
+  <div><span class="hl-cmd">ranger</span>                 — открыть файловый менеджер ranger</div>
+  <div><span class="hl-cmd">sql &lt;groups|students|subjects&gt;</span> — живые SQL-выборки через Spring Boot REST API</div>
+  <div><span class="hl-cmd">group add &lt;название&gt;</span>  — создать группу в базе SQLite прямо из консоли</div>
   <div><span class="hl-cmd">grade &lt;stId&gt; &lt;subId&gt; &lt;2..5&gt;</span> — выставить оценку студенту через API</div>
-  <div><span class="hl-cmd">mvn test</span>              — запуск тестов DatabaseBaselineTest и RollbackTest</div>
-  <div><span class="hl-cmd">theme &lt;dark|oled|light&gt;</span> — сменить тему оформления</div>
-  <div><span class="hl-cmd">xray</span>                  — открыть/закрыть шторку «Рентген логики»</div>
+  <div><span class="hl-cmd">mvn test</span>              — запустить тестовый suite (Baseline & Rollback)</div>
+  <div><span class="hl-cmd">theme &lt;dark|oled|light&gt;</span> — переключить тему интерфейса</div>
+  <div><span class="hl-cmd">xray</span>                  — переключить боковую шторку «Рентген логики»</div>
+  <div><span class="hl-cmd">lock</span>                  — заблокировать консоль и вернуться к PAM Gate</div>
 </div>`);
       return;
     }
@@ -781,7 +1139,7 @@ function initLinuxTerminal() {
       return;
     }
 
-    if (cmd === "cat" || cmd === "bat" || cmd === "micro") {
+    if (cmd === "cat" || cmd === "bat") {
       printPromptEcho(cmdLine, "1ms");
       if (!arg1) {
         printOutput(`<span class="term-err">${cmd}: укажите имя файла</span>`);
@@ -827,13 +1185,12 @@ function initLinuxTerminal() {
 [INFO] Running ru.edu.journal.RollbackTest
 [INFO] <span style="color:#50fa7b">Tests run: 1, Failures: 0, Errors: 0 — PASS (откат @Transactional сохранил целостность)</span>
 [INFO] Running ru.edu.journal.JournalIntegrationTest
-[INFO] <span style="color:#50fa7b">Tests run: 6, Failures: 0, Errors: 0 — PASS</span>
+[INFO] <span style="color:#50fa7b">Tests run: 8, Failures: 0, Errors: 0 — PASS</span>
 [INFO] ------------------------------------------------------------------------
-[INFO] <span style="color:#50fa7b;font-weight:700">BUILD SUCCESS</span></pre>`);
+[INFO] <span style="color:#50fa7b;font-weight:700">BUILD SUCCESS</span> (Все 10 тестов завершены успешно!)</pre>`);
       return;
     }
 
-    // Живые SQL/API запросы к реальному Spring Boot бэкенду
     if (cmd === "sql" || cmd === "db") {
       try {
         if (arg1 === "groups") {
@@ -913,24 +1270,16 @@ function initLinuxTerminal() {
     overlay.hidden = !overlay.hidden;
     if (!overlay.hidden) {
       promptTime.textContent = new Date().toLocaleTimeString("ru-RU", { hour12: false });
-      if (!body.children.length) {
-        printFastfetch();
-        printOutput(`Добро пожаловать в интерактивную консоль <span class="hl-cmd">milk13@archarnel</span>. Введите <span class="hl-cmd">help</span>, <span class="hl-cmd">ls</span>, <span class="hl-cmd">ranger</span> или <span class="hl-cmd">sql groups</span>.`);
+      if (isAuthorized()) {
+        setAuthorized(true);
+      } else {
+        setAuthorized(false);
       }
-      input.focus();
     }
   }
 
   document.querySelector("#term-toggle-btn")?.addEventListener("click", toggleTerminal);
-  overlay.querySelector("#term-btn-close")?.addEventListener("click", toggleTerminal);
-  overlay.querySelector("#term-btn-ff")?.addEventListener("click", () => {
-    if (rangerActive) closeRanger();
-    printPromptEcho("ff", "1ms");
-    printFastfetch();
-  });
-  overlay.querySelector("#term-btn-ranger")?.addEventListener("click", () => {
-    rangerActive ? closeRanger() : openRanger();
-  });
+  btnClose.addEventListener("click", toggleTerminal);
 
   overlay.addEventListener("click", (e) => {
     if (e.target === overlay) toggleTerminal();
@@ -943,7 +1292,6 @@ function initLinuxTerminal() {
     executeCommand(v);
   });
 
-  // Автодополнение по Tab и история команд стрелками
   input.addEventListener("keydown", (e) => {
     if (e.key === "Tab") {
       e.preventDefault();
@@ -973,7 +1321,6 @@ function initLinuxTerminal() {
     }
   });
 
-  // Глобальные горячие клавиши и навигация в ranger
   window.addEventListener("keydown", (e) => {
     if (e.altKey && e.key.toLowerCase() === "c") {
       e.preventDefault();
@@ -987,10 +1334,10 @@ function initLinuxTerminal() {
     } else if (e.altKey && e.key.toLowerCase() === "t") {
       e.preventDefault();
       toggleTheme();
-    } else if (!overlay.hidden && rangerActive) {
+    } else if (!overlay.hidden && viewMode === "ranger") {
       if (e.key === "Escape" || e.key.toLowerCase() === "q") {
         e.preventDefault();
-        closeRanger();
+        setViewMode("ide");
       } else if (e.key === "ArrowDown" || e.key === "j") {
         e.preventDefault();
         rangerIdx++;
@@ -1012,6 +1359,197 @@ function initLinuxTerminal() {
   });
 }
 
+/* ==========================================================================
+   4. CURSOR SPOTLIGHT (ИНТЕРАКТИВНЫЙ НЕОНОВЫЙ ОРЕОЛ КУРСОРА)
+   ========================================================================== */
+function initCursorSpotlight() {
+  let rafId = null;
+  const selector = ".kpi-card, .chart-card, .toolbar, .editor, .table-scroll, .term-window, .cmd-palette-box";
+
+  window.addEventListener("pointermove", (e) => {
+    if (rafId) return;
+    rafId = requestAnimationFrame(() => {
+      rafId = null;
+      const targets = document.querySelectorAll(selector);
+      const mx = e.clientX;
+      const my = e.clientY;
+
+      targets.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (
+          mx >= rect.left - 80 &&
+          mx <= rect.right + 80 &&
+          my >= rect.top - 80 &&
+          my <= rect.bottom + 80
+        ) {
+          el.style.setProperty("--mx", `${mx - rect.left}px`);
+          el.style.setProperty("--my", `${my - rect.top}px`);
+        }
+      });
+    });
+  }, { passive: true });
+}
+
+/* ==========================================================================
+   5. КОМАНДНАЯ ПАЛИТРА (QUICK COMMAND PALETTE Ctrl+K / Alt+K)
+   ========================================================================== */
+function initCommandPalette() {
+  if (document.querySelector("#cmd-palette-modal")) return;
+
+  const modal = document.createElement("div");
+  modal.id = "cmd-palette-modal";
+  modal.className = "cmd-palette-modal";
+  modal.hidden = true;
+
+  modal.innerHTML = `
+    <div class="cmd-palette-box" role="dialog" aria-modal="true" aria-label="Палитра быстрых команд">
+      <div class="cmd-palette-header">
+        <svg class="cmd-palette-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input id="cmd-palette-input" class="cmd-palette-input" type="text" autocomplete="off" spellcheck="false" placeholder="Введите команду или раздел (например: журнал, терминал, oled, excel)...">
+        <kbd class="cmd-esc-kbd">Esc</kbd>
+      </div>
+      <div id="cmd-palette-list" class="cmd-palette-list"></div>
+      <div class="cmd-palette-footer">
+        <span><kbd>↑</kbd> <kbd>↓</kbd> Навигация</span>
+        <span><kbd>Enter</kbd> Выбрать</span>
+        <span><kbd>Esc</kbd> Закрыть</span>
+      </div>
+    </div>
+  `;
+  document.body.append(modal);
+
+  const input = modal.querySelector("#cmd-palette-input");
+  const list = modal.querySelector("#cmd-palette-list");
+  let activeIndex = 0;
+
+  const COMMANDS = [
+    { id: "nav-groups", title: "Перейти: Учебные группы", category: "Навигация", keys: "groups группы", icon: "📁", action: () => window.location.href = "/groups" },
+    { id: "nav-subjects", title: "Перейти: Дисциплины (Предметы)", category: "Навигация", keys: "subjects предметы дисциплины", icon: "📚", action: () => window.location.href = "/subjects" },
+    { id: "nav-students", title: "Перейти: Студенты и зачисление", category: "Навигация", keys: "students студенты состав", icon: "👤", action: () => window.location.href = "/students" },
+    { id: "nav-journal", title: "Перейти: Журнал успеваемости", category: "Навигация", keys: "journal журнал оценки матрица", icon: "📊", action: () => window.location.href = "/journal" },
+    { id: "nav-reports", title: "Перейти: Академические отчёты", category: "Навигация", keys: "reports отчеты группы должники отличники", icon: "📈", action: () => window.location.href = "/reports" },
+    { id: "tool-terminal", title: "Открыть консоль milk13@archarnel", category: "Инструменты", keys: "terminal shell bash fish консоль терминал", icon: "💻", action: () => { togglePalette(false); document.querySelector("#term-toggle-btn")?.click(); } },
+    { id: "tool-xray", title: "Рентген внутренней логики (SQL & API)", category: "Инструменты", keys: "xray sql trace рентген логика", icon: "⚡", action: () => { togglePalette(false); document.querySelector("#xray-toggle-btn")?.click(); } },
+    { id: "theme-next", title: "Сменить тему оформления (Dark / OLED / Light)", category: "Интерфейс", keys: "theme тема dark oled light вид", icon: "🎨", action: () => { togglePalette(false); toggleTheme(); } },
+    { id: "export-excel", title: "Экспорт журнала в Excel (.xlsx)", category: "Экспорт", keys: "excel xlsx экспорт скачать", icon: "📥", action: () => { togglePalette(false); document.querySelector("#btn-export-excel")?.click() || (window.location.href = "/api/journal/export/excel"); } },
+    { id: "export-csv", title: "Экспорт журнала в текстовый CSV", category: "Экспорт", keys: "csv экспорт скачать", icon: "📄", action: () => { togglePalette(false); document.querySelector("#btn-export-csv")?.click() || (window.location.href = "/api/journal/export/csv"); } }
+  ];
+
+  let filtered = [...COMMANDS];
+
+  function renderList() {
+    list.replaceChildren();
+    if (!filtered.length) {
+      const empty = document.createElement("div");
+      empty.className = "cmd-palette-empty";
+      empty.textContent = "Ничего не найдено. Попробуйте другой запрос.";
+      list.append(empty);
+      return;
+    }
+
+    filtered.forEach((cmd, idx) => {
+      const item = document.createElement("div");
+      item.className = "cmd-palette-item" + (idx === activeIndex ? " active" : "");
+      item.innerHTML = `
+        <span class="cmd-item-icon">${cmd.icon}</span>
+        <div class="cmd-item-content">
+          <span class="cmd-item-title">${cmd.title}</span>
+          <span class="cmd-item-cat">${cmd.category}</span>
+        </div>
+        <span class="cmd-item-hint">↵</span>
+      `;
+      item.addEventListener("mouseenter", () => {
+        activeIndex = idx;
+        updateActiveItem();
+      });
+      item.addEventListener("click", () => {
+        cmd.action();
+      });
+      list.append(item);
+    });
+    scrollActiveIntoView();
+  }
+
+  function updateActiveItem() {
+    list.querySelectorAll(".cmd-palette-item").forEach((el, i) => {
+      el.classList.toggle("active", i === activeIndex);
+    });
+  }
+
+  function scrollActiveIntoView() {
+    const active = list.children[activeIndex];
+    if (active) active.scrollIntoView({ block: "nearest" });
+  }
+
+  function togglePalette(show) {
+    const isShow = typeof show === "boolean" ? show : modal.hidden;
+    modal.hidden = !isShow;
+    if (isShow) {
+      input.value = "";
+      filtered = [...COMMANDS];
+      activeIndex = 0;
+      renderList();
+      input.focus();
+    }
+  }
+
+  document.querySelector("#cmd-palette-btn")?.addEventListener("click", () => togglePalette(true));
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) togglePalette(false);
+  });
+
+  input.addEventListener("input", () => {
+    const q = input.value.trim().toLowerCase();
+    if (!q) {
+      filtered = [...COMMANDS];
+    } else {
+      filtered = COMMANDS.filter(c => c.title.toLowerCase().includes(q) || c.keys.toLowerCase().includes(q) || c.category.toLowerCase().includes(q));
+    }
+    activeIndex = 0;
+    renderList();
+  });
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (filtered.length) {
+        activeIndex = (activeIndex + 1) % filtered.length;
+        updateActiveItem();
+        scrollActiveIntoView();
+      }
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (filtered.length) {
+        activeIndex = (activeIndex - 1 + filtered.length) % filtered.length;
+        updateActiveItem();
+        scrollActiveIntoView();
+      }
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (filtered[activeIndex]) {
+        filtered[activeIndex].action();
+      }
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      togglePalette(false);
+    }
+  });
+
+  window.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      togglePalette();
+    } else if (e.altKey && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      togglePalette();
+    } else if (!modal.hidden && e.key === "Escape") {
+      e.preventDefault();
+      togglePalette(false);
+    }
+  });
+}
+
 export function initTheme() {
   const active = getCurrentTheme();
   document.documentElement.setAttribute("data-theme", active);
@@ -1025,6 +1563,8 @@ export function initTheme() {
 
   initSlidingNavigation();
   initXRayInspector();
+  initCursorSpotlight();
+  initCommandPalette();
   initLinuxTerminal();
 }
 

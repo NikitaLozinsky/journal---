@@ -15,4 +15,11 @@ public record StudentSaveRequest(
         @Size(max = 100, message = "Email не должен превышать 100 символов.")
         String email
 ) {
+    public StudentSaveRequest {
+        if (name != null) name = name.strip();
+        if (email != null) {
+            email = email.strip();
+            if (email.isEmpty()) email = null;
+        }
+    }
 }

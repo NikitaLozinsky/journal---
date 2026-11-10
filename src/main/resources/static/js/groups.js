@@ -26,15 +26,16 @@ async function deleteRecord(recordId) {
 function render() {
   body.replaceChildren();
   if (!items.length) { emptyRow(body, 3); return; }
-  for (const item of items) {
+  items.forEach((item, index) => {
     const row = document.createElement("tr");
+    row.style.setProperty("--row-i", String(index));
     row.append(cell(item.name));
     row.append(cell(item.student_count, "number"));
     const td = document.createElement("td");
     td.append(actions(item.id));
     row.append(td);
     body.append(row);
-  }
+  });
 }
 
 /** Обновляет данные, сохраняя старую таблицу при неудачном запросе. */

@@ -199,6 +199,53 @@ public class JournalApplication implements CommandLineRunner {
         }
 
         System.out.println("PASS: обычное удаление убрало студента и его оценки");
+
+        // Восстановление удаленного студента и его оценок из снимка before для сохранения рабочей базы
+        try (Connection con = dataSource.getConnection()) {
+            con.setAutoCommit(false);
+            try {
+                List<Object> studentRow = before.get("students").stream()
+                        .filter(r -> r.get(0).equals(studentId))
+                        .findFirst()
+                        .orElse(null);
+                if (studentRow != null) {
+                    try (var ps = con.prepareStatement("INSERT INTO students (id, name, group_id, email) VALUES (?, ?, ?, ?)")) {
+                        ps.setObject(1, studentRow.get(0));
+                        ps.setObject(2, studentRow.get(1));
+                        ps.setObject(3, studentRow.get(2));
+                        ps.setObject(4, studentRow.get(3));
+                        ps.executeUpdate();
+                    }
+                }
+
+                List<List<Object>> studentGrades = before.get("grades").stream()
+                        .filter(r -> r.get(1).equals(studentId))
+                        .toList();
+                for (List<Object> gRow : studentGrades) {
+                    try (var ps = con.prepareStatement("INSERT INTO grades (id, student_id, subject_id, mark) VALUES (?, ?, ?, ?)")) {
+                        ps.setObject(1, gRow.get(0));
+                        ps.setObject(2, gRow.get(1));
+                        ps.setObject(3, gRow.get(2));
+                        ps.setObject(4, gRow.get(3));
+                        ps.executeUpdate();
+                    }
+                }
+                con.commit();
+            } catch (Exception ex) {
+                con.rollback();
+                throw ex;
+            } finally {
+                con.setAutoCommit(true);
+            }
+        }
+
+        Map<String, List<List<Object>>> finalSnapshot = snapshot();
+        if (!before.equals(finalSnapshot)) {
+            System.err.println("FAIL: Рабочая база не была восстановлена до исходного состояния");
+            System.exit(1);
+        }
+
+        System.out.println("PASS: рабочая база не изменена проверкой");
     }
 
     private Map<String, List<List<Object>>> snapshot() throws Exception {

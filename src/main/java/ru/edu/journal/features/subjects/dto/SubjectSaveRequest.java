@@ -8,4 +8,7 @@ public record SubjectSaveRequest(
         @Size(max = 100, message = "Допускается не более 100 символов.")
         String name
 ) {
+    public SubjectSaveRequest {
+        if (name != null) name = name.strip();
+    }
 }
