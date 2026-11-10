@@ -9,9 +9,9 @@
 | # | Документ | Описание темы |
 |---|---|---|
 | **01** | [**01-how-it-works-and-architecture.md**](file:///home/milk13/IdeaProjects/jrnl/docs/01-how-it-works-and-architecture.md) | **Как устроен проект: запуск веб-сервера, роль Spring Boot, создание сайтов на Java и базовые концепции.** |
-| **02** | *В разработке...* | База данных SQLite, чистый SQL и работа через `JdbcClient` без тяжелых ORM. |
-| **03** | *В разработке...* | Фронтенд, шаблонизация Thymeleaf, REST API и динамический интерфейс (JavaScript). |
-| **04** | *В разработке...* | Вертикальные функциональные срезы (Features): студенты, группы, журнал, аналитика. |
+| **02** | [**02-database-sqlite-and-jdbc-client.md**](file:///home/milk13/IdeaProjects/jrnl/docs/02-database-sqlite-and-jdbc-client.md) | **База данных SQLite WAL, чистый SQL, транзакции ACID и современный Spring `JdbcClient` без тяжелых ORM.** |
+| **03** | [**03-frontend-vanilla-js-and-modern-aurora-ui.md**](file:///home/milk13/IdeaProjects/jrnl/docs/03-frontend-vanilla-js-and-modern-aurora-ui.md) | **Клиентский слой, Vanilla JS, Modern Aurora UI, Google Antigravity physics, поповер оценок и X-Ray.** |
+| **04** | *В разработке...* | Вертикальные функциональные срезы (Features): бизнес-правила групп, студентов, журнала и аналитики. |
 
 ---
 

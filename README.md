@@ -318,8 +318,10 @@ java -jar target/journal-2.0.0.jar
 
 ## 📚 Дополнительная документация
 
-* 📖 [**Руководство по архитектуре и внутреннему устройству (01-how-it-works-and-architecture.md)**](docs/01-how-it-works-and-architecture.md) — исчерпывающий разбор жизненного цикла приложения, работы Spring IoC, DispatcherServlet и низкоуровневых параметров SQLite.
-* 📋 [**Полный снимок контекста системы (project_context.md)**](project_context.md) — актуальное дерево всех 75 файлов проекта с их исходным кодом.
+* 📖 [**Руководство 01: Архитектура и веб-сервер (01-how-it-works-and-architecture.md)**](docs/01-how-it-works-and-architecture.md) — жизненный цикл Spring Boot, DispatcherServlet, Embedded Tomcat и гибридный SSR/REST.
+* 💾 [**Руководство 02: База данных SQLite и Spring JdbcClient (02-database-sqlite-and-jdbc-client.md)**](docs/02-database-sqlite-and-jdbc-client.md) — режим WAL, чистый SQL без ORM, транзакции ACID, каскадное удаление и автотест отката.
+* 🎨 [**Руководство 03: Клиентский интерфейс и Modern Aurora UI (03-frontend-vanilla-js-and-modern-aurora-ui.md)**](docs/03-frontend-vanilla-js-and-modern-aurora-ui.md) — реактивный Vanilla JS, физика Antigravity на Canvas, поповер оценок, темы Zero-FOUC и X-Ray.
+* 📋 [**Полный снимок контекста системы (project_context.md)**](project_context.md) — актуальное дерево всех файлов проекта с их исходным кодом.
 
 ---
 

@@ -2,6 +2,8 @@
 .
 ├── docs
 │   ├── 01-how-it-works-and-architecture.md
+│   ├── 02-database-sqlite-and-jdbc-client.md
+│   ├── 03-frontend-vanilla-js-and-modern-aurora-ui.md
 │   └── README.md
 ├── journal-intro.pptx
 ├── journal-student-guide.docx
@@ -117,7 +119,7 @@
                         ├── JournalIntegrationTest.java
                         └── RollbackTest.java
 
-41 directories, 76 files
+41 directories, 78 files
 
 ## Содержимое ключевых файлов проекта
 
@@ -444,8 +446,10 @@ java -jar target/journal-2.0.0.jar
 
 ## 📚 Дополнительная документация
 
-* 📖 [**Руководство по архитектуре и внутреннему устройству (01-how-it-works-and-architecture.md)**](docs/01-how-it-works-and-architecture.md) — исчерпывающий разбор жизненного цикла приложения, работы Spring IoC, DispatcherServlet и низкоуровневых параметров SQLite.
-* 📋 [**Полный снимок контекста системы (project_context.md)**](project_context.md) — актуальное дерево всех 75 файлов проекта с их исходным кодом.
+* 📖 [**Руководство 01: Архитектура и веб-сервер (01-how-it-works-and-architecture.md)**](docs/01-how-it-works-and-architecture.md) — жизненный цикл Spring Boot, DispatcherServlet, Embedded Tomcat и гибридный SSR/REST.
+* 💾 [**Руководство 02: База данных SQLite и Spring JdbcClient (02-database-sqlite-and-jdbc-client.md)**](docs/02-database-sqlite-and-jdbc-client.md) — режим WAL, чистый SQL без ORM, транзакции ACID, каскадное удаление и автотест отката.
+* 🎨 [**Руководство 03: Клиентский интерфейс и Modern Aurora UI (03-frontend-vanilla-js-and-modern-aurora-ui.md)**](docs/03-frontend-vanilla-js-and-modern-aurora-ui.md) — реактивный Vanilla JS, физика Antigravity на Canvas, поповер оценок, темы Zero-FOUC и X-Ray.
+* 📋 [**Полный снимок контекста системы (project_context.md)**](project_context.md) — актуальное дерево всех файлов проекта с их исходным кодом.
 
 ---
 
@@ -468,9 +472,9 @@ java -jar target/journal-2.0.0.jar
 | # | Документ | Описание темы |
 |---|---|---|
 | **01** | [**01-how-it-works-and-architecture.md**](file:///home/milk13/IdeaProjects/jrnl/docs/01-how-it-works-and-architecture.md) | **Как устроен проект: запуск веб-сервера, роль Spring Boot, создание сайтов на Java и базовые концепции.** |
-| **02** | *В разработке...* | База данных SQLite, чистый SQL и работа через `JdbcClient` без тяжелых ORM. |
-| **03** | *В разработке...* | Фронтенд, шаблонизация Thymeleaf, REST API и динамический интерфейс (JavaScript). |
-| **04** | *В разработке...* | Вертикальные функциональные срезы (Features): студенты, группы, журнал, аналитика. |
+| **02** | [**02-database-sqlite-and-jdbc-client.md**](file:///home/milk13/IdeaProjects/jrnl/docs/02-database-sqlite-and-jdbc-client.md) | **База данных SQLite WAL, чистый SQL, транзакции ACID и современный Spring `JdbcClient` без тяжелых ORM.** |
+| **03** | [**03-frontend-vanilla-js-and-modern-aurora-ui.md**](file:///home/milk13/IdeaProjects/jrnl/docs/03-frontend-vanilla-js-and-modern-aurora-ui.md) | **Клиентский слой, Vanilla JS, Modern Aurora UI, Google Antigravity physics, поповер оценок и X-Ray.** |
+| **04** | *В разработке...* | Вертикальные функциональные срезы (Features): бизнес-правила групп, студентов, журнала и аналитики. |
 
 ---
 
