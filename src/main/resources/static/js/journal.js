@@ -40,6 +40,7 @@ const btnExportCsv = document.querySelector("#btn-export-csv");
 const btnPrint = document.querySelector("#btn-print");
 const quickEditCheckbox = document.querySelector("#quick-edit-mode");
 const quickEditHint = document.querySelector("#quick-edit-hint");
+const autoAdvanceCheckbox = document.querySelector("#auto-advance-down");
 
 const printGroupName = document.querySelector("#print-group-name");
 const printDate = document.querySelector("#print-date");
@@ -66,6 +67,14 @@ if (toggleAnalyticsBtn && analyticsSection) {
 if (quickEditCheckbox && quickEditHint) {
   quickEditCheckbox.addEventListener("change", () => {
     quickEditHint.hidden = !quickEditCheckbox.checked;
+  });
+}
+
+if (autoAdvanceCheckbox) {
+  const savedAutoAdvance = localStorage.getItem("journal_auto_advance_down");
+  autoAdvanceCheckbox.checked = savedAutoAdvance === "true";
+  autoAdvanceCheckbox.addEventListener("change", () => {
+    localStorage.setItem("journal_auto_advance_down", String(autoAdvanceCheckbox.checked));
   });
 }
 
@@ -811,7 +820,11 @@ tableBody.addEventListener("keydown", function(event) {
     case "5":
       event.preventDefault();
       quickSaveGrade(btn, r, c, Number(event.key));
-      setActiveCell(r + 1, c);
+      if (autoAdvanceCheckbox && autoAdvanceCheckbox.checked) {
+        setActiveCell(r + 1, c);
+      } else {
+        setActiveCell(r, c);
+      }
       break;
     case "Delete":
     case "Backspace":

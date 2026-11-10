@@ -1414,30 +1414,52 @@ function initCursorSpotlight() {
 }
 
 /* ==========================================================================
-   6. HEADER WATER RIPPLE (ИНТЕРАКТИВНАЯ РЯБЬ ВЕРХНЕЙ ПАНЕЛИ)
+   6. HEADER AURORA GRADIENT REACTION (ПЛАВНЫЙ ИНТЕРАКТИВНЫЙ ГРАДИЕНТ ВЕРХНЕЙ ПАНЕЛИ)
    ========================================================================== */
-function initHeaderRipple() {
+const TAB_GRADIENT_PALETTES = {
+  home:     { c1: "rgba(189, 147, 249, 0.26)", c2: "rgba(255, 121, 198, 0.12)" },
+  groups:   { c1: "rgba(255, 121, 198, 0.26)", c2: "rgba(189, 147, 249, 0.12)" },
+  subjects: { c1: "rgba(167, 139, 250, 0.26)", c2: "rgba(139, 233, 253, 0.14)" },
+  students: { c1: "rgba(192, 132, 252, 0.26)", c2: "rgba(244, 114, 182, 0.14)" },
+  journal:  { c1: "rgba(189, 147, 249, 0.26)", c2: "rgba(80, 250, 123, 0.14)" },
+  reports:  { c1: "rgba(80, 250, 123, 0.26)",  c2: "rgba(139, 233, 253, 0.14)" }
+};
+
+function initHeaderGradientReaction() {
   const header = document.querySelector(".site-header");
-  const layer = document.querySelector("#header-ripple-layer");
-  if (!header || !layer) return;
+  if (!header) return;
+
+  const activeLink = header.querySelector('#main-nav a[aria-current="page"]');
+  const activeKey = activeLink ? (activeLink.dataset.nav || "home") : (window.location.pathname === "/" ? "home" : "groups");
+  const defaultPalette = TAB_GRADIENT_PALETTES[activeKey] || TAB_GRADIENT_PALETTES.home;
+
+  header.style.setProperty("--hdr-c1", defaultPalette.c1);
+  header.style.setProperty("--hdr-c2", defaultPalette.c2);
 
   header.addEventListener("pointermove", (e) => {
     const rect = header.getBoundingClientRect();
-    const hx = e.clientX - rect.left;
-    const hy = e.clientY - rect.top;
+    const hx = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+    const hy = Math.max(0, Math.min(e.clientY - rect.top, rect.height));
     header.style.setProperty("--hx", `${hx}px`);
     header.style.setProperty("--hy", `${hy}px`);
+    header.style.setProperty("--hx-pct", `${(hx / rect.width) * 100}%`);
   }, { passive: true });
 
-  header.addEventListener("pointerdown", (e) => {
-    if (e.target.closest("button, a, input, select")) return;
-    const rect = header.getBoundingClientRect();
-    const drop = document.createElement("div");
-    drop.className = "header-ripple-drop";
-    drop.style.left = `${e.clientX - rect.left}px`;
-    drop.style.top = `${e.clientY - rect.top}px`;
-    layer.append(drop);
-    setTimeout(() => drop.remove(), 750);
+  const navLinks = header.querySelectorAll("#main-nav a[data-nav]");
+  navLinks.forEach(link => {
+    link.addEventListener("pointerenter", () => {
+      const navKey = link.dataset.nav;
+      const palette = TAB_GRADIENT_PALETTES[navKey];
+      if (palette) {
+        header.style.setProperty("--hdr-c1", palette.c1);
+        header.style.setProperty("--hdr-c2", palette.c2);
+      }
+    });
+
+    link.addEventListener("pointerleave", () => {
+      header.style.setProperty("--hdr-c1", defaultPalette.c1);
+      header.style.setProperty("--hdr-c2", defaultPalette.c2);
+    });
   });
 }
 
@@ -1616,7 +1638,7 @@ export function initTheme() {
   initSlidingNavigation();
   initXRayInspector();
   initCursorSpotlight();
-  initHeaderRipple();
+  initHeaderGradientReaction();
   initCommandPalette();
   initLinuxTerminal();
 }

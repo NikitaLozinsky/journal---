@@ -5568,12 +5568,12 @@ body.xray-resizing .xray-resizer {
    CURSOR SPOTLIGHT (РАДИАЛЬНОЕ СВЕЧЕНИЕ НА КАРТОЧКАХ И ТАБЛИЦАХ)
    ========================================================================== */
 .kpi-card, .chart-card, .toolbar, .editor, .term-window, .cmd-palette-box,
-.table-scroll, .status-card, .home-card, .journal-progress-box {
+.table-scroll, .status-card, .home-nav-item, .journal-progress-box {
   position: relative;
 }
 
 .kpi-card::before, .chart-card::before, .toolbar::before, .editor::before, .cmd-palette-box::before,
-.table-scroll::before, .status-card::before, .home-card::before, .journal-progress-box::before {
+.table-scroll::before, .status-card::before, .home-nav-item::before, .journal-progress-box::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -5586,7 +5586,7 @@ body.xray-resizing .xray-resizer {
 }
 
 .kpi-card:hover::before, .chart-card:hover::before, .toolbar:hover::before, .editor:hover::before, .cmd-palette-box:hover::before,
-.table-scroll:hover::before, .status-card:hover::before, .home-card:hover::before, .journal-progress-box:hover::before {
+.table-scroll:hover::before, .status-card:hover::before, .home-nav-item:hover::before, .journal-progress-box:hover::before {
   opacity: 1;
 }
 
@@ -5643,47 +5643,43 @@ tbody tr {
 }
 
 /* ==========================================================================
-   HEADER WATER RIPPLE & AMBIENT GLOW
+   HEADER AURORA GRADIENT REACTION & LUMINESCENCE (МЯГКИЙ СВЕТОВОЙ ОТКЛИК ШАПКИ)
    ========================================================================== */
 .site-header {
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-bottom: 1px solid var(--line);
+  padding-top: 12px;
+  background: color-mix(in srgb, var(--bg) 84%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   overflow: hidden;
 }
 
-.header-ripple-layer {
+/* Живой фоновый градиент шапки, плавно смещающийся за курсором и адаптирующий цвета под активную вкладку */
+.header-glow-layer {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 1;
-  overflow: hidden;
-}
-
-.header-ripple-drop {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  border: 1.5px solid var(--brand);
-  background: radial-gradient(circle, var(--brand-soft) 0%, transparent 70%);
-  transform: translate(-50%, -50%) scale(0);
+  z-index: 0;
+  background: radial-gradient(460px circle at var(--hx, 50%) var(--hy, 50%), var(--hdr-c1, rgba(189, 147, 249, 0.2)), var(--hdr-c2, rgba(255, 121, 198, 0.08)), transparent 75%);
   opacity: 0.85;
-  pointer-events: none;
-  animation: rippleWave 0.75s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+  transition: opacity 0.3s ease, background 0.35s ease;
 }
 
-@keyframes rippleWave {
-  0% {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0.85;
-  }
-  60% {
-    border-color: var(--brand-pink);
-    opacity: 0.45;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(30);
-    opacity: 0;
-  }
+/* Тонкая световая нить по нижней кромке шапки, мягко бликующая вслед за курсором */
+.header-glow-layer::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: radial-gradient(320px circle at var(--hx, 50%) 100%, var(--brand), transparent 75%);
+  pointer-events: none;
+  opacity: 0.8;
+  transition: opacity 0.25s ease;
 }
 
 /* ==========================================================================
@@ -5733,7 +5729,7 @@ tbody tr {
 }
 
 /* ==========================================================================
-   ДОМАШНЯЯ СТРАНИЦА (GOOGLE ANTIGRAVITY EXPERIENCE & PORTAL GRID)
+   ДОМАШНЯЯ СТРАНИЦА (МИНИМАЛИСТИЧНЫЙ ДИЗАЙН & ANTIGRAVITY HUB)
    ========================================================================== */
 .home-page-body {
   position: relative;
@@ -5752,171 +5748,188 @@ tbody tr {
 .home-container {
   position: relative;
   z-index: 2;
-  max-width: 1140px;
+  max-width: 960px;
   margin: 0 auto;
-  padding: 38px 24px 70px 24px;
+  padding: 54px 20px 84px 20px;
 }
 
 .home-hero {
   text-align: center;
-  max-width: 820px;
-  margin: 0 auto 46px auto;
+  max-width: 680px;
+  margin: 0 auto 42px auto;
 }
 
 .home-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 5px 14px;
+  padding: 4px 12px;
   border-radius: 99px;
   background: var(--surface);
   border: 1px solid var(--line-glow);
   font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 500;
   color: var(--muted);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-  margin-bottom: 22px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
 }
 
 .home-badge-dot {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: #50fa7b;
   box-shadow: 0 0 8px #50fa7b;
 }
 
 .home-title {
-  font-size: 42px;
-  line-height: 1.18;
+  font-size: 38px;
+  line-height: 1.16;
   font-weight: 800;
-  letter-spacing: -0.03em;
-  margin: 0 0 16px 0;
+  letter-spacing: -0.025em;
+  margin: 0 0 14px 0;
   color: var(--ink);
 }
 
 .home-gradient-text {
-  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-pink) 60%, #ff79c6 100%);
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-pink) 70%, #ff79c6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
 }
 
 .home-subtitle {
-  font-size: 15.5px;
-  line-height: 1.6;
+  font-size: 15px;
+  line-height: 1.55;
   color: var(--muted);
-  max-width: 680px;
-  margin: 0 auto 30px auto;
+  max-width: 520px;
+  margin: 0 auto 26px auto;
 }
 
 .home-actions-row {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
-  margin-bottom: 34px;
+  margin-bottom: 24px;
 }
 
 .home-main-btn {
-  padding: 10px 22px;
-  font-size: 14px;
+  padding: 9px 20px;
+  font-size: 13.5px;
   font-weight: 600;
-  border-radius: 10px;
-  box-shadow: 0 4px 20px var(--brand-soft);
+  border-radius: 8px;
+  box-shadow: 0 4px 18px var(--brand-soft);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.home-actions-row kbd {
+.home-btn-arrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  transition: transform 0.2s ease;
+}
+
+.home-main-btn:hover .home-btn-arrow {
+  transform: translateX(3px);
+}
+
+.home-action-btn {
+  padding: 8px 16px;
+  font-size: 13px;
+  border-radius: 8px;
+}
+
+.home-action-btn kbd {
   font-family: "JetBrains Mono", monospace;
   font-size: 11px;
-  padding: 2px 6px;
+  padding: 1px 5px;
   border-radius: 4px;
   background: var(--input-bg);
   border: 1px solid var(--line);
   color: var(--brand);
-  margin-left: 6px;
+  margin-left: 4px;
 }
 
-.home-stats-strip {
+.home-metrics-bar {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 22px;
-  padding: 12px 28px;
-  border-radius: 14px;
+  gap: 12px;
+  padding: 6px 18px;
+  border-radius: 99px;
   background: var(--surface);
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(10px);
 }
 
-.home-stat-item {
+.metric-item {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 6px;
+  font-size: 12px;
 }
 
-.home-stat-val {
+.metric-label {
+  color: var(--muted);
+}
+
+.metric-val {
   font-family: "JetBrains Mono", monospace;
-  font-size: 18px;
+  font-size: 12.5px;
   font-weight: 700;
   color: var(--ink);
 }
 
-.home-stat-val.val-green {
+.metric-val.val-green {
   color: #50fa7b;
 }
 
-.home-stat-label {
-  font-size: 11.5px;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+.metric-dot {
+  color: var(--line);
+  font-size: 10px;
 }
 
-.home-stat-divider {
-  width: 1px;
-  height: 24px;
-  background: var(--line);
-}
-
-.home-grid {
+/* Минималистичный навигационный хаб */
+.home-nav-hub {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 18px;
-  margin-bottom: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+  max-width: 960px;
+  margin: 0 auto;
 }
 
-.home-card {
+.home-nav-item {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 20px 22px;
-  border-radius: 12px;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
   background: var(--surface);
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
   backdrop-filter: blur(10px);
   text-decoration: none;
   color: var(--ink);
-  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease, box-shadow 0.22s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
 }
 
-.home-card:hover {
-  transform: translateY(-3px);
+.home-nav-item:hover {
+  transform: translateY(-2px);
   border-color: var(--brand);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35), 0 0 18px var(--brand-soft);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3), 0 0 14px var(--brand-soft);
 }
 
-.home-card-icon-wrap {
-  width: 44px;
-  height: 44px;
-  min-width: 44px;
-  border-radius: 10px;
+.home-nav-icon {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -5925,7 +5938,12 @@ tbody tr {
   transition: transform 0.2s ease;
 }
 
-.home-card:hover .home-card-icon-wrap {
+.home-nav-icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.home-nav-item:hover .home-nav-icon {
   transform: scale(1.08);
 }
 
@@ -5935,57 +5953,38 @@ tbody tr {
 .icon-amber  { color: #f1fa8c; border-color: rgba(241, 250, 140, 0.3); background: rgba(241, 250, 140, 0.1); }
 .icon-green  { color: #50fa7b; border-color: rgba(80, 250, 123, 0.3); background: rgba(80, 250, 123, 0.1); }
 
-.home-card-icon {
-  width: 22px;
-  height: 22px;
-}
-
-.home-card-content {
-  flex: 1;
+.home-nav-text {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
+  gap: 2px;
 }
 
-.home-card-title {
-  font-size: 16px;
-  font-weight: 700;
-  margin: 0 0 5px 0;
-  color: var(--ink);
-  letter-spacing: -0.01em;
-}
-
-.home-card-desc {
+.home-nav-title {
   font-size: 13px;
-  line-height: 1.45;
-  color: var(--muted);
-  margin: 0;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.home-card-arrow {
+.home-nav-sub {
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.home-nav-arrow {
+  margin-left: auto;
   font-family: "JetBrains Mono", monospace;
-  font-size: 18px;
+  font-size: 13px;
   color: var(--muted);
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.home-card:hover .home-card-arrow {
-  transform: translateX(4px);
-  color: var(--brand);
-}
-
-.home-antigravity-tip {
-  text-align: center;
-  font-size: 12.5px;
-  color: var(--muted);
-  margin-top: 10px;
-}
-
-.home-antigravity-tip kbd {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 11px;
-  padding: 2px 6px;
-  border-radius: 4px;
-  background: var(--input-bg);
-  border: 1px solid var(--line);
+.home-nav-item:hover .home-nav-arrow {
+  transform: translateX(3px);
   color: var(--brand);
 }
 ```
@@ -6024,13 +6023,12 @@ function initAntigravityPhysics() {
   window.addEventListener("resize", resize);
   resize();
 
-  const PARTICLE_COUNT = Math.min(90, Math.max(45, Math.floor((width * height) / 16000)));
+  const PARTICLE_COUNT = Math.min(55, Math.max(28, Math.floor((width * height) / 28000)));
   const COLORS = [
     { r: 189, g: 147, b: 249 }, // Lavender #bd93f9
     { r: 255, g: 121, b: 198 }, // Pink #ff79c6
     { r: 139, g: 233, b: 253 }, // Cyan #8be9fd
-    { r: 80,  g: 250, b: 123 }, // Green #50fa7b
-    { r: 241, g: 250, b: 140 }  // Yellow #f1fa8c
+    { r: 80,  g: 250, b: 123 }  // Green #50fa7b
   ];
 
   class Particle {
@@ -6041,14 +6039,14 @@ function initAntigravityPhysics() {
     reset(initial = false) {
       this.x = Math.random() * width;
       this.y = initial ? Math.random() * height : (Math.random() < 0.5 ? -10 : height + 10);
-      this.baseVx = (Math.random() - 0.5) * 0.45;
-      this.baseVy = (Math.random() - 0.5) * 0.45;
+      this.baseVx = (Math.random() - 0.5) * 0.35;
+      this.baseVy = (Math.random() - 0.5) * 0.35;
       this.vx = this.baseVx;
       this.vy = this.baseVy;
-      this.radius = 2.2 + Math.random() * 2.5;
+      this.radius = 1.6 + Math.random() * 1.8;
       this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
-      this.alpha = 0.45 + Math.random() * 0.45;
-      this.pulseSpeed = 0.02 + Math.random() * 0.03;
+      this.alpha = 0.3 + Math.random() * 0.35;
+      this.pulseSpeed = 0.015 + Math.random() * 0.025;
       this.pulseAngle = Math.random() * Math.PI * 2;
     }
 
@@ -6130,18 +6128,18 @@ function initAntigravityPhysics() {
     mouse.active = false;
   });
 
-  // Клик по экрану создает расширяющуюся гравитационную волну
+  // Клик по экрану создает мягкую гравитационную волну
   window.addEventListener("pointerdown", (e) => {
-    // Не создаем шоквейв, если кликнули по кнопкам или формам
-    if (e.target.closest("button, a, input, select, textarea, .home-card")) return;
+    // Не создаем волну, если кликнули по кнопкам, ссылкам или карточкам
+    if (e.target.closest("button, a, input, select, textarea, .home-nav-item, .site-header")) return;
     shockwaves.push({
       x: e.clientX,
       y: e.clientY,
-      radius: 10,
-      maxRadius: 240,
-      speed: 7,
-      strength: 6.5,
-      alpha: 0.8
+      radius: 8,
+      maxRadius: 200,
+      speed: 6,
+      strength: 4.5,
+      alpha: 0.65
     });
   });
 
@@ -6260,26 +6258,10 @@ async function loadLiveHomeStats() {
  * Инициализация быстрых триггеров на домашней странице
  */
 function initHomeTriggers() {
-  const btnTerm = document.querySelector("#home-open-term");
   const btnPalette = document.querySelector("#home-open-palette");
-  const cardXray = document.querySelector("#card-trigger-xray");
-
-  if (btnTerm) {
-    btnTerm.addEventListener("click", () => {
-      document.querySelector("#term-toggle-btn")?.click();
-    });
-  }
-
   if (btnPalette) {
     btnPalette.addEventListener("click", () => {
       document.querySelector("#cmd-palette-btn")?.click();
-    });
-  }
-
-  if (cardXray) {
-    cardXray.addEventListener("click", (e) => {
-      e.preventDefault();
-      document.querySelector("#xray-toggle-btn")?.click();
     });
   }
 }
@@ -6925,6 +6907,7 @@ const btnExportCsv = document.querySelector("#btn-export-csv");
 const btnPrint = document.querySelector("#btn-print");
 const quickEditCheckbox = document.querySelector("#quick-edit-mode");
 const quickEditHint = document.querySelector("#quick-edit-hint");
+const autoAdvanceCheckbox = document.querySelector("#auto-advance-down");
 
 const printGroupName = document.querySelector("#print-group-name");
 const printDate = document.querySelector("#print-date");
@@ -6951,6 +6934,14 @@ if (toggleAnalyticsBtn && analyticsSection) {
 if (quickEditCheckbox && quickEditHint) {
   quickEditCheckbox.addEventListener("change", () => {
     quickEditHint.hidden = !quickEditCheckbox.checked;
+  });
+}
+
+if (autoAdvanceCheckbox) {
+  const savedAutoAdvance = localStorage.getItem("journal_auto_advance_down");
+  autoAdvanceCheckbox.checked = savedAutoAdvance === "true";
+  autoAdvanceCheckbox.addEventListener("change", () => {
+    localStorage.setItem("journal_auto_advance_down", String(autoAdvanceCheckbox.checked));
   });
 }
 
@@ -7696,7 +7687,11 @@ tableBody.addEventListener("keydown", function(event) {
     case "5":
       event.preventDefault();
       quickSaveGrade(btn, r, c, Number(event.key));
-      setActiveCell(r + 1, c);
+      if (autoAdvanceCheckbox && autoAdvanceCheckbox.checked) {
+        setActiveCell(r + 1, c);
+      } else {
+        setActiveCell(r, c);
+      }
       break;
     case "Delete":
     case "Backspace":
@@ -10051,30 +10046,52 @@ function initCursorSpotlight() {
 }
 
 /* ==========================================================================
-   6. HEADER WATER RIPPLE (ИНТЕРАКТИВНАЯ РЯБЬ ВЕРХНЕЙ ПАНЕЛИ)
+   6. HEADER AURORA GRADIENT REACTION (ПЛАВНЫЙ ИНТЕРАКТИВНЫЙ ГРАДИЕНТ ВЕРХНЕЙ ПАНЕЛИ)
    ========================================================================== */
-function initHeaderRipple() {
+const TAB_GRADIENT_PALETTES = {
+  home:     { c1: "rgba(189, 147, 249, 0.26)", c2: "rgba(255, 121, 198, 0.12)" },
+  groups:   { c1: "rgba(255, 121, 198, 0.26)", c2: "rgba(189, 147, 249, 0.12)" },
+  subjects: { c1: "rgba(167, 139, 250, 0.26)", c2: "rgba(139, 233, 253, 0.14)" },
+  students: { c1: "rgba(192, 132, 252, 0.26)", c2: "rgba(244, 114, 182, 0.14)" },
+  journal:  { c1: "rgba(189, 147, 249, 0.26)", c2: "rgba(80, 250, 123, 0.14)" },
+  reports:  { c1: "rgba(80, 250, 123, 0.26)",  c2: "rgba(139, 233, 253, 0.14)" }
+};
+
+function initHeaderGradientReaction() {
   const header = document.querySelector(".site-header");
-  const layer = document.querySelector("#header-ripple-layer");
-  if (!header || !layer) return;
+  if (!header) return;
+
+  const activeLink = header.querySelector('#main-nav a[aria-current="page"]');
+  const activeKey = activeLink ? (activeLink.dataset.nav || "home") : (window.location.pathname === "/" ? "home" : "groups");
+  const defaultPalette = TAB_GRADIENT_PALETTES[activeKey] || TAB_GRADIENT_PALETTES.home;
+
+  header.style.setProperty("--hdr-c1", defaultPalette.c1);
+  header.style.setProperty("--hdr-c2", defaultPalette.c2);
 
   header.addEventListener("pointermove", (e) => {
     const rect = header.getBoundingClientRect();
-    const hx = e.clientX - rect.left;
-    const hy = e.clientY - rect.top;
+    const hx = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+    const hy = Math.max(0, Math.min(e.clientY - rect.top, rect.height));
     header.style.setProperty("--hx", `${hx}px`);
     header.style.setProperty("--hy", `${hy}px`);
+    header.style.setProperty("--hx-pct", `${(hx / rect.width) * 100}%`);
   }, { passive: true });
 
-  header.addEventListener("pointerdown", (e) => {
-    if (e.target.closest("button, a, input, select")) return;
-    const rect = header.getBoundingClientRect();
-    const drop = document.createElement("div");
-    drop.className = "header-ripple-drop";
-    drop.style.left = `${e.clientX - rect.left}px`;
-    drop.style.top = `${e.clientY - rect.top}px`;
-    layer.append(drop);
-    setTimeout(() => drop.remove(), 750);
+  const navLinks = header.querySelectorAll("#main-nav a[data-nav]");
+  navLinks.forEach(link => {
+    link.addEventListener("pointerenter", () => {
+      const navKey = link.dataset.nav;
+      const palette = TAB_GRADIENT_PALETTES[navKey];
+      if (palette) {
+        header.style.setProperty("--hdr-c1", palette.c1);
+        header.style.setProperty("--hdr-c2", palette.c2);
+      }
+    });
+
+    link.addEventListener("pointerleave", () => {
+      header.style.setProperty("--hdr-c1", defaultPalette.c1);
+      header.style.setProperty("--hdr-c2", defaultPalette.c2);
+    });
   });
 }
 
@@ -10253,7 +10270,7 @@ export function initTheme() {
   initSlidingNavigation();
   initXRayInspector();
   initCursorSpotlight();
-  initHeaderRipple();
+  initHeaderGradientReaction();
   initCommandPalette();
   initLinuxTerminal();
 }
@@ -10519,11 +10536,11 @@ export function fillGroups(select, groups, includeAll = false) {
       } catch (e) {}
     })();
   </script>
-  <title>Электронный журнал успеваемости — journal.edu.local</title>
-  <link rel="stylesheet" href="/css/styles.css?v=4.0">
+  <title>Электронный журнал — journal.edu.local</title>
+  <link rel="stylesheet" href="/css/styles.css?v=4.1">
 </head>
 <body class="home-page-body">
-  <!-- Интерактивное физическое поле Антигравитации (Google Antigravity Experience) -->
+  <!-- Интерактивное физическое поле Антигравитации -->
   <canvas id="antigravity-canvas" class="antigravity-canvas" aria-hidden="true"></canvas>
 
   <header th:replace="~{partials/header :: header}"></header>
@@ -10532,139 +10549,117 @@ export function fillGroups(select, groups, includeAll = false) {
     <div class="home-hero">
       <div class="home-badge">
         <span class="home-badge-dot"></span>
-        <span>journal.edu.local • Spring Boot 3.3.5 • SQLite WAL</span>
+        <span>arch::ed • journal</span>
       </div>
 
       <h1 class="home-title">
-        Электронный журнал <span class="home-gradient-text">успеваемости</span>
+        Электронный <span class="home-gradient-text">журнал</span>
       </h1>
 
       <p class="home-subtitle">
-        Быстрая академическая система учёта с мгновенным откликом, интерактивной Excel-ведомостью, встроенным TUI-терминалом и прозрачным рентгеном SQL-запросов.
+        Быстрый академический учёт успеваемости, ведомостей и задолженностей.
       </p>
 
-      <!-- Быстрые действия и палитра -->
+      <!-- Компактные действия -->
       <div class="home-actions-row">
         <a href="/journal" class="button-primary home-main-btn">
           <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-          <span>Открыть журнал оценок</span>
+          <span>Перейти к журналу</span>
+          <span class="home-btn-arrow">→</span>
         </a>
-        <button id="home-open-term" class="button-secondary" type="button">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
-          <span>Консоль milk13</span>
-          <kbd>Alt+C</kbd>
-        </button>
-        <button id="home-open-palette" class="button-secondary" type="button">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <span>Командная палитра</span>
-          <kbd>Ctrl+K</kbd>
+        <button id="home-open-palette" class="button-secondary home-action-btn" type="button" title="Открыть поиск и команды (Ctrl+K)">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <span>Команды</span>
+          <kbd>⌘K</kbd>
         </button>
       </div>
 
-      <!-- Живые системные метрики -->
-      <div class="home-stats-strip">
-        <div class="home-stat-item">
-          <span class="home-stat-val" id="stat-students">—</span>
-          <span class="home-stat-label">Студентов в базе</span>
+      <!-- Лаконичная строка системных метрик -->
+      <div class="home-metrics-bar">
+        <div class="metric-item">
+          <span class="metric-label">Студентов</span>
+          <span class="metric-val" id="stat-students">—</span>
         </div>
-        <div class="home-stat-divider"></div>
-        <div class="home-stat-item">
-          <span class="home-stat-val" id="stat-groups">—</span>
-          <span class="home-stat-label">Учебных групп</span>
+        <span class="metric-dot">•</span>
+        <div class="metric-item">
+          <span class="metric-label">Групп</span>
+          <span class="metric-val" id="stat-groups">—</span>
         </div>
-        <div class="home-stat-divider"></div>
-        <div class="home-stat-item">
-          <span class="home-stat-val" id="stat-subjects">—</span>
-          <span class="home-stat-label">Дисциплин</span>
+        <span class="metric-dot">•</span>
+        <div class="metric-item">
+          <span class="metric-label">Дисциплин</span>
+          <span class="metric-val" id="stat-subjects">—</span>
         </div>
-        <div class="home-stat-divider"></div>
-        <div class="home-stat-item">
-          <span class="home-stat-val val-green">100% PASS</span>
-          <span class="home-stat-label">Тесты транзакций</span>
+        <span class="metric-dot">•</span>
+        <div class="metric-item">
+          <span class="metric-label">Транзакции</span>
+          <span class="metric-val val-green">PASS</span>
         </div>
       </div>
     </div>
 
-    <!-- Интерактивные карточки разделов (Portal Grid) -->
-    <div class="home-grid">
-      <a href="/journal" class="home-card">
-        <div class="home-card-icon-wrap icon-purple">
-          <svg class="home-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+    <!-- Минималистичный навигационный хаб (без лишнего шума) -->
+    <div class="home-nav-hub">
+      <a href="/journal" class="home-nav-item">
+        <div class="home-nav-icon icon-purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
         </div>
-        <div class="home-card-content">
-          <h2 class="home-card-title">Журнал оценок</h2>
-          <p class="home-card-desc">Матрица ведомостей, тактильный Excel-ввод (2..5), аналитика групп, экспорт в Excel/CSV и официальная печать.</p>
+        <div class="home-nav-text">
+          <span class="home-nav-title">Журнал оценок</span>
+          <span class="home-nav-sub">Ведомости и ввод</span>
         </div>
-        <span class="home-card-arrow">→</span>
+        <span class="home-nav-arrow">→</span>
       </a>
 
-      <a href="/groups" class="home-card">
-        <div class="home-card-icon-wrap icon-pink">
-          <svg class="home-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+      <a href="/groups" class="home-nav-item">
+        <div class="home-nav-icon icon-pink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
         </div>
-        <div class="home-card-content">
-          <h2 class="home-card-title">Учебные группы</h2>
-          <p class="home-card-desc">Каталог потоков, численность обучающихся и проверка целостности внешних ключей при удалении.</p>
+        <div class="home-nav-text">
+          <span class="home-nav-title">Учебные группы</span>
+          <span class="home-nav-sub">Потоки и списки</span>
         </div>
-        <span class="home-card-arrow">→</span>
+        <span class="home-nav-arrow">→</span>
       </a>
 
-      <a href="/students" class="home-card">
-        <div class="home-card-icon-wrap icon-cyan">
-          <svg class="home-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      <a href="/students" class="home-nav-item">
+        <div class="home-nav-icon icon-cyan">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
         </div>
-        <div class="home-card-content">
-          <h2 class="home-card-title">Студенты и зачисление</h2>
-          <p class="home-card-desc">Составы групп, средние баллы, быстрый фильтр по ФИО и добавление новой группы прямо из формы.</p>
+        <div class="home-nav-text">
+          <span class="home-nav-title">Студенты</span>
+          <span class="home-nav-sub">Зачисление</span>
         </div>
-        <span class="home-card-arrow">→</span>
+        <span class="home-nav-arrow">→</span>
       </a>
 
-      <a href="/subjects" class="home-card">
-        <div class="home-card-icon-wrap icon-amber">
-          <svg class="home-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+      <a href="/subjects" class="home-nav-item">
+        <div class="home-nav-icon icon-amber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
         </div>
-        <div class="home-card-content">
-          <h2 class="home-card-title">Дисциплины</h2>
-          <p class="home-card-desc">Реестр академических предметов и контроль блокировки удаления дисциплин с выставленными баллами.</p>
+        <div class="home-nav-text">
+          <span class="home-nav-title">Дисциплины</span>
+          <span class="home-nav-sub">Предметы</span>
         </div>
-        <span class="home-card-arrow">→</span>
+        <span class="home-nav-arrow">→</span>
       </a>
 
-      <a href="/reports" class="home-card">
-        <div class="home-card-icon-wrap icon-green">
-          <svg class="home-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"></path><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path></svg>
+      <a href="/reports" class="home-nav-item">
+        <div class="home-nav-icon icon-green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"></path><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path></svg>
         </div>
-        <div class="home-card-content">
-          <h2 class="home-card-title">Академические отчёты</h2>
-          <p class="home-card-desc">Аналитические срезы: средний балл групп, студенты без оценок и список задолженностей со статистикой.</p>
+        <div class="home-nav-text">
+          <span class="home-nav-title">Отчёты</span>
+          <span class="home-nav-sub">Аналитика</span>
         </div>
-        <span class="home-card-arrow">→</span>
+        <span class="home-nav-arrow">→</span>
       </a>
-
-      <div class="home-card home-card-interactive" id="card-trigger-xray">
-        <div class="home-card-icon-wrap icon-purple">
-          <svg class="home-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-        </div>
-        <div class="home-card-content">
-          <h2 class="home-card-title">Рентген внутренней логики</h2>
-          <p class="home-card-desc">Инспектор цепочки Controller → Service → JdbcClient. Показывает точный выполняемый SQL и время в миллисекундах.</p>
-        </div>
-        <span class="home-card-arrow">→</span>
-      </div>
-    </div>
-
-    <!-- Интерактивная подсказка -->
-    <div class="home-antigravity-tip">
-      <span class="tip-sparkle">✦</span>
-      <span>Интерактивная физика Antigravity: перемещайте курсор или кликайте по фону — частицы мягко разлетаются под действием поля невесомости.</span>
     </div>
   </main>
 
   <footer th:replace="~{partials/footer :: footer}"></footer>
 
-  <!-- Скрипт физики Антигравитации -->
-  <script type="module" src="/js/antigravity.js"></script>
+  <script type="module" src="/js/antigravity.js?v=4.1"></script>
 </body>
 </html>
 ```
@@ -10737,6 +10732,11 @@ export function fillGroups(select, groups, includeAll = false) {
         <input id="quick-edit-mode" type="checkbox" checked>
         <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6" y2="8"></line><line x1="10" y1="8" x2="10" y2="8"></line><line x1="14" y1="8" x2="14" y2="8"></line><line x1="18" y1="8" x2="18" y2="8"></line><line x1="6" y1="12" x2="6" y2="12"></line><line x1="10" y1="12" x2="10" y2="12"></line><line x1="14" y1="12" x2="14" y2="12"></line><line x1="18" y1="12" x2="18" y2="12"></line><line x1="7" y1="16" x2="17" y2="16"></line></svg>
         <span>Быстрый ввод (Excel)</span>
+      </label>
+      <label class="toggle-mode-label" title="Автоматически смещать фокус вниз при выставлении оценки">
+        <input id="auto-advance-down" type="checkbox">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+        <span>Смещать вниз при вводе</span>
       </label>
       <div id="journal-progress-box" class="journal-progress-box" title="Процент заполнения оценочной ведомости">
         <div class="progress-labels">
@@ -10895,8 +10895,8 @@ export function fillGroups(select, groups, includeAll = false) {
     <div class="aurora-blob blob-2"></div>
   </div>
 
-  <!-- Интерактивный волновой слой ряби в шапке -->
-  <div class="header-ripple-layer" id="header-ripple-layer" aria-hidden="true"></div>
+  <!-- Интерактивное градиентное свечение верхней панели (Aurora Header Reaction) -->
+  <div class="header-glow-layer" id="header-glow-layer" aria-hidden="true"></div>
 
   <div class="container">
     <div class="brand-row">

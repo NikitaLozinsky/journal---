@@ -11,11 +11,11 @@
       } catch (e) {}
     })();
   </script>
-  <title>Электронный журнал успеваемости — journal.edu.local</title>
-  <link rel="stylesheet" href="/css/styles.css?v=4.0">
+  <title>Электронный журнал — journal.edu.local</title>
+  <link rel="stylesheet" href="/css/styles.css?v=4.1">
 </head>
 <body class="home-page-body">
-  <!-- Интерактивное физическое поле Антигравитации (Google Antigravity Experience) -->
+  <!-- Интерактивное физическое поле Антигравитации -->
   <canvas id="antigravity-canvas" class="antigravity-canvas" aria-hidden="true"></canvas>
 
   <header th:replace="~{partials/header :: header}"></header>
@@ -24,138 +24,116 @@
     <div class="home-hero">
       <div class="home-badge">
         <span class="home-badge-dot"></span>
-        <span>journal.edu.local • Spring Boot 3.3.5 • SQLite WAL</span>
+        <span>arch::ed • journal</span>
       </div>
 
       <h1 class="home-title">
-        Электронный журнал <span class="home-gradient-text">успеваемости</span>
+        Электронный <span class="home-gradient-text">журнал</span>
       </h1>
 
       <p class="home-subtitle">
-        Быстрая академическая система учёта с мгновенным откликом, интерактивной Excel-ведомостью, встроенным TUI-терминалом и прозрачным рентгеном SQL-запросов.
+        Быстрый академический учёт успеваемости, ведомостей и задолженностей.
       </p>
 
-      <!-- Быстрые действия и палитра -->
+      <!-- Компактные действия -->
       <div class="home-actions-row">
         <a href="/journal" class="button-primary home-main-btn">
           <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-          <span>Открыть журнал оценок</span>
+          <span>Перейти к журналу</span>
+          <span class="home-btn-arrow">→</span>
         </a>
-        <button id="home-open-term" class="button-secondary" type="button">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
-          <span>Консоль milk13</span>
-          <kbd>Alt+C</kbd>
-        </button>
-        <button id="home-open-palette" class="button-secondary" type="button">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <span>Командная палитра</span>
-          <kbd>Ctrl+K</kbd>
+        <button id="home-open-palette" class="button-secondary home-action-btn" type="button" title="Открыть поиск и команды (Ctrl+K)">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <span>Команды</span>
+          <kbd>⌘K</kbd>
         </button>
       </div>
 
-      <!-- Живые системные метрики -->
-      <div class="home-stats-strip">
-        <div class="home-stat-item">
-          <span class="home-stat-val" id="stat-students">—</span>
-          <span class="home-stat-label">Студентов в базе</span>
+      <!-- Лаконичная строка системных метрик -->
+      <div class="home-metrics-bar">
+        <div class="metric-item">
+          <span class="metric-label">Студентов</span>
+          <span class="metric-val" id="stat-students">—</span>
         </div>
-        <div class="home-stat-divider"></div>
-        <div class="home-stat-item">
-          <span class="home-stat-val" id="stat-groups">—</span>
-          <span class="home-stat-label">Учебных групп</span>
+        <span class="metric-dot">•</span>
+        <div class="metric-item">
+          <span class="metric-label">Групп</span>
+          <span class="metric-val" id="stat-groups">—</span>
         </div>
-        <div class="home-stat-divider"></div>
-        <div class="home-stat-item">
-          <span class="home-stat-val" id="stat-subjects">—</span>
-          <span class="home-stat-label">Дисциплин</span>
+        <span class="metric-dot">•</span>
+        <div class="metric-item">
+          <span class="metric-label">Дисциплин</span>
+          <span class="metric-val" id="stat-subjects">—</span>
         </div>
-        <div class="home-stat-divider"></div>
-        <div class="home-stat-item">
-          <span class="home-stat-val val-green">100% PASS</span>
-          <span class="home-stat-label">Тесты транзакций</span>
+        <span class="metric-dot">•</span>
+        <div class="metric-item">
+          <span class="metric-label">Транзакции</span>
+          <span class="metric-val val-green">PASS</span>
         </div>
       </div>
     </div>
 
-    <!-- Интерактивные карточки разделов (Portal Grid) -->
-    <div class="home-grid">
-      <a href="/journal" class="home-card">
-        <div class="home-card-icon-wrap icon-purple">
-          <svg class="home-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+    <!-- Минималистичный навигационный хаб (без лишнего шума) -->
+    <div class="home-nav-hub">
+      <a href="/journal" class="home-nav-item">
+        <div class="home-nav-icon icon-purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
         </div>
-        <div class="home-card-content">
-          <h2 class="home-card-title">Журнал оценок</h2>
-          <p class="home-card-desc">Матрица ведомостей, тактильный Excel-ввод (2..5), аналитика групп, экспорт в Excel/CSV и официальная печать.</p>
+        <div class="home-nav-text">
+          <span class="home-nav-title">Журнал оценок</span>
+          <span class="home-nav-sub">Ведомости и ввод</span>
         </div>
-        <span class="home-card-arrow">→</span>
+        <span class="home-nav-arrow">→</span>
       </a>
 
-      <a href="/groups" class="home-card">
-        <div class="home-card-icon-wrap icon-pink">
-          <svg class="home-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+      <a href="/groups" class="home-nav-item">
+        <div class="home-nav-icon icon-pink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
         </div>
-        <div class="home-card-content">
-          <h2 class="home-card-title">Учебные группы</h2>
-          <p class="home-card-desc">Каталог потоков, численность обучающихся и проверка целостности внешних ключей при удалении.</p>
+        <div class="home-nav-text">
+          <span class="home-nav-title">Учебные группы</span>
+          <span class="home-nav-sub">Потоки и списки</span>
         </div>
-        <span class="home-card-arrow">→</span>
+        <span class="home-nav-arrow">→</span>
       </a>
 
-      <a href="/students" class="home-card">
-        <div class="home-card-icon-wrap icon-cyan">
-          <svg class="home-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      <a href="/students" class="home-nav-item">
+        <div class="home-nav-icon icon-cyan">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
         </div>
-        <div class="home-card-content">
-          <h2 class="home-card-title">Студенты и зачисление</h2>
-          <p class="home-card-desc">Составы групп, средние баллы, быстрый фильтр по ФИО и добавление новой группы прямо из формы.</p>
+        <div class="home-nav-text">
+          <span class="home-nav-title">Студенты</span>
+          <span class="home-nav-sub">Зачисление</span>
         </div>
-        <span class="home-card-arrow">→</span>
+        <span class="home-nav-arrow">→</span>
       </a>
 
-      <a href="/subjects" class="home-card">
-        <div class="home-card-icon-wrap icon-amber">
-          <svg class="home-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+      <a href="/subjects" class="home-nav-item">
+        <div class="home-nav-icon icon-amber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
         </div>
-        <div class="home-card-content">
-          <h2 class="home-card-title">Дисциплины</h2>
-          <p class="home-card-desc">Реестр академических предметов и контроль блокировки удаления дисциплин с выставленными баллами.</p>
+        <div class="home-nav-text">
+          <span class="home-nav-title">Дисциплины</span>
+          <span class="home-nav-sub">Предметы</span>
         </div>
-        <span class="home-card-arrow">→</span>
+        <span class="home-nav-arrow">→</span>
       </a>
 
-      <a href="/reports" class="home-card">
-        <div class="home-card-icon-wrap icon-green">
-          <svg class="home-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"></path><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path></svg>
+      <a href="/reports" class="home-nav-item">
+        <div class="home-nav-icon icon-green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"></path><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path></svg>
         </div>
-        <div class="home-card-content">
-          <h2 class="home-card-title">Академические отчёты</h2>
-          <p class="home-card-desc">Аналитические срезы: средний балл групп, студенты без оценок и список задолженностей со статистикой.</p>
+        <div class="home-nav-text">
+          <span class="home-nav-title">Отчёты</span>
+          <span class="home-nav-sub">Аналитика</span>
         </div>
-        <span class="home-card-arrow">→</span>
+        <span class="home-nav-arrow">→</span>
       </a>
-
-      <div class="home-card home-card-interactive" id="card-trigger-xray">
-        <div class="home-card-icon-wrap icon-purple">
-          <svg class="home-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-        </div>
-        <div class="home-card-content">
-          <h2 class="home-card-title">Рентген внутренней логики</h2>
-          <p class="home-card-desc">Инспектор цепочки Controller → Service → JdbcClient. Показывает точный выполняемый SQL и время в миллисекундах.</p>
-        </div>
-        <span class="home-card-arrow">→</span>
-      </div>
-    </div>
-
-    <!-- Интерактивная подсказка -->
-    <div class="home-antigravity-tip">
-      <span class="tip-sparkle">✦</span>
-      <span>Интерактивная физика Antigravity: перемещайте курсор или кликайте по фону — частицы мягко разлетаются под действием поля невесомости.</span>
     </div>
   </main>
 
   <footer th:replace="~{partials/footer :: footer}"></footer>
 
-  <!-- Скрипт физики Антигравитации -->
-  <script type="module" src="/js/antigravity.js"></script>
+  <script type="module" src="/js/antigravity.js?v=4.1"></script>
 </body>
 </html>

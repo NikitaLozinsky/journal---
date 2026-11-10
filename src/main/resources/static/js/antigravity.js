@@ -29,13 +29,12 @@ function initAntigravityPhysics() {
   window.addEventListener("resize", resize);
   resize();
 
-  const PARTICLE_COUNT = Math.min(90, Math.max(45, Math.floor((width * height) / 16000)));
+  const PARTICLE_COUNT = Math.min(55, Math.max(28, Math.floor((width * height) / 28000)));
   const COLORS = [
     { r: 189, g: 147, b: 249 }, // Lavender #bd93f9
     { r: 255, g: 121, b: 198 }, // Pink #ff79c6
     { r: 139, g: 233, b: 253 }, // Cyan #8be9fd
-    { r: 80,  g: 250, b: 123 }, // Green #50fa7b
-    { r: 241, g: 250, b: 140 }  // Yellow #f1fa8c
+    { r: 80,  g: 250, b: 123 }  // Green #50fa7b
   ];
 
   class Particle {
@@ -46,14 +45,14 @@ function initAntigravityPhysics() {
     reset(initial = false) {
       this.x = Math.random() * width;
       this.y = initial ? Math.random() * height : (Math.random() < 0.5 ? -10 : height + 10);
-      this.baseVx = (Math.random() - 0.5) * 0.45;
-      this.baseVy = (Math.random() - 0.5) * 0.45;
+      this.baseVx = (Math.random() - 0.5) * 0.35;
+      this.baseVy = (Math.random() - 0.5) * 0.35;
       this.vx = this.baseVx;
       this.vy = this.baseVy;
-      this.radius = 2.2 + Math.random() * 2.5;
+      this.radius = 1.6 + Math.random() * 1.8;
       this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
-      this.alpha = 0.45 + Math.random() * 0.45;
-      this.pulseSpeed = 0.02 + Math.random() * 0.03;
+      this.alpha = 0.3 + Math.random() * 0.35;
+      this.pulseSpeed = 0.015 + Math.random() * 0.025;
       this.pulseAngle = Math.random() * Math.PI * 2;
     }
 
@@ -135,18 +134,18 @@ function initAntigravityPhysics() {
     mouse.active = false;
   });
 
-  // Клик по экрану создает расширяющуюся гравитационную волну
+  // Клик по экрану создает мягкую гравитационную волну
   window.addEventListener("pointerdown", (e) => {
-    // Не создаем шоквейв, если кликнули по кнопкам или формам
-    if (e.target.closest("button, a, input, select, textarea, .home-card")) return;
+    // Не создаем волну, если кликнули по кнопкам, ссылкам или карточкам
+    if (e.target.closest("button, a, input, select, textarea, .home-nav-item, .site-header")) return;
     shockwaves.push({
       x: e.clientX,
       y: e.clientY,
-      radius: 10,
-      maxRadius: 240,
-      speed: 7,
-      strength: 6.5,
-      alpha: 0.8
+      radius: 8,
+      maxRadius: 200,
+      speed: 6,
+      strength: 4.5,
+      alpha: 0.65
     });
   });
 
@@ -265,26 +264,10 @@ async function loadLiveHomeStats() {
  * Инициализация быстрых триггеров на домашней странице
  */
 function initHomeTriggers() {
-  const btnTerm = document.querySelector("#home-open-term");
   const btnPalette = document.querySelector("#home-open-palette");
-  const cardXray = document.querySelector("#card-trigger-xray");
-
-  if (btnTerm) {
-    btnTerm.addEventListener("click", () => {
-      document.querySelector("#term-toggle-btn")?.click();
-    });
-  }
-
   if (btnPalette) {
     btnPalette.addEventListener("click", () => {
       document.querySelector("#cmd-palette-btn")?.click();
-    });
-  }
-
-  if (cardXray) {
-    cardXray.addEventListener("click", (e) => {
-      e.preventDefault();
-      document.querySelector("#xray-toggle-btn")?.click();
     });
   }
 }
