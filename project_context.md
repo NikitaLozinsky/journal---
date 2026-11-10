@@ -551,7 +551,7 @@ PASS: обычное удаление убрало студента и его о
 
     <groupId>ru.edu</groupId>
     <artifactId>journal</artifactId>
-    <version>1.0.0</version>
+    <version>2.0.0</version>
     <name>journal</name>
     <description>Электронный журнал студентов на Java и Spring Boot</description>
 
